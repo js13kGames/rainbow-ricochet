@@ -1,0 +1,37 @@
+Theme is Rainbow and Unicorns (or was it Unicorns and Rainbows...)
+
+
+Platformer:
+
+Rainbow Island..  I think it was called that.. a c64 or maybe Amiga game.   (ok it was "Bubble Bobble 2")
+
+
+Shoot rainbows at monsters to save Unicorns
+Classic plattform elements with elevators and enimies.. boxes, traps..
+
+
+
+
+3D-game:
+
+I was planning a retro FPS shooter..  maybe I can squeeze in the theme.  
+
+Shoot rainbows at monsters to save the Last unicorn (or maybe one unicorn on each level)..  The goal might be bringing the unicorn a horn to save it..
+
+Bright rainbow colours..   monsters are maybe darkness..    black evil blobs? (easy graphic :D).
+
+Rainbow is a boomerang that comes back..   maybe it will bounce a bunch of times and then come back to the player..   if it gets stuck it can just disable collissions
+and move through the wall.  Perhaps it will bounce like a normal bounce but slightly move against close monsters.
+
+Maybe the horn also can be weapon shooting..  um..   something..    smaller non bouncy rainbows..
+
+Fast paced with big levels..
+
+If I do the 3D-game I can use my 3D-template I did plan on use.. 
+
+
+
+
+the rainbow boomerang thing can be fun if I can get the feeling right..
+
+
