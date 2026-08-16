@@ -30,9 +30,9 @@ export default class Level{
                 if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
 
                 //else if (x == 1 && z == 4) this.setStructure(x,z,Structures.wall);
-                //else if (Math.random()< 0.1){
-                    //this.setStructure(x,z,Structures.wall);
-               // }
+                else if (Math.random()< 0.05){
+                  this.setStructure(x,z,Structures.wall);
+                }
                 else this.setStructure(x,z,Structures.floor);
             }
         }
@@ -44,8 +44,17 @@ export default class Level{
         this.setStructure(11,10,Structures.wall);
         this.setStructure(11,11,Structures.wall);
 
-        this.generateLight(size/2,size/2,8,4);
+        this.generateLight(size/2,size/2,8,2);
         this.setStructure(size/2,size/2,Structures.lightBlock);
+
+        for (let x = 0; x < size; x++) {
+                for (let z = 0; z < size; z++){
+                if (Math.random()< 0.005){
+                    this.generateLight(x,z,16,2);
+                    this.setStructure(x,z,Structures.lightBlock);
+                }
+            }
+        }
 
         this.buildLevel();
 
@@ -53,26 +62,20 @@ export default class Level{
     }
 
     generateLight(startX,startY, distance,strength){
-        console.log("Generating light "+startX+" "+startY);
-
         for (let i = 0; i < Math.PI*2; i = i+0.01){
             var stopX = startX + Math.sin(i) * distance;
             var stopY = startY + Math.cos(i) * distance;
             let light = strength;
             var p = MathUtil.bresenham(startX, startY, stopX, stopY, distance);
-            p.every((point) => {
+            for (let pi = 0; pi < p.length; pi++){
+                var point = p[pi];
                 light *= 0.85;
                 var s = this.getStructure(point.x, point.y);
-                if (!s.blocksLight()) {
+                if (s != null && !s.blocksLight()) {
                     this.setLight(point.x,point.y,light);
-                    return true;
-                }else{
-                    return false;
-                }
-            });
-            console.log(light);
+                }else break;
+            }
         }
-
     }
 
     addEntity(entity){
@@ -97,6 +100,9 @@ export default class Level{
     }
 
     setLight(x,z,light){
+        if (x < 0 || z < 0 || x > this.size || z > this.size) return;
+        var existingLight = this.getLight(x,z);
+        if (existingLight > light) return;
         this.lightMap[x * this.size + z] = light;
     }
 

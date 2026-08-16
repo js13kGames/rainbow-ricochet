@@ -58,13 +58,13 @@ export default class Player extends Entity{
 
         // Fire unicornhorn bullets
         if (game.input.firePressed && this.primaryFireDelay <= 0.0){
-            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,12));
+            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.9,this.position.z,cameraDirection,12));
             this.primaryFireDelay = 0.3;
         }
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,8));
+            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.9,this.position.z,cameraDirection,8));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
         }
