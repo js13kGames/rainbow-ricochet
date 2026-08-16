@@ -9,6 +9,10 @@ export default class Structure{
         return false;
     }
 
+    blocksLight(){
+        return false;
+    }
+
     intersects(x,y,z,checkAABB){
         this.AABB.minX=x;
         this.AABB.minY=y;

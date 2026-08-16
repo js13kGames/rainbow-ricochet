@@ -12,4 +12,24 @@ export default class MathUtil{
         out.y *= length;
         out.z *= length;
     }
+
+    static bresenham(x, y, ex, ey, maxLength) {
+        const points = [];
+        const dx = Math.abs(ex - x);
+        const dy = Math.abs(ey - y);
+        const sx = Math.sign(ex - x);
+        const sy = Math.sign(ey - y);
+        let err = dx - dy;
+
+        for (let i = 0; i < maxLength; i++) {
+            points.push({ x, y });
+            if (x === ex && y === ey) break;
+
+            const e = 2 * err;
+            if (e > -dy) err -= dy, x += sx;
+            if (e < dx) err += dx, y += sy;
+        }
+
+        return points;
+    }
 }
