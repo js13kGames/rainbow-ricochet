@@ -1,10 +1,11 @@
+import Game from "../game.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
-import Bullet from "./weapon.js";
+import Bullet from "./bullet.js";
 
 export default class Rainbow extends Bullet{
     constructor(gl,shaderprogram,glTexture,x,y,z,direction,speed){
-        super(x,y,z,direction,speed);
+        super(x,y,z,direction,speed,true);
         this.shaderprogram = shaderprogram;
         this.glTexture = glTexture;
         this.texture = new Texture(glTexture,63,0,1,1);
@@ -13,13 +14,13 @@ export default class Rainbow extends Bullet{
 
         let alpha = 0.8;
         let light = 2;
-        this.addBox(meshBuild,-0.5,0,-0.5,1.0,0.8,0.1,alpha,light);
-        this.addBox(meshBuild,-1.0,0,-1.0,1.0,0.5,0.0,alpha,light);
-        this.addBox(meshBuild,-1.5,0,-1.5,1.0,0.1,0.1,alpha,light);
-        this.addBox(meshBuild,0,0,0,0.0,0.8,0.4,alpha,light);
-        this.addBox(meshBuild,0.5,0,-0.5,0.0,0.7,0.9,alpha,light);
-        this.addBox(meshBuild,1.0,0,-1.0,0.0,0.3,0.5,alpha,light);
-        this.addBox(meshBuild,1.5,0,-1.5,0.4,0.1,0.5,alpha,light);
+        this.addBox(meshBuild,-0.5,0,-0.5,Game.rainbowColors[0],alpha,light);
+        this.addBox(meshBuild,-1.0,0,-1.0,Game.rainbowColors[1],alpha,light);
+        this.addBox(meshBuild,-1.5,0,-1.5,Game.rainbowColors[2],alpha,light);
+        this.addBox(meshBuild,0,0,0,Game.rainbowColors[3],alpha,light);
+        this.addBox(meshBuild,0.5,0,-0.5,Game.rainbowColors[4],alpha,light);
+        this.addBox(meshBuild,1.0,0,-1.0,Game.rainbowColors[5],alpha,light);
+        this.addBox(meshBuild,1.5,0,-1.5,Game.rainbowColors[6],alpha,light);
 
         this.mesh = MeshBuilder.build(meshBuild);
         this.mesh.setS(0.15);
@@ -28,7 +29,10 @@ export default class Rainbow extends Bullet{
     
     }
 
-    addBox(meshBuild,x,y,z,r,g,b,alpha,light){
+    addBox(meshBuild,x,y,z,rgb,alpha,light){
+        var r = rgb[0];
+        var g = rgb[1];
+        var b = rgb[2];
         MeshBuilder.left(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha],null);
         MeshBuilder.right(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha],null);
         MeshBuilder.front(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha],null);
@@ -37,7 +41,7 @@ export default class Rainbow extends Bullet{
         MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,y,z,light,[r,g,b,alpha],null);
     }
 
-    onStructureHit(pos){
+    onStructureHit(game, pos){
         this.bounces++;
         console.log(this.bounces);
     }
@@ -46,8 +50,6 @@ export default class Rainbow extends Bullet{
         super.tick(game,deltaTime);
         this.counter += deltaTime;
         this.mesh.setRotationY(this.mesh.rotY+(5*deltaTime));
-        //this.mesh.setRotationX(this.mesh.rotX+(1.0*deltaTime));
-        this.mesh.setPos(this.position.x,this.position.y,this.position.z);
     }
 
     render(gl){

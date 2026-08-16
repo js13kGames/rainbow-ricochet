@@ -1,10 +1,11 @@
 import Entity from "./entity.js";
 
 export default class Bullet extends Entity{
-    constructor(x,y,z,direction,speed){
+    constructor(x,y,z,direction,speed,bounce=false){
         super(x,y,z);
         this.direction = direction;
         this.speed = speed;
+        this.bounce = bounce;
     }
 
     tick(game,deltaTime){
@@ -16,21 +17,22 @@ export default class Bullet extends Entity{
         if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z,0.2))
             this.move(this.tempVector.x-this.position.x,0,0);
         else{
-            this.direction.x = -this.direction.x;
-            this.onStructureHit(this.tempVector); // This should probably move to the entity class
+            if (this.bounce) this.direction.x = -this.direction.x;
+            this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
         }
             
         if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z,0.2))
             this.move(0,0,this.tempVector.z-this.position.z);
-            //this.position.z = this.tempVector.z;
         else{
-            this.direction.z = -this.direction.z;
-            this.onStructureHit(this.tempVector); // This should probably move to the entity class
+            if (this.bounce) this.direction.z = -this.direction.z;
+            this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
         }
+
+        this.mesh.setPos(this.position.x,this.position.y,this.position.z);
     }
 
     // Called when we hit a structure at the given position
-    onStructureHit(pos){
+    onStructureHit(game, pos){
 
     }
 }

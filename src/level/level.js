@@ -36,6 +36,23 @@ export default class Level{
         
     }
 
+    addEntity(entity){
+        this.entities.push(entity);
+    }
+
+    deleteEntity(entity){
+        this.deleteFromList(entity,this.entities);
+    }
+
+    // Javascript doesn't have a way to just delete something smoothly from a list (AFAIK)
+    deleteFromList(objectToDelete,sourceList){
+        for(let i = sourceList.length - 1; i >= 0; i--) {
+            if(sourceList[i] === objectToDelete) {
+                sourceList.splice(i, 1);
+            }
+        }
+    }
+
     setStructure(x,z,structure){
         this.structures[x * this.size + z] = structure;
     }

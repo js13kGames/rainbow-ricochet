@@ -2,6 +2,7 @@ import Game from "../game.js";
 import MathUtil from "../mathutil.js";
 import Entity from "./entity.js";
 import Rainbow from "./rainbow.js";
+import UnicornhornBullet from "./unicornhornbullet.js";
 
 export default class Player extends Entity{
     constructor(x,y,z) {
@@ -9,13 +10,14 @@ export default class Player extends Entity{
 
         this.strafe = {x:0,z:0};
         this.speed = 5;
-        this.fireDelay = 0;
+        this.primaryFireDelay = this.secondaryFireDelay = 0;
     }
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
 
-        this.fireDelay -= deltaTime;
+        this.primaryFireDelay -= deltaTime;
+        this.secondaryFireDelay -= deltaTime;
 
         game.gl.camera.rotate(-game.input.pointer.x/500);
         game.gl.camera.rotateX(-game.input.pointer.y/500);
@@ -44,10 +46,8 @@ export default class Player extends Entity{
             this.tempVector.x += this.position.x;
             this.tempVector.z += this.position.z;
 
-            // check if the player can move in x or z direction to allow slide along walls
-            
-            //if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.position.x += this.tempVector.x-this.position.x;
-           // if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.position.z += this.tempVector.z-this.position.z;
+            // check if the player can move in x or z direction separetly to allow slide along walls
+
             if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.move(this.tempVector.x-this.position.x,0,0);
             if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.move(0,0,this.tempVector.z-this.position.z);
 
@@ -55,9 +55,16 @@ export default class Player extends Entity{
             game.gl.camera.position.z = this.position.z;
         }
 
-        if (game.input.secondFirePressed && this.fireDelay <= 0.0){
-            game.level.entities.push(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,8));
-            this.fireDelay = 0.9;
+        // Fire unicornhorn bullets
+        if (game.input.firePressed && this.primaryFireDelay <= 0.0){
+            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,12));
+            this.primaryFireDelay = 0.3;
+        }
+
+        // Fire rainbow boomerang
+        if (game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
+            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,8));
+            this.secondaryFireDelay = 0.9;
         }
     }
 

@@ -14,6 +14,9 @@ import Structures from "./structure/structures.js";
 export default class Game{
     static up = {x:0,y:1,z:0};
     static down = {x:0,y:-1,z:0}
+    static rainbowColors = [[1.0,0.8,0.1],[1.0,0.5,0.0],[1.0,0.1,0.1],[0.0,0.8,0.4],[0.0,0.7,0.9],[0.0,0.3,0.5],[0.4,0.1,0.5]];
+
+
     constructor(){
         this.canvas = document.getElementById("c");
         this.canvas.width = 854;
