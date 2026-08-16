@@ -111,7 +111,7 @@ export default class Game{
         this.counter = 0;
         this.fps = 0;
 
-        this.level = new Level(this,16);
+        this.level = new Level(this,64,this.player);
     }
 
     update(){
@@ -154,12 +154,13 @@ export default class Game{
         this.input.tick(this);
 
         
-        this.player.tick(this,deltaTime);
+        //this.player.tick(this,deltaTime);
 
         this.level.tick(this,deltaTime);
     }
 
     render(){
         this.level.render(this.gl);
+        //this.player.render(this.gl);
     }
 }

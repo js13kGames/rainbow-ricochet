@@ -7,13 +7,14 @@ import Structures from "../structure/structures.js";
 import Rainbow from "../entity/rainbow.js";
 
 export default class Level{
-    constructor(game,size){
+    constructor(game,size,player){
         console.log(game);
         this.gl = game.gl;
         this.shaderprogram = game.shaderProgram;
         this.glTexture = game.glTexture;
         this.entities = [];
         this.structures = [];
+        this.entities.push(player);
 
         this.level = [size*size];
         this.size = size;
@@ -23,7 +24,7 @@ export default class Level{
                 if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
 
                 //else if (x == 1 && z == 4) this.setStructure(x,z,Structures.wall);
-                else if (Math.random()< 0.1){
+                else if (Math.random()< 0.01){
                     this.setStructure(x,z,Structures.wall);
                 }
                 else this.setStructure(x,z,Structures.floor);
@@ -75,6 +76,18 @@ export default class Level{
         this.entities.forEach(a => {
             a.tick(game,deltaTime);
         });
+
+        // Bad performance thing but here we are :)
+        // If I have time and space make it check just areas surronding each entity
+
+        this.entities.forEach(a => {
+            this.entities.forEach(b => {
+                if(a.doesCollidesWithEntity(game,b)){
+                    a.onEntityHit(game,b);
+                    b.onEntityHit(game,a);
+                }
+            })
+        })
     }
 
     render(gl){

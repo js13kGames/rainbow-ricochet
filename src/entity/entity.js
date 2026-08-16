@@ -7,7 +7,23 @@ export default class Entity{
         this.tempAABB = {minX:0,minY:0,minZ:0,maxX:0,maxY:0,maxZ:0};
     }
 
+    // Move the entity in x,y,z position (position + movement)
+    // Also update the AABB which is used for collision checking between entities
+    move(x,y,z){
+        this.position.x = this.position.x + x;
+        this.position.y = this.position.y + y;
+        this.position.z = this.position.z + z;
 
+        this.AABB.minX=this.position.x;
+        this.AABB.minY=this.position.y;
+        this.AABB.minZ=this.position.z;
+        this.AABB.maxX=this.position.x+1;
+        this.AABB.maxY=this.position.y+2;
+        this.AABB.maxZ=this.position.z+1;
+    }
+
+    // Check if the entity can move to the position it wants to move to
+    // Checks surronding structures and do AABB intersect checks against them
     canMove(game, x,y,z,radius=0.4){
 
         this.tempAABB.minX=x;
@@ -31,17 +47,29 @@ export default class Entity{
         if (b1) return !b1;
         if (b2) return !b2;
         if (b3) return !b3;
-        if (b4) return !b4;  
+        if (b4) return !b4;
         return true;
     }
 
+    // Get sturcture and check if we will intersect with it
     checkIntersects(game, x,y,z){
         var s = game.level.getStructure(x,z);
 
         if (s == null) return false;
         var i = s.intersects(x,y,z,this.tempAABB);
-
         return i;
+    }
+
+    // Check if this entity collides with another entity by doing a AABB check. Returns false if we try to check against ourselves.
+    doesCollidesWithEntity(game,entity){
+        if (entity == this) return false;
+        return (entity.AABB.minX <= this.AABB.maxX && entity.AABB.maxX >= this.AABB.minX) &&
+         (entity.AABB.minY <= this.AABB.maxY && entity.AABB.maxY >= this.AABB.minY) &&
+         (entity.AABB.minZ <= this.AABB.maxZ && entity.AABB.maxZ >= this.AABB.minZ);
+    }
+
+    // Called when we are hit by an entity and which entity
+    onEntityHit(game, entity){
     }
 
     tick(game,deltaTime){

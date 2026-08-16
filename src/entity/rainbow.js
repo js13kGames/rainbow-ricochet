@@ -1,8 +1,8 @@
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
-import Weapon from "./weapon.js";
+import Bullet from "./weapon.js";
 
-export default class Rainbow extends Weapon{
+export default class Rainbow extends Bullet{
     constructor(gl,shaderprogram,glTexture,x,y,z,direction,speed){
         super(x,y,z,direction,speed);
         this.shaderprogram = shaderprogram;
@@ -24,7 +24,7 @@ export default class Rainbow extends Weapon{
         this.mesh = MeshBuilder.build(meshBuild);
         this.mesh.setS(0.15);
 
-        this.counter = 0;
+        this.counter = this.bounces = 0;
     
     }
 
@@ -35,6 +35,11 @@ export default class Rainbow extends Weapon{
         MeshBuilder.back(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha],null);
         MeshBuilder.top(this.texture.getUVs(),meshBuild,x,y,z,light,[r,g,b,alpha],null);
         MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,y,z,light,[r,g,b,alpha],null);
+    }
+
+    onStructureHit(pos){
+        this.bounces++;
+        console.log(this.bounces);
     }
 
     tick(game,deltaTime){

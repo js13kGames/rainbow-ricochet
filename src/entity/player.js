@@ -46,17 +46,22 @@ export default class Player extends Entity{
 
             // check if the player can move in x or z direction to allow slide along walls
             
-            if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.position.x += this.tempVector.x-this.position.x;
-            if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.position.z += this.tempVector.z-this.position.z;
+            //if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.position.x += this.tempVector.x-this.position.x;
+           // if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.position.z += this.tempVector.z-this.position.z;
+            if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.move(this.tempVector.x-this.position.x,0,0);
+            if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.move(0,0,this.tempVector.z-this.position.z);
 
             game.gl.camera.position.x = this.position.x;
             game.gl.camera.position.z = this.position.z;
         }
 
-        if (game.input.firePressed && this.fireDelay <= 0.0){
-            game.level.entities.push(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.1,this.position.z,cameraDirection,8));
+        if (game.input.secondFirePressed && this.fireDelay <= 0.0){
+            game.level.entities.push(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,8));
             this.fireDelay = 0.9;
-        } 
+        }
+    }
 
+    onEntityHit(game,entity){
+        console.log("hit!!! ouch!!!!!!"+entity.position.x+" "+entity.position.z);
     }
 }

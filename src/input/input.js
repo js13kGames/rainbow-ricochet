@@ -14,6 +14,7 @@ export default class Input {
         this.axes = { x: (this.keys[68] == "keydown" || this.keys[39] == "keydown") - (this.keys[65] == "keydown" || this.keys[37] == "keydown"), y: (this.keys[83] == "keydown" || this.keys[40] == "keydown") - (this.keys[87] == "keydown" || this.keys[38] == "keydown") };
         this.pointer = { x: this.pointerX || 0, y: this.pointerY || 0 };
         this.firePressed = this.buttons[0] == "mousedown";
+        this.secondFirePressed = this.buttons[2] == "mousedown";
         
         this.pointerX = 0;
         this.pointerY = 0;
