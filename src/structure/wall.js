@@ -3,7 +3,7 @@ import Structure from "./structure.js";
 
 export default class Wall extends Structure{
     constructor(glTexture, tint) {
-        super(new Texture(glTexture,0,0,16,16),tint);
+        super(new Texture(glTexture,0,16,16,16),tint);
     }
 
     isSolid(){

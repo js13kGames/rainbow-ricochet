@@ -6,7 +6,7 @@ export default class Structures{
     static floor;
 
     constructor(glTexture){
-        Structures.wall = new Wall(glTexture,[0.4,0.5,0.8,1.0]);
+        Structures.wall = new Wall(glTexture,[0.7,0.7,0.9,1.0]);
         Structures.floor = new Floor(glTexture,[0.5,0.8,0.9,1.0]);
     }
 }

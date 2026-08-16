@@ -24,7 +24,7 @@ export default class Level{
                 if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
 
                 //else if (x == 1 && z == 4) this.setStructure(x,z,Structures.wall);
-                else if (Math.random()< 0.01){
+                else if (Math.random()< 0.1){
                     this.setStructure(x,z,Structures.wall);
                 }
                 else this.setStructure(x,z,Structures.floor);
