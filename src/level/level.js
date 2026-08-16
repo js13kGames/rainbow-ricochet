@@ -64,7 +64,7 @@ export default class Level{
     buildLevel(){
         let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
         //let h = Math.ceil(Math.random()*4)+2;
-        let h = 2;
+        let h = 4;
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -91,7 +91,8 @@ export default class Level{
 
     tick(game,deltaTime){
         this.entities.forEach(a => {
-            a.tick(game,deltaTime);
+            if (a.disposed) this.deleteEntity(a);
+            else a.tick(game,deltaTime);
         });
 
         // Bad performance thing but here we are :)

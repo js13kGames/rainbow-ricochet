@@ -25,7 +25,7 @@ export default class Rainbow extends Bullet{
         this.mesh = MeshBuilder.build(meshBuild);
         this.mesh.setS(0.15);
 
-        this.counter = this.bounces = 0;
+        this.bounces = 0;
     
     }
 
@@ -43,12 +43,14 @@ export default class Rainbow extends Bullet{
 
     onStructureHit(game, pos){
         this.bounces++;
-        console.log(this.bounces);
     }
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
-        this.counter += deltaTime;
+        if (this.bounces > 4){
+            this.ignoreCollisions = true;
+            this.direction = {x: this.position.x - game.player.position.x, y: this.position.y - game.player.position.y, z: this.position.z - game.player.position.z}
+        }
         this.mesh.setRotationY(this.mesh.rotY+(5*deltaTime));
     }
 

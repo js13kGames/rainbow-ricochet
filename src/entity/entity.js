@@ -72,6 +72,10 @@ export default class Entity{
     onEntityHit(game, entity){
     }
 
+    dispose(game){
+        this.disposed = true;
+    }
+
     tick(game,deltaTime){
 
     }

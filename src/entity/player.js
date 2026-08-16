@@ -11,6 +11,7 @@ export default class Player extends Entity{
         this.strafe = {x:0,z:0};
         this.speed = 5;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
+        this.hasRainbowInHand = true;
     }
 
     tick(game,deltaTime){
@@ -62,13 +63,19 @@ export default class Player extends Entity{
         }
 
         // Fire rainbow boomerang
-        if (game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
+        if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
             game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.4,this.position.z,cameraDirection,8));
             this.secondaryFireDelay = 0.9;
+            this.hasRainbowInHand = false;
         }
     }
 
     onEntityHit(game,entity){
-        console.log("hit!!! ouch!!!!!!"+entity.position.x+" "+entity.position.z);
+        if (entity instanceof Rainbow){
+            if (entity.bounces > 0){
+                this.hasRainbowInHand = true;
+                entity.dispose(game);
+            }
+        }
     }
 }
