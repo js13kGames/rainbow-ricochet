@@ -9,7 +9,7 @@ import MathUtil from "../mathutil.js";
 import Lightblock from "../structure/lightblock.js";
 
 export default class Level{
-    constructor(game,size,player){
+    constructor(game,size,player,ambientLight){
         console.log(game);
         this.gl = game.gl;
         this.shaderprogram = game.shaderProgram;
@@ -21,44 +21,32 @@ export default class Level{
         this.level = [size*size];
         this.lightMap = [size*size];
         this.size = size;
+        this.ambientLight = ambientLight;
 
-        
-        console.log(this.lightMap);
 
         for (let x = 0; x < size; x++) {
             for (let z = 0; z < size; z++){
-                if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
+                var levelChar = l.charAt(x + (z*this.size));
 
-                //else if (x == 1 && z == 4) this.setStructure(x,z,Structures.wall);
-                else if (Math.random()< 0.05){
-                  this.setStructure(x,z,Structures.wall);
-                }
+                if (levelChar == "#") this.setStructure(x,z,Structures.wall);
                 else this.setStructure(x,z,Structures.floor);
+                if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
+
+                
+                if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
             }
         }
-
-        this.setStructure(10,10,Structures.wall);
-        this.setStructure(10,11,Structures.wall);
-        this.setStructure(10,12,Structures.wall);
-
-        this.setStructure(11,10,Structures.wall);
-        this.setStructure(11,11,Structures.wall);
-
-        this.generateLight(size/2,size/2,8,2);
-        this.setStructure(size/2,size/2,Structures.lightBlock);
-
         for (let x = 0; x < size; x++) {
-                for (let z = 0; z < size; z++){
-                if (Math.random()< 0.005){
-                    this.generateLight(x,z,16,2);
+            for (let z = 0; z < size; z++){
+                var levelChar = l.charAt(x + (z*this.size));
+                if (levelChar == "l"){
                     this.setStructure(x,z,Structures.lightBlock);
+                    this.generateLight(x,z,10,4);
                 }
             }
         }
 
         this.buildLevel();
-
-        
     }
 
     generateLight(startX,startY, distance,strength){
@@ -107,9 +95,9 @@ export default class Level{
     }
 
     getLight(x,z){
-        if (x < 0 || z < 0 || x > this.size || z > this.size) return 0.4;
+        if (x < 0 || z < 0 || x > this.size || z > this.size) return this.ambientLight;
         var v =  this.lightMap[x * this.size + z];
-        if (v == null) return 0.4;
+        if (v == null) return this.ambientLight;
         return v;
     }
 
@@ -176,7 +164,6 @@ export default class Level{
     }
 
     render(gl){
-        //console.log(this.shaderprogram);
         this.structureMesh.render(gl,this.shaderprogram, this.glTexture);
 
         this.entities.forEach(e => {

@@ -108,13 +108,13 @@ export default class Game{
         this.player = new Player(1,0,1);
 
         this.gl.camera = new Camera(this.gl,this.player.position.x,1.2,this.player.position.z);
-        this.gl.camera.setRotation(180);
+        this.gl.camera.setRotation(270);
 
         this.last = performance.now();
         this.counter = 0;
         this.fps = 0;
 
-        this.level = new Level(this,64,this.player);
+        this.level = new Level(this,96,this.player,0.7);
     }
 
     update(){

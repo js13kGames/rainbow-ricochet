@@ -9,7 +9,7 @@ export default class Player extends Entity{
         super(x,y,z);
 
         this.strafe = {x:0,z:0};
-        this.speed = 5;
+        this.speed = 7;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.hasRainbowInHand = true;
     }
@@ -51,10 +51,10 @@ export default class Player extends Entity{
 
             if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.move(this.tempVector.x-this.position.x,0,0);
             if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.move(0,0,this.tempVector.z-this.position.z);
-
-            game.gl.camera.position.x = this.position.x;
-            game.gl.camera.position.z = this.position.z;
         }
+
+        game.gl.camera.position.x = this.position.x;
+        game.gl.camera.position.z = this.position.z;
 
         // Fire unicornhorn bullets
         if (game.input.firePressed && this.primaryFireDelay <= 0.0){

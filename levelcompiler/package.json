@@ -1,0 +1,16 @@
+{
+  "name": "levelcompiler",
+  "version": "1.1.0",
+  "description": "Compile level pngs to txt for my js13k game 2026",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "nicklas lof",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^3.2.3",
+    "png-js": "^2.0.0"
+  }
+}

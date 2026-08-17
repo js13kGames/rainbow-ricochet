@@ -39,7 +39,12 @@ echo "<meta charset="UTF-8"><style>" > index-template.html
 cat ../src/i.css >> index-template.html
 echo "</style>" >> index-template.html
 echo "<canvas id=\"c\"></canvas>" >> index-template.html
-cat ../src/c.js >> index-template.html
+echo "<script>" >> index-template.html
+cat ../src/l.js >> index-template.html
+echo "</script>" >> index-template.html
+echo "<script>" >> index-template.html
+cat ../src/m.js >> index-template.html
+echo "</script>" >> index-template.html
 echo "<script charset=\"utf8\">" >> index-template.html
 cat o.js >> index-template.html
 echo "</script><div id="s">Press any key to start</div>" >> index-template.html

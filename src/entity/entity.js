@@ -1,5 +1,5 @@
 export default class Entity{
-    constructor(x,y,z){
+    constructor(x,y,z,radius){
         this.velocity = {x:0,z:0};
         this.position = {x:x,y:y,z:z};
         this.tempVector = {x:0,y:0,z:0};
