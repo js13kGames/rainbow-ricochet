@@ -114,7 +114,7 @@ export default class Game{
         this.counter = 0;
         this.fps = 0;
 
-        this.level = new Level(this,64,this.player,0.3);
+        this.level = new Level(this,64,this.player,0.3,5);
     }
 
     update(){

@@ -9,7 +9,7 @@ import MathUtil from "../mathutil.js";
 import Lightblock from "../structure/lightblock.js";
 
 export default class Level{
-    constructor(game,size,player,ambientLight){
+    constructor(game,size,player,ambientLight,height){
         console.log(game);
         this.gl = game.gl;
         this.shaderprogram = game.shaderProgram;
@@ -22,6 +22,7 @@ export default class Level{
         this.lightMap = [size*size];
         this.size = size;
         this.ambientLight = ambientLight;
+        this.height = height;
 
 
         for (let x = 0; x < size; x++) {
@@ -109,7 +110,6 @@ export default class Level{
 
     buildLevel(){
         let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
-        let h = 3;
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -119,13 +119,13 @@ export default class Level{
                     let r = this.getStructure(x+1,z);
                     let f = this.getStructure(x,z+1);
                     let b = this.getStructure(x,z-1);
-                    if (l!= null && !l.isSolid()) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),h,s.tint,null);
-                    if (r!= null && !r.isSolid()) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),h,s.tint,null);
-                    if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),h,s.tint,null);
-                    if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),h,s.tint,null);
+                    if (l!= null && !l.isSolid()) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),this.height,s.tint,null);
+                    if (r!= null && !r.isSolid()) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,s.tint,null);
+                    if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,s.tint,null);
+                    if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,s.tint,null);
                 }else if (s instanceof Floor){
                     MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
-                    MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,h,z,this.getLight(x,z),s.tint,null);
+                    MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),s.tint,null);
                 }
             }
         }
@@ -135,7 +135,6 @@ export default class Level{
 
     buildTransparentLevel(){
         let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
-        let h = 3;
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -144,10 +143,10 @@ export default class Level{
                     let r = this.getStructure(x+1,z);
                     let f = this.getStructure(x,z+1);
                     let b = this.getStructure(x,z-1);
-                    if (l!= null && !l.isSolid()) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),h,s.tint,null);
-                    if (r!= null && !r.isSolid()) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),h,s.tint,null);
-                    if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),h,s.tint,null);
-                    if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),h,s.tint,null);
+                    if (l!= null && !l.isSolid()) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),this.height,s.tint,null);
+                    if (r!= null && !r.isSolid()) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,s.tint,null);
+                    if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,s.tint,null);
+                    if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,s.tint,null);
 
                 }
             }
