@@ -3,11 +3,11 @@ import Structure from "./structure.js";
 
 export default class Lightblock extends Structure{
     constructor(glTexture, tint) {
-        super(new Texture(glTexture,63,0,1,1),tint);
+        super(new Texture(glTexture,16,0,16,16),tint);
     }
 
     isSolid(){
-        return false;
+        return true;
     }
 
     blocksLight(){

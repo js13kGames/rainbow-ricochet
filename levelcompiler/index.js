@@ -2,8 +2,8 @@
 //Compiles the level image to two text files. One with the leveltiles and the other one with metadata using the alpha value of the color.
 //The resulting files will be 8kb but zip will compress them alot resulting in two files much smaller than using the png itself.
 const { createCanvas, loadImage,ImageData } = require('canvas');
-const width = 96;
-const height = 96;
+const width = 64;
+const height = 64;
 const canvas = createCanvas(width, height);
 const ctx = canvas.getContext('2d');
 canvas.imageSmoothingEnabled = false;

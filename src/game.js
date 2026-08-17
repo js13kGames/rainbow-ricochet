@@ -114,7 +114,7 @@ export default class Game{
         this.counter = 0;
         this.fps = 0;
 
-        this.level = new Level(this,96,this.player,0.7);
+        this.level = new Level(this,64,this.player,0.3);
     }
 
     update(){
@@ -136,9 +136,7 @@ export default class Game{
             this.gl.enable(this.gl.DEPTH_TEST);
             this.gl.depthFunc(this.gl.LESS);
             this.gl.enable(this.gl.CULL_FACE);
-            this.gl.disable(this.gl.BLEND);
 
-            this.gl.enable(this.gl.BLEND)
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
             this.render();
 

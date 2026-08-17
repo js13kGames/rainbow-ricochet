@@ -9,7 +9,7 @@ export default class Player extends Entity{
         super(x,y,z);
 
         this.strafe = {x:0,z:0};
-        this.speed = 7;
+        this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.hasRainbowInHand = true;
     }

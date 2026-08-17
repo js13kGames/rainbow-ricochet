@@ -41,12 +41,13 @@ export default class Level{
                 var levelChar = l.charAt(x + (z*this.size));
                 if (levelChar == "l"){
                     this.setStructure(x,z,Structures.lightBlock);
-                    this.generateLight(x,z,10,4);
+                    this.generateLight(x,z,10,5);
                 }
             }
         }
 
         this.buildLevel();
+        this.buildTransparentLevel();
     }
 
     generateLight(startX,startY, distance,strength){
@@ -57,7 +58,7 @@ export default class Level{
             var p = MathUtil.bresenham(startX, startY, stopX, stopY, distance);
             for (let pi = 0; pi < p.length; pi++){
                 var point = p[pi];
-                light *= 0.85;
+                light *= 0.75;
                 var s = this.getStructure(point.x, point.y);
                 if (s != null && !s.blocksLight()) {
                     this.setLight(point.x,point.y,light);
@@ -108,8 +109,7 @@ export default class Level{
 
     buildLevel(){
         let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
-        let h = 4;
-        console.log(this.lightMap);
+        let h = 3;
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -123,7 +123,23 @@ export default class Level{
                     if (r!= null && !r.isSolid()) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),h,s.tint,null);
                     if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),h,s.tint,null);
                     if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),h,s.tint,null);
-                }else if (s instanceof Lightblock){
+                }else if (s instanceof Floor){
+                    MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
+                    MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,h,z,this.getLight(x,z),s.tint,null);
+                }
+            }
+        }
+
+        this.structureMesh = MeshBuilder.build(meshBuild);
+    }
+
+    buildTransparentLevel(){
+        let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
+        let h = 3;
+        for (let x = 0; x < this.size; x++) {
+            for (let z = 0; z < this.size; z++){
+                let s = this.getStructure(x,z);
+                if (s instanceof Lightblock){
                     let l = this.getStructure(x-1,z);
                     let r = this.getStructure(x+1,z);
                     let f = this.getStructure(x,z+1);
@@ -133,15 +149,11 @@ export default class Level{
                     if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),h,s.tint,null);
                     if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),h,s.tint,null);
 
-                }else if (s instanceof Floor){
-                    MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
-                    MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,h,z,this.getLight(x,z),s.tint,null);
                 }
             }
         }
 
-        this.structureMesh = MeshBuilder.build(meshBuild);
-        
+        this.transparentMesh = MeshBuilder.build(meshBuild);
     }
 
     tick(game,deltaTime){
@@ -165,9 +177,19 @@ export default class Level{
 
     render(gl){
         this.structureMesh.render(gl,this.shaderprogram, this.glTexture);
-
+        
         this.entities.forEach(e => {
             e.render(gl);
         });
+
+
+        gl.enable(this.gl.BLEND)
+
+        this.transparentMesh.render(gl,this.shaderprogram, this.glTexture);
+
+                gl.disable(this.gl.BLEND);
+
+       
     }
+    
 }
