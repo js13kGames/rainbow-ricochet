@@ -37,18 +37,24 @@ export default class Level{
                 if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
             }
         }
-        for (let x = 0; x < size; x++) {
-            for (let z = 0; z < size; z++){
-                var levelChar = l.charAt(x + (z*this.size));
-                if (levelChar == "l"){
-                    this.setStructure(x,z,Structures.lightBlock);
-                    this.generateLight(x,z,10,5);
-                }
-            }
-        }
+
+        this.buildLight();
+        
 
         this.buildLevel();
         this.buildTransparentLevel();
+    }
+
+    buildLight(){
+        for (let x = 0; x < this.size; x++) {
+            for (let z = 0; z < this.size; z++){
+                var levelChar = l.charAt(x + (z*this.size));
+                if (levelChar == "l"){
+                    this.setStructure(x,z,Structures.lightBlock);
+                    if (Math.random() > 0.4) this.generateLight(x,z,10,5);
+                }
+            }
+        }
     }
 
     generateLight(startX,startY, distance,strength){
@@ -156,6 +162,13 @@ export default class Level{
     }
 
     tick(game,deltaTime){
+
+        if (Math.random() < 0.05){
+            this.lightMap = [this.size*this.size];
+            this.buildLight();
+            this.buildLevel();
+            this.buildTransparentLevel();
+        }
         this.entities.forEach(a => {
             if (a.disposed) this.deleteEntity(a);
             else a.tick(game,deltaTime);
