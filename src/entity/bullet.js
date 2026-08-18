@@ -24,7 +24,6 @@ export default class Bullet extends Entity{
                 this.position.y = this.heightOverGround;
             }
             else{
-                console.log("wut");
                 if (this.bounce) this.direction.x = -this.direction.x;
                 this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
             }
@@ -34,7 +33,6 @@ export default class Bullet extends Entity{
                 this.position.y = this.heightOverGround;
             }
             else{
-                console.log("wut");
                 if (this.bounce) this.direction.z = -this.direction.z;
                 this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
             }

@@ -10,7 +10,6 @@ import Lightblock from "../structure/lightblock.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height){
-        console.log(game);
         this.gl = game.gl;
         this.shaderprogram = game.shaderProgram;
         this.glTexture = game.glTexture;

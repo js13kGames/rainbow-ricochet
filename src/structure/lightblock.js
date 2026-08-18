@@ -7,7 +7,7 @@ export default class Lightblock extends Structure{
     }
 
     isSolid(){
-        return true;
+        return false;
     }
 
     blocksLight(){

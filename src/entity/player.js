@@ -55,19 +55,16 @@ export default class Player extends Entity{
             if (moveX.i) this.move(this.tempVector.x-this.position.x,0,0);
             if (moveZ.i) this.move(0,0,this.tempVector.z-this.position.z);
 
-            if (moveX.s != null && moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76){
-                console.log(this.position.y + " " +moveX.s.height);
+            if (moveX.s != null && (moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76)){
                 this.move(this.tempVector.x-this.position.x,0,0);
                 this.position.y = moveX.s.height;
             }else if (moveX.s == null) this.position.y = 0;
-            if (moveZ.s != null && moveZ.s instanceof Floor && moveZ.s.height >0 && moveZ.s.height - this.position.y < 0.76){
-                console.log(this.position.y + " " +moveZ.s.height);
+            if (moveZ.s != null && (moveZ.s instanceof Floor && moveZ.s.height >0 && moveZ.s.height - this.position.y < 0.76)){
                 this.move(0,moveZ.s.height,this.tempVector.z-this.position.z);
                 this.position.y = moveZ.s.height;
             }else if (moveZ.s == null) this.position.y = 0;
 
         }
-        //console.log(this.position.y);
         game.gl.camera.position.x = this.position.x;
         game.gl.camera.position.y = game.gl.camera.heightOverGround + this.position.y;
         game.gl.camera.position.z = this.position.z;

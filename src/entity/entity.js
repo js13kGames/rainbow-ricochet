@@ -1,4 +1,5 @@
 import Floor from "../structure/floor.js";
+import Wall from "../structure/wall.js";
 
 export default class Entity{
     constructor(x,y,z,radius){
@@ -32,34 +33,39 @@ export default class Entity{
         this.tempAABB.minY=y;
         this.tempAABB.minZ=z;
         this.tempAABB.maxX=x+1;
-        this.tempAABB.maxY=y+2;
+        this.tempAABB.maxY=y+2.25;
         this.tempAABB.maxZ=z+1;
-        console.log(this.tempAABB);
+       // console.log(this.tempAABB);
 
-        var radius = radius;
-        let x1 = Math.round(x + radius);
-        let z1 = Math.round(z + radius);
-        let x2 = Math.round(x - radius);
-        let z2 = Math.round(z - radius);
 
-        var b1 = this.checkIntersects(game, x1,y,z1);
-        var b2 = this.checkIntersects(game, x2,y,z1);
-        var b3 = this.checkIntersects(game, x1,y,z2);
-        var b4 = this.checkIntersects(game, x2,y,z2);
+        let x1 = Math.round(x + radius), z1 = Math.round(z + radius);
+        let x2 = Math.round(x - radius), z2 = Math.round(z - radius);
 
-        if (b1.i) return {i:!b1.i,s:b1.s};
-        if (b2.i) return {i:!b2.i,s:b2.s};
-        if (b3.i) return {i:!b3.i,s:b3.s};
-        if (b4.i) return {i:!b4.i,s:b4.s};
-        return {i:true,s:null};
+        let structures = [
+            this.checkIntersects(game, x1, y, z1),
+            this.checkIntersects(game, x2, y, z1),
+            this.checkIntersects(game, x1, y, z2),
+            this.checkIntersects(game, x2, y, z2),
+        ];
+
+        // This is ugly..  Prefer wall collisions over floor collisions (fake 3D trade‑off)
+        for (let structure of structures) {
+            if (structure.i && !(structure.s instanceof Floor)) return { i: !structure.i, s: structure.s };
+        }
+        for (let structure of structures) {
+            if (structure.i) return { i: !structure.i, s: structure.s };
+        }
+        return { i: true, s: null };
     }
 
-    // Get sturcture and check if we will intersect with it
+    // Get structure and check if we will intersect with it
     checkIntersects(game, x,y,z){
-        var s = game.level.getStructure(x,z);
-        if (s == null) return false;
-        var i = s.intersects(x,y,z,this.tempAABB);
-        return {i,s};
+        var structure = game.level.getStructure(x,z);
+        if (structure == null) return false;
+        if (structure instanceof Floor) y = structure.height;
+
+        var intersects = structure.intersects(x,y,z,this.tempAABB);
+        return {i: intersects,s: structure};
     }
 
     // Check if this entity collides with another entity by doing a AABB check. Returns false if we try to check against ourselves.

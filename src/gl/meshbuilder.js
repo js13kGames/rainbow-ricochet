@@ -39,7 +39,6 @@ export default class MeshBuilder{
     //Add left side of the mesh. Heigth and offset can be specified
     static left(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
         var ySize = customYSize > 0 ? customYSize : baseSize;
-        console.log(ySize);
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
@@ -58,7 +57,6 @@ export default class MeshBuilder{
     //Add right side of the mesh. Heigth and offset can be specified
     static right(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
         var ySize = customYSize > 0 ? customYSize : baseSize;
-        console.log(ySize);
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
@@ -122,7 +120,6 @@ export default class MeshBuilder{
 
     //Add left side of the mesh. Offset can be specified
     static top(uvs,builder,x,y,z,light, color, lightArray){
-        //console.log(lightArray);
         MeshBuilder.addColor(builder.colors,color);
         if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
         else MeshBuilder.addLight(builder.lights,light);
