@@ -41,7 +41,8 @@ export default class Level{
         this.buildLight();
         
 
-        this.buildLevel();
+        this.buildWallLevel();
+        this.buildFloorLevel();
         this.buildTransparentLevel();
     }
 
@@ -114,7 +115,7 @@ export default class Level{
         return this.structures[x * this.size + z];
     }
 
-    buildLevel(){
+    buildWallLevel(){
         let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
@@ -129,14 +130,26 @@ export default class Level{
                     if (r!= null && !r.isSolid()) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,s.tint,null);
                     if (f!= null && !f.isSolid()) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,s.tint,null);
                     if (b!= null && !b.isSolid()) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,s.tint,null);
-                }else if (s instanceof Floor){
+                }
+            }
+        }
+
+        this.wallMesh = MeshBuilder.build(meshBuild);
+    }
+
+    buildFloorLevel(){
+        let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
+        for (let x = 0; x < this.size; x++) {
+            for (let z = 0; z < this.size; z++){
+                let s = this.getStructure(x,z);
+                if (s instanceof Floor){
                     MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
                     MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),s.tint,null);
                 }
             }
         }
 
-        this.structureMesh = MeshBuilder.build(meshBuild);
+        this.floorMesh = MeshBuilder.build(meshBuild);
     }
 
     buildTransparentLevel(){
@@ -166,7 +179,8 @@ export default class Level{
         if (Math.random() < 0.05){
             this.lightMap = [this.size*this.size];
             this.buildLight();
-            this.buildLevel();
+            this.buildWallLevel();
+            this.buildFloorLevel();
             this.buildTransparentLevel();
         }
         this.entities.forEach(a => {
@@ -188,7 +202,8 @@ export default class Level{
     }
 
     render(gl){
-        this.structureMesh.render(gl,this.shaderprogram, this.glTexture);
+        this.wallMesh.render(gl,this.shaderprogram, this.glTexture);
+        this.floorMesh.render(gl,this.shaderprogram, this.glTexture);
         
         this.entities.forEach(e => {
             e.render(gl);
