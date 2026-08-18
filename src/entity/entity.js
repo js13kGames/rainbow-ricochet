@@ -1,3 +1,5 @@
+import Floor from "../structure/floor.js";
+
 export default class Entity{
     constructor(x,y,z,radius){
         this.velocity = {x:0,z:0};
@@ -32,6 +34,7 @@ export default class Entity{
         this.tempAABB.maxX=x+1;
         this.tempAABB.maxY=y+2;
         this.tempAABB.maxZ=z+1;
+        console.log(this.tempAABB);
 
         var radius = radius;
         let x1 = Math.round(x + radius);
@@ -44,20 +47,19 @@ export default class Entity{
         var b3 = this.checkIntersects(game, x1,y,z2);
         var b4 = this.checkIntersects(game, x2,y,z2);
 
-        if (b1) return !b1;
-        if (b2) return !b2;
-        if (b3) return !b3;
-        if (b4) return !b4;
-        return true;
+        if (b1.i) return {i:!b1.i,s:b1.s};
+        if (b2.i) return {i:!b2.i,s:b2.s};
+        if (b3.i) return {i:!b3.i,s:b3.s};
+        if (b4.i) return {i:!b4.i,s:b4.s};
+        return {i:true,s:null};
     }
 
     // Get sturcture and check if we will intersect with it
     checkIntersects(game, x,y,z){
         var s = game.level.getStructure(x,z);
-
         if (s == null) return false;
         var i = s.intersects(x,y,z,this.tempAABB);
-        return i;
+        return {i,s};
     }
 
     // Check if this entity collides with another entity by doing a AABB check. Returns false if we try to check against ourselves.

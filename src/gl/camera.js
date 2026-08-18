@@ -2,6 +2,7 @@ export default class Camera{
     constructor(gl, x,y,z){
         this.gl = gl;
         this.position = {x,y,z};
+        this.heightOverGround = y;
         this.currentRot = 0;
         this.currentRotX = 0;
     }

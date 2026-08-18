@@ -1,5 +1,6 @@
 import Game from "../game.js";
 import MathUtil from "../mathutil.js";
+import Floor from "../structure/floor.js";
 import Entity from "./entity.js";
 import Rainbow from "./rainbow.js";
 import UnicornhornBullet from "./unicornhornbullet.js";
@@ -49,22 +50,37 @@ export default class Player extends Entity{
 
             // check if the player can move in x or z direction separetly to allow slide along walls
 
-            if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z)) this.move(this.tempVector.x-this.position.x,0,0);
-            if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z)) this.move(0,0,this.tempVector.z-this.position.z);
-        }
+            var moveX = this.canMove(game, this.tempVector.x,this.position.y,this.position.z);
+            var moveZ = this.canMove(game, this.position.x,this.position.y,this.tempVector.z);
+            if (moveX.i) this.move(this.tempVector.x-this.position.x,0,0);
+            if (moveZ.i) this.move(0,0,this.tempVector.z-this.position.z);
 
+            if (moveX.s != null && moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76){
+                console.log(this.position.y + " " +moveX.s.height);
+                this.move(this.tempVector.x-this.position.x,0,0);
+                this.position.y = moveX.s.height;
+            }else if (moveX.s == null) this.position.y = 0;
+            if (moveZ.s != null && moveZ.s instanceof Floor && moveZ.s.height >0 && moveZ.s.height - this.position.y < 0.76){
+                console.log(this.position.y + " " +moveZ.s.height);
+                this.move(0,moveZ.s.height,this.tempVector.z-this.position.z);
+                this.position.y = moveZ.s.height;
+            }else if (moveZ.s == null) this.position.y = 0;
+
+        }
+        //console.log(this.position.y);
         game.gl.camera.position.x = this.position.x;
+        game.gl.camera.position.y = game.gl.camera.heightOverGround + this.position.y;
         game.gl.camera.position.z = this.position.z;
 
         // Fire unicornhorn bullets
         if (game.input.firePressed && this.primaryFireDelay <= 0.0){
-            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.9,this.position.z,cameraDirection,12));
+            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,12));
             this.primaryFireDelay = 0.3;
         }
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,0.9,this.position.z,cameraDirection,8));
+            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,8));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
         }

@@ -3,6 +3,7 @@ import Entity from "./entity.js";
 export default class Bullet extends Entity{
     constructor(x,y,z,direction,speed,bounce=false){
         super(x,y,z);
+        this.heightOverGround = y;
         this.direction = direction;
         this.speed = speed;
         this.bounce = bounce;
@@ -18,16 +19,22 @@ export default class Bullet extends Entity{
         if (this.ignoreCollisions){
             this.move(this.tempVector.x-this.position.x,0,this.tempVector.z-this.position.z);
         }else{
-            if (this.canMove(game, this.tempVector.x,this.position.y,this.position.z,0.2))
+            if (this.canMove(game, this.tempVector.x,this.heightOverGround,this.position.z,0.2).i){
                 this.move(this.tempVector.x-this.position.x,0,0);
+                this.position.y = this.heightOverGround;
+            }
             else{
+                console.log("wut");
                 if (this.bounce) this.direction.x = -this.direction.x;
                 this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
             }
                 
-            if (this.canMove(game, this.position.x,this.position.y,this.tempVector.z,0.2))
+            if (this.canMove(game, this.position.x,this.heightOverGround,this.tempVector.z,0.2).i){
                 this.move(0,0,this.tempVector.z-this.position.z);
+                this.position.y = this.heightOverGround;
+            }
             else{
+                console.log("wut");
                 if (this.bounce) this.direction.z = -this.direction.z;
                 this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
             }

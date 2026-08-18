@@ -37,7 +37,9 @@ export default class MeshBuilder{
     }
 
     //Add left side of the mesh. Heigth and offset can be specified
-    static left(uvs,builder,x,y,z,light,height,color,lightArray){
+    static left(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
+        var ySize = customYSize > 0 ? customYSize : baseSize;
+        console.log(ySize);
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
@@ -47,14 +49,16 @@ export default class MeshBuilder{
             builder.verticies.push(
                 x-baseSize,y+h-baseSize,z-baseSize,
                 x-baseSize,y+h-baseSize,z+baseSize,
-                x-baseSize,y+h+baseSize,z+baseSize,
-                x-baseSize,y+h+baseSize,z-baseSize
+                x-baseSize,y+h+ySize,z+baseSize,
+                x-baseSize,y+h+ySize,z-baseSize
             );
         }
 
     }
     //Add right side of the mesh. Heigth and offset can be specified
-    static right(uvs,builder,x,y,z,light,height,color,lightArray){
+    static right(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
+        var ySize = customYSize > 0 ? customYSize : baseSize;
+        console.log(ySize);
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
@@ -64,13 +68,14 @@ export default class MeshBuilder{
             builder.verticies.push(
                 x+baseSize,y+h-baseSize,z+baseSize,
                 x+baseSize,y+h-baseSize,z-baseSize,
-                x+baseSize,y+h+baseSize,z-baseSize,
-                x+baseSize,y+h+baseSize,z+baseSize
+                x+baseSize,y+h+ySize,z-baseSize,
+                x+baseSize,y+h+ySize,z+baseSize
             );
         }
     }
     //Add front side of the mesh. Heigth and offset can be specified
-    static front(uvs,builder,x,y,z,light,height,color,lightArray){
+    static front(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
+        var ySize = customYSize > 0 ? customYSize : baseSize;
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
@@ -80,8 +85,8 @@ export default class MeshBuilder{
             builder.verticies.push(
                 x-baseSize,y+h-baseSize,z+baseSize,
                 x+baseSize,y+h-baseSize,z+baseSize,
-                x+baseSize,y+h+baseSize,z+baseSize,
-                x-baseSize,y+h+baseSize,z+baseSize
+                x+baseSize,y+h+ySize,z+baseSize,
+                x-baseSize,y+h+ySize,z+baseSize
             );
         }
         // if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
@@ -97,7 +102,8 @@ export default class MeshBuilder{
         //     );
     }
     //Add back side of the mesh. Heigth and offset can be specified
-    static back(uvs,builder,x,y,z,light,height,color, lightArray){
+    static back(uvs,builder,x,y,z,light,height,color, lightArray,customYSize=0){
+        var ySize = customYSize > 0 ? customYSize : baseSize;
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
@@ -107,8 +113,8 @@ export default class MeshBuilder{
             builder.verticies.push(
                 x+baseSize,y+h-baseSize,z-baseSize,
                 x-baseSize,y+h-baseSize,z-baseSize,
-                x-baseSize,y+h+baseSize,z-baseSize,
-                x+baseSize,y+h+baseSize,z-baseSize
+                x-baseSize,y+h+ySize,z-baseSize,
+                x+baseSize,y+h+ySize,z-baseSize
 
             );
         }

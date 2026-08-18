@@ -30,6 +30,10 @@ export default class Level{
                 var levelChar = l.charAt(x + (z*this.size));
 
                 if (levelChar == "#") this.setStructure(x,z,Structures.wall);
+                else if (levelChar == "a") this.setStructure(x,z,Structures.floor1);
+                else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
+                else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
+                else if (levelChar == "d") this.setStructure(x,z,Structures.floor4);
                 else this.setStructure(x,z,Structures.floor);
                 if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
 
@@ -52,7 +56,8 @@ export default class Level{
                 var levelChar = l.charAt(x + (z*this.size));
                 if (levelChar == "l"){
                     this.setStructure(x,z,Structures.lightBlock);
-                    if (Math.random() > 0.4) this.generateLight(x,z,10,5);
+                    //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
+                    this.generateLight(x,z,10,5);
                 }
             }
         }
@@ -143,7 +148,15 @@ export default class Level{
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
                 if (s instanceof Floor){
-                    MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
+                    if (s.height == 0) MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
+                    else if (s.height > 0){
+                        MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1+s.height,z,this.getLight(x,z),s.tint,null);
+
+                        MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),1,s.tint,null,s.height-0.5);
+                        MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),1,s.tint,null,s.height-0.5);
+                        MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),1,s.tint,null,s.height-0.5);
+                        MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),1,s.tint,null,s.height-0.5);
+                    }
                     MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),s.tint,null);
                 }
             }
@@ -176,13 +189,13 @@ export default class Level{
 
     tick(game,deltaTime){
 
-        if (Math.random() < 0.05){
+       /* if (Math.random() < 0.05){
             this.lightMap = [this.size*this.size];
             this.buildLight();
             this.buildWallLevel();
             this.buildFloorLevel();
             this.buildTransparentLevel();
-        }
+        }*/
         this.entities.forEach(a => {
             if (a.disposed) this.deleteEntity(a);
             else a.tick(game,deltaTime);

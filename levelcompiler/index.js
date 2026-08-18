@@ -37,6 +37,13 @@ loadImage("level1.png").then((image) => {
                 if (c == 0x00ffff) addToLevel(level,x,y,"l"); // Lightsource
                 if (c == 0x00ff00) addToLevel(level,x,y,"p"); // Player start position
 
+                // Height floor
+
+                if (c == 0xff5555) addToLevel(level,x,y,"a");
+                if (c == 0xff6666) addToLevel(level,x,y,"b");
+                if (c == 0xff7777) addToLevel(level,x,y,"c");
+                if (c == 0xff8888) addToLevel(level,x,y,"d");
+
             }
         }
     

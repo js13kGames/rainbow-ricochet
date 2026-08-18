@@ -50,6 +50,7 @@ export default class Rainbow extends Bullet{
         if (this.bounces > 4){
             this.ignoreCollisions = true;
             this.direction = {x: this.position.x - game.player.position.x, y: this.position.y - game.player.position.y, z: this.position.z - game.player.position.z}
+            this.position.y = game.player.position.y+0.9;
         }
         this.mesh.setRotationY(this.mesh.rotY+(5*deltaTime));
     }
