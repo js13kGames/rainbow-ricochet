@@ -140,7 +140,8 @@ export default class Mesh{
 
     }
     //Render the mesh with WebGL.
-    render(gl, shaderProgram, texture){
+    render(gl, shaderProgram, texture,targetCamera=null){
+        var camera = targetCamera == null ? gl.camera : targetCamera;
 
         gl.bindBuffer(gl.ARRAY_BUFFER, this.positionsBuffer);
         gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
@@ -170,9 +171,9 @@ export default class Mesh{
         gl.uniform3f(shaderProgram.locations.uniformLocations.meshScale, this.scale[0], this.scale[1], this.scale[2]);
 
 
-        gl.uniform1f(shaderProgram.locations.uniformLocations.cameraRotX, gl.camera.currentRotX);
-        gl.uniform1f(shaderProgram.locations.uniformLocations.cameraRotY, gl.camera.currentRot);
-        gl.uniform3f(shaderProgram.locations.uniformLocations.cameraPosition, gl.camera.position.x, gl.camera.position.y, gl.camera.position.z);
+        gl.uniform1f(shaderProgram.locations.uniformLocations.cameraRotX, camera.currentRotX);
+        gl.uniform1f(shaderProgram.locations.uniformLocations.cameraRotY, camera.currentRot);
+        gl.uniform3f(shaderProgram.locations.uniformLocations.cameraPosition, camera.position.x, camera.position.y, camera.position.z);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         gl.drawElements(gl.TRIANGLES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);

@@ -107,6 +107,7 @@ export default class Game{
         this.player = new Player(1,0,1);
 
         this.gl.camera = new Camera(this.gl,this.player.position.x,1.2,this.player.position.z);
+        this.gl.uiCamera = new Camera(this.gl,0,0,0);
         this.gl.camera.setRotation(270);
 
         this.last = performance.now();

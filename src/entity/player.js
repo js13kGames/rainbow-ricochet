@@ -69,6 +69,10 @@ export default class Player extends Entity{
         game.gl.camera.position.y = game.gl.camera.heightOverGround + this.position.y;
         game.gl.camera.position.z = this.position.z;
 
+         if (this.hasRainbowInHand && this.rainbowInHand == null){
+            this.rainbowInHand = new Rainbow(game.gl,game.shaderProgram,game.gl,0,0,0,{x:0,y:0,z:0},0,0.9);
+        }
+
         // Fire unicornhorn bullets
         if (game.input.firePressed && this.primaryFireDelay <= 0.0){
             game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,12));
@@ -77,9 +81,21 @@ export default class Player extends Entity{
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,8));
+            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,11));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
+        }
+
+        if (!this.hasRainbowInHand && this.rainbowInHand.inHandYOffset > -1){
+            this.rainbowInHand.inHandYOffset -= deltaTime*3.5;
+            this.rainbowInHand.inHandXOffset -= deltaTime*3.5;
+            this.rainbowInHand.inHandYOffset = Math.max(-1,this.rainbowInHand.inHandYOffset);
+            this.rainbowInHand.inHandXOffset = Math.max(-1,this.rainbowInHand.inHandXOffset);
+        }else if (this.hasRainbowInHand && this.rainbowInHand.inHandYOffset < 0){
+            this.rainbowInHand.inHandYOffset += deltaTime*3.5;
+            this.rainbowInHand.inHandXOffset += deltaTime*3.5;
+            this.rainbowInHand.inHandYOffset = Math.min(0,this.rainbowInHand.inHandYOffset);
+            this.rainbowInHand.inHandXOffset = Math.min(0,this.rainbowInHand.inHandXOffset);
         }
     }
 
@@ -89,6 +105,12 @@ export default class Player extends Entity{
                 this.hasRainbowInHand = true;
                 entity.dispose(game);
             }
+        }
+    }
+
+    render(gl){
+        if (!this.rainbowInHand.inHandYOffset > -1){
+            this.rainbowInHand.renderinHand(gl);
         }
     }
 }

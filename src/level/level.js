@@ -226,7 +226,7 @@ export default class Level{
 
         this.transparentMesh.render(gl,this.shaderprogram, this.glTexture);
 
-                gl.disable(this.gl.BLEND);
+        gl.disable(this.gl.BLEND);
 
        
     }
