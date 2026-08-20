@@ -81,7 +81,7 @@ export default class Player extends Entity{
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,11));
+            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
         }

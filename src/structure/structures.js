@@ -18,6 +18,6 @@ export default class Structures{
         Structures.floor2 = new Floor(glTexture,[0.5,0.5,0.7,1.0],1.25);
         Structures.floor3 = new Floor(glTexture,[0.5,0.5,0.7,1.0],1.75);
         Structures.floor4 = new Floor(glTexture,[0.5,0.5,0.7,1.0],2.25);
-        Structures.lightBlock = new Lightblock(glTexture,[0.4,0.4,1.0,0.7]);
+        Structures.lightBlock = new Lightblock(glTexture,[0.4,0.4,1.0,1.0]);
     }
 }

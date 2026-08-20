@@ -19,7 +19,7 @@ export default class Game{
 
     constructor(){
         this.canvas = document.getElementById("c");
-        this.canvas.width = 854*2;
+        this.canvas.width = 852*2;
         this.canvas.height = 480*2;
         this.gl = this.canvas.getContext("webgl",{antialias: false});
 
@@ -108,23 +108,36 @@ export default class Game{
 
         this.gl.camera = new Camera(this.gl,this.player.position.x,1.2,this.player.position.z);
         this.gl.uiCamera = new Camera(this.gl,0,0,0);
-        this.gl.camera.setRotation(270);
+        //this.gl.camera.setRotation(270);
+        this.gl.camera.setRotation(180);
 
         this.last = performance.now();
-        //this.counter = 0;
-        //this.fps = 0;
+        this.counter = 0;
+        this.fps = 0;
 
-        this.level = new Level(this,64,this.player,0.3,10);
+        this.level = new Level(this,64,this.player,0.1,5);
     }
 
     update(){
         if (this.glTexture.dirty) return;
+        //this.canvas.width += 1;
         var now = performance.now();
         var deltaTime = now - this.last;
         if (deltaTime>500) deltaTime = 16; // Dont allow too big jump in time.
         this.last = now;
 
-        //this.counter += deltaTime;
+        this.counter += deltaTime;
+
+       /*if (this.canvas.width < 854 * 2){
+            this.canvas.width += deltaTime/2;
+            this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+        }
+
+        if (this.canvas.height < 480 * 2){
+            this.canvas.height += deltaTime/2;
+            this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+        }*/
+
 
 
             this.tick(deltaTime/1000);
@@ -140,15 +153,15 @@ export default class Game{
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
             this.render();
 
-            //this.fps++;
+            this.fps++;
 
 
 
         // FPS and tick counter
-        //if (this.counter > 1000){
-            //console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
+        if (this.counter > 1000){
+            console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
             this.counter = this.fps = 0;
-       // }
+        }
     }
 
     tick(deltaTime){

@@ -7,6 +7,7 @@ import Structures from "../structure/structures.js";
 import Rainbow from "../entity/rainbow.js";
 import MathUtil from "../mathutil.js";
 import Lightblock from "../structure/lightblock.js";
+import Darkness from "../entity/darkness.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height){
@@ -14,6 +15,7 @@ export default class Level{
         this.shaderprogram = game.shaderProgram;
         this.glTexture = game.glTexture;
         this.entities = [];
+        this.particles = [];
         this.structures = [];
         this.entities.push(player);
 
@@ -36,6 +38,8 @@ export default class Level{
                 else this.setStructure(x,z,Structures.floor);
                 if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
 
+                if (levelChar == "m") { this.addEntity(new Darkness(game.gl,game.shaderProgram,game.glTexture,x,0,z))}
+
                 
                 if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
             }
@@ -56,7 +60,7 @@ export default class Level{
                 if (levelChar == "l"){
                     this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
-                    this.generateLight(x,z,10,5);
+                    this.generateLight(x,z,12,5);
                 }
             }
         }
@@ -70,7 +74,7 @@ export default class Level{
             var p = MathUtil.bresenham(startX, startY, stopX, stopY, distance);
             for (let pi = 0; pi < p.length; pi++){
                 var point = p[pi];
-                light *= 0.75;
+                light *= 0.74;
                 var s = this.getStructure(point.x, point.y);
                 if (s != null && !s.blocksLight()) {
                     this.setLight(point.x,point.y,light);
@@ -85,6 +89,14 @@ export default class Level{
 
     deleteEntity(entity){
         this.deleteFromList(entity,this.entities);
+    }
+
+    addParticle(particle){
+        this.particles.push(particle);
+    }
+
+    deleteParticle(particle){
+        this.deleteFromList(particle,this.particles);
     }
 
     // Javascript doesn't have a way to just delete something smoothly from a list (AFAIK)
@@ -200,6 +212,11 @@ export default class Level{
             else a.tick(game,deltaTime);
         });
 
+        this.particles.forEach(a =>{
+            if (a.disposed) this.deleteParticle(a);
+            else a.tick(game,deltaTime);
+        })
+
         // Bad performance thing but here we are :)
         // If I have time and space make it check just areas surronding each entity
 
@@ -218,6 +235,10 @@ export default class Level{
         this.floorMesh.render(gl,this.shaderprogram, this.glTexture);
         
         this.entities.forEach(e => {
+            e.render(gl);
+        });
+
+        this.particles.forEach(e => {
             e.render(gl);
         });
 

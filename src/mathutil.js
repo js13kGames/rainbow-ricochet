@@ -32,4 +32,9 @@ export default class MathUtil{
 
         return points;
     }
+
+    // Generate a random number between min and max;
+    static getRandom(min, max){
+        return Math.random() * (max - min) + min
+    }
 }
