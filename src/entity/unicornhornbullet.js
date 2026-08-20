@@ -29,5 +29,6 @@ export default class UnicornhornBullet extends Bullet{
 
     onStructureHit(game, pos){
         game.level.deleteEntity(this);
+        this.explode(game,0);
     }
 }

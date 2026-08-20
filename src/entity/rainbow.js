@@ -46,6 +46,7 @@ export default class Rainbow extends Bullet{
 
     onStructureHit(game, pos){
         this.bounces++;
+        this.explode(game,0.01);
     }
 
     tick(game,deltaTime){
