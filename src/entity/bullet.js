@@ -1,4 +1,6 @@
+import Darkness from "./darkness.js";
 import Entity from "./entity.js";
+import RainBow from "./rainbow.js";
 
 export default class Bullet extends Entity{
     constructor(x,y,z,direction,speed,bounce=false){
@@ -38,13 +40,16 @@ export default class Bullet extends Entity{
             }
         }
 
-       
-
         this.mesh.setPos(this.position.x,this.position.y,this.position.z);
     }
 
     // Called when we hit a structure at the given position
     onStructureHit(game, pos){
 
+    }
+    onEntityHit(game,entity){
+        if (entity instanceof Darkness && !(this instanceof RainBow)){
+            this.disposed = true;
+        }
     }
 }

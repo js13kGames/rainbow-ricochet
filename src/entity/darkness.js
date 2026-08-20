@@ -1,6 +1,7 @@
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
 import MathUtil from "../mathutil.js";
+import Bullet from "./bullet.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
 export default class Darkness extends Entity{
@@ -11,6 +12,8 @@ export default class Darkness extends Entity{
         this.texture = new Texture(glTexture,16,16,16,16);
         this.eyesTexture = new Texture(glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
+        this.health = 2;
+        this.hitDelay = 0;
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -48,6 +51,7 @@ export default class Darkness extends Entity{
     tick(game,deltaTime){
         
         super.tick(game,deltaTime);
+        this.move(0,0,0);
         var i = 0;
         this.meshes.forEach(m=>{
             this.meshMoveCounter[i]+=deltaTime;
@@ -64,6 +68,8 @@ export default class Darkness extends Entity{
             var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.5,this.position.z,0.8,{x:MathUtil.getRandom(-0.2,0.2), y: Math.random()/1.5, z: MathUtil.getRandom(-0.2,0.2)},0.05,[0.01,0.01,0.01,1.0],MathUtil.getRandom(0.05,0.2));
             game.level.addParticle(p);
         }
+
+        if (this.hitDelay > 0) this.hitDelay -= deltaTime;
         
     }
 
@@ -74,6 +80,25 @@ export default class Darkness extends Entity{
             m.render(gl,this.shaderprogram, this.glTexture);
         });
 
+
+    }
+
+     onEntityHit(game, entity){
+        if (!(entity instanceof Bullet)) return;
+        if (this.hitDelay <= 0){
+            this.health--;
+            if (this.health <=0){
+                this.disposed = true;
+                for (let i = 0; i < 20; i++){
+                    var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.5,this.position.z,2.8,{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[0.01,0.01,0.01,1.0],MathUtil.getRandom(0.05,0.2));
+                    game.level.addParticle(p);
+                }
+               
+            }else{
+                this.hitDelay = 0.25;
+            }
+            
+        }
 
     }
 }
