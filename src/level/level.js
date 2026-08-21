@@ -8,6 +8,7 @@ import Rainbow from "../entity/rainbow.js";
 import MathUtil from "../mathutil.js";
 import Lightblock from "../structure/lightblock.js";
 import Darkness from "../entity/darkness.js";
+import Door from "../entity/door.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height){
@@ -31,6 +32,9 @@ export default class Level{
                 var levelChar = l.charAt(x + (z*this.size));
 
                 if (levelChar == "#") this.setStructure(x,z,Structures.wall);
+                else if (levelChar == "x") this.addDoor(game, x,z,Door.green);
+                else if (levelChar == "y") this.addDoor(game, x,z,Door.blue);
+                else if (levelChar == "z") this.addDoor(game, x,z,Door.yellow);
                 else if (levelChar == "a") this.setStructure(x,z,Structures.floor1);
                 else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
                 else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
@@ -51,6 +55,12 @@ export default class Level{
         this.buildWallLevel();
         this.buildFloorLevel();
         this.buildTransparentLevel();
+    }
+
+    addDoor(game, x,z,color){
+        this.addEntity(new Door(this,game.gl,game.shaderProgram,game.glTexture,x,0,z,color));
+        this.setStructure(x,z,Structures.doorBlock);
+       //this.setStructure(x,z,Structures.floor);
     }
 
     buildLight(){
@@ -110,6 +120,10 @@ export default class Level{
 
     setStructure(x,z,structure){
         this.structures[x * this.size + z] = structure;
+    }
+
+    removeStructure(x,z){
+        this.structures[x * this.size + z] = null;
     }
 
     setLight(x,z,light){

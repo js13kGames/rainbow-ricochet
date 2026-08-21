@@ -38,6 +38,10 @@ loadImage("level1.png").then((image) => {
                 if (c == 0x00ff00) addToLevel(level,x,y,"p"); // Player start position
                 if (c == 0x0000ff) addToLevel(level,x,y,"m"); // Monster
 
+                if (c == 0x007700) addToLevel(level,x,y,"x"); // Green door
+                if (c == 0xdd6e93) addToLevel(level,x,y,"y"); // Blue door
+                if (c == 0x6eddc8) addToLevel(level,x,y,"z"); // Yellow door 
+
                 // Height floor
 
                 if (c == 0xff5555) addToLevel(level,x,y,"a");

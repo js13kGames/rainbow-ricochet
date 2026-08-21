@@ -1,6 +1,7 @@
 import Game from "../game.js";
 import MathUtil from "../mathutil.js";
 import Floor from "../structure/floor.js";
+import Door from "./door.js";
 import Entity from "./entity.js";
 import Rainbow from "./rainbow.js";
 import UnicornhornBullet from "./unicornhornbullet.js";
@@ -13,6 +14,9 @@ export default class Player extends Entity{
         this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.hasRainbowInHand = true;
+        this.keysHold = [];
+
+        this.keysHold.push(Door.green);
     }
 
     tick(game,deltaTime){
@@ -105,6 +109,10 @@ export default class Player extends Entity{
                 this.hasRainbowInHand = true;
                 entity.dispose(game);
             }
+        }
+
+        if (entity instanceof Door){
+            entity.unlockDoor(game,this);
         }
     }
 

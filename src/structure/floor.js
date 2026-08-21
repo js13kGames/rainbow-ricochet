@@ -6,8 +6,8 @@ export default class Floor extends Structure{
         super(new Texture(glTexture,0,0,16,16),tint,height);
     }
 
-    intersects(x,y,z,checkAABB){
+    intersects(game,x,y,z,checkAABB){
         if (this.height == 0) return false;
-        else return super.intersects(x,y,z,checkAABB);
+        else return super.intersects(game,x,y,z,checkAABB);
     }
 }

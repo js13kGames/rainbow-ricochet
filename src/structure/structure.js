@@ -16,7 +16,7 @@ export default class Structure{
         return false;
     }
 
-    intersects(x,y,z,checkAABB){
+    intersects(game,x,y,z,checkAABB){
         var yMinAdjusted = this.height > 0 ? this.height : 0;
         var yMaxAdjusted = this.height > 0 ? 0.5 : 5;
         this.AABB.minX=x;

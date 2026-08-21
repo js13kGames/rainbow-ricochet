@@ -64,7 +64,7 @@ export default class Entity{
         if (structure == null) return false;
         if (structure instanceof Floor) y = structure.height;
 
-        var intersects = structure.intersects(x,y,z,this.tempAABB);
+        var intersects = structure.intersects(game,x,y,z,this.tempAABB);
         return {i: intersects,s: structure};
     }
 
