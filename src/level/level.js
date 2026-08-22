@@ -6,11 +6,12 @@ import Wall from "../structure/wall.js";
 import Structures from "../structure/structures.js";
 import Rainbow from "../entity/rainbow.js";
 import MathUtil from "../mathutil.js";
-import Lightblock from "../structure/lightblock.js";
+import Glassblock from "../structure/glassblock.js";
 import Darkness from "../entity/darkness.js";
 import Door from "../entity/door.js";
 import Key from "../entity/key.js";
 import UnicornHorn from "../entity/unicornhorn.js";
+import Light from "../entity/light.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height){
@@ -35,6 +36,7 @@ export default class Level{
                 var levelChar = l.charAt(x + (z*this.size));
 
                 if (levelChar == "#") this.setStructure(x,z,Structures.wall);
+                else if (levelChar == "g") this.setStructure(x,z,Structures.glassBlock);
                 else if (levelChar == "x") this.addDoor(game, x,z,Door.green);
                 else if (levelChar == "y") this.addDoor(game, x,z,Door.blue);
                 else if (levelChar == "z") this.addDoor(game, x,z,Door.yellow);
@@ -56,7 +58,7 @@ export default class Level{
             }
         }
 
-        this.buildLight();
+        this.buildLight(game);
         
 
         this.buildWallLevel();
@@ -91,12 +93,13 @@ export default class Level{
         this.addEntity(new Darkness(game.gl,game.shaderProgram,game.glTexture,x,height,z));
     }
 
-    buildLight(){
+    buildLight(game){
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 var levelChar = l.charAt(x + (z*this.size));
                 if (levelChar == "l"){
-                    this.setStructure(x,z,Structures.lightBlock);
+                    this.addEntity(new Light(game.gl,game.shaderProgram,game.glTexture,x,0,z,[0.5,0.5,0.8,1.0]));
+                    //this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
                     this.generateLight(x,z,12,4);
                 }
@@ -223,7 +226,7 @@ export default class Level{
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
-                if (s instanceof Lightblock){
+                if (s instanceof Glassblock){
                     let l = this.getStructure(x-1,z);
                     let r = this.getStructure(x+1,z);
                     let f = this.getStructure(x,z+1);

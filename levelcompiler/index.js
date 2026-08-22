@@ -35,6 +35,7 @@ loadImage("level1.png").then((image) => {
                 //Based on the color set an asciicharacter in the level textfile
                 if (c == 0xffffff) addToLevel(level,x,y,"#"); // Wall 
                 if (c == 0x00ffff) addToLevel(level,x,y,"l"); // Lightsource
+                if (c == 0x5c5c5e) addToLevel(level,x,y,"g"); // Glassblock
                 if (c == 0x00ff00) addToLevel(level,x,y,"p"); // Player start position
                 if (c == 0x0000ff) addToLevel(level,x,y,"m"); // Monster
 
