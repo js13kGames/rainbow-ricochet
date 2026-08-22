@@ -16,6 +16,7 @@ export default class Darkness extends Entity{
         this.hitDelay = 0;
         this.light = 0.3;
         this.distanceToPlayer = {x:0, z:0};
+        this.aggroRange = 20;
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -75,12 +76,25 @@ export default class Darkness extends Entity{
 
         this.distanceToPlayer.x = game.player.position.x - this.position.x;
         this.distanceToPlayer.z = game.player.position.z - this.position.z;
+        var length = MathUtil.length(this.distanceToPlayer);
 
-        if (MathUtil.length(this.distanceToPlayer)< 10){
-            if (!this.hasPlayerAggro){
-                this.hasPlayerAggro = true;
-                game.monsterAggro();
-            }1
+        if (length < this.aggroRange){
+            var p = MathUtil.bresenham(Math.ceil(this.position.x), Math.ceil(this.position.z), Math.ceil(game.player.position.x), Math.ceil(game.player.position.z), Math.ceil(length));
+            for (let pi = 0; pi < p.length; pi++){
+                var point = p[pi];
+                var s = game.level.getStructure(point.x, point.y);
+                if (s != null && !s.blocksLight()) {
+                    if (point.x == Math.ceil(game.player.position.x) && point.y == Math.ceil(game.player.position.z)){
+                        if (!this.hasPlayerAggro){
+                            this.hasPlayerAggro = true;
+                            game.monsterAggro();
+                            }
+                        }
+                }else{
+                    this.hasPlayerAggro = false;
+                    break;
+                } 
+            }
         }else {
             this.hasPlayerAggro = false;
         }
@@ -88,8 +102,6 @@ export default class Darkness extends Entity{
         if (this.hasPlayerAggro && Math.random() < 0.001){
             game.monsterAggro();
         }
-
-        
     }
 
      render(gl){

@@ -16,7 +16,7 @@ export default class Player extends Entity{
         this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.hasRainbowInHand = false;
-        this.hasUnicornInHand = false;
+        this.hasUnicornInHand = true;
         this.keysHold = [];
 
        // this.keysHold.push(Door.blue);
