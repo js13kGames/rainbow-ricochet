@@ -31,7 +31,7 @@ rm bundle.js
 #roadroller -O2 -D g.js -o ./o.js
 
 # Use the parameters from a -OO session
-roadroller -D -Zab27 -Zdy0 -Zlr1100 -Zmc4 -Zmd49 -Zpr16 -S0,1,2,3,5,6,10,13,57,170,198,337 g.js -o ./o.js
+roadroller -D -Zab31 -Zdy0 -Zlr1910 -Zmc3 -Zmd117 -Zpr16 -S0,1,2,3,5,7,14,25,42,101,198,409 g.js -o ./o.js
 
 
 
@@ -41,9 +41,6 @@ echo "</style>" >> index-template.html
 echo "<canvas id=\"c\"></canvas>" >> index-template.html
 echo "<script>" >> index-template.html
 cat ../src/l.js >> index-template.html
-echo "</script>" >> index-template.html
-echo "<script>" >> index-template.html
-cat ../src/m.js >> index-template.html
 echo "</script>" >> index-template.html
 echo "<script charset=\"utf8\">" >> index-template.html
 cat o.js >> index-template.html

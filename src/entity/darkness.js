@@ -1,6 +1,7 @@
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
 import MathUtil from "../mathutil.js";
+import Floor from "../structure/floor.js";
 import Bullet from "./bullet.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
@@ -12,7 +13,7 @@ export default class Darkness extends Entity{
         this.texture = new Texture(glTexture,16,16,16,16);
         this.eyesTexture = new Texture(glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
-        this.health = 2;
+        this.health = 1;
         this.hitDelay = 0;
         this.light = 0.3;
         this.distanceToPlayer = {x:0, z:0};
@@ -84,6 +85,10 @@ export default class Darkness extends Entity{
                 var point = p[pi];
                 var s = game.level.getStructure(point.x, point.y);
                 if (s != null && !s.blocksLight()) {
+                    if ((s instanceof Floor && s.height > 0)){
+                        this.hasPlayerAggro = false;
+                        break;
+                    }
                     if (point.x == Math.ceil(game.player.position.x) && point.y == Math.ceil(game.player.position.z)){
                         if (!this.hasPlayerAggro){
                             this.hasPlayerAggro = true;

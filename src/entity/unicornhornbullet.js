@@ -15,10 +15,13 @@ export default class UnicornhornBullet extends Bullet{
             MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,2,1,[c[0],c[1],c[2],0.9],null);
             this.mesh = MeshBuilder.build(meshBuild);
             this.mesh.setS(0.05);
+            this.ttl = 1.5;
     }
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
+        this.ttl -= deltaTime;
+        if (this.ttl <= 0) this.disposed = true;
         this.mesh.setRotationY(-game.gl.camera.currentRot);
     }
 

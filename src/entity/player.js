@@ -16,12 +16,12 @@ export default class Player extends Entity{
         this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.hasRainbowInHand = false;
-        this.hasUnicornInHand = true;
+        this.hasUnicornInHand = false;
         this.keysHold = [];
 
-       // this.keysHold.push(Door.blue);
+        //this.keysHold.push(Door.blue);
        // this.keysHold.push(Door.green);
-       // this.keysHold.push(Door.yellow);
+        //this.keysHold.push(Door.yellow);
     }
 
     tick(game,deltaTime){
@@ -89,7 +89,7 @@ export default class Player extends Entity{
 
         // Fire unicornhorn bullets
         if (this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
-            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,16));
+            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
             this.primaryFireDelay = 0.3;
             game.playShoot();
             this.unicornInHand.inHandYOffset = 0.6;
