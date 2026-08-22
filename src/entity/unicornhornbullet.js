@@ -4,13 +4,11 @@ import Texture from "../gl/texture.js";
 import Bullet from "./bullet.js";
 
 export default class UnicornhornBullet extends Bullet{
-    constructor(gl,shaderprogram,glTexture,x,y,z,direction,speed){
+    constructor(x,y,z,direction,speed){
         super(x,y,z,direction,speed,false);
-            this.shaderprogram = shaderprogram;
-            this.glTexture = glTexture;
-            this.texture = new Texture(glTexture,63,0,1,1);
+            this.texture = new Texture(Game.glTexture,63,0,1,1);
 
-            var meshBuild = MeshBuilder.start(gl,x,y,z,0.5);
+            var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
             var c = Game.rainbowColors[Math.floor(Math.random()*6)];
             MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,2,1,[c[0],c[1],c[2],0.9],null);
             this.mesh = MeshBuilder.build(meshBuild);
@@ -22,12 +20,12 @@ export default class UnicornhornBullet extends Bullet{
         super.tick(game,deltaTime);
         this.ttl -= deltaTime;
         if (this.ttl <= 0) this.disposed = true;
-        this.mesh.setRotationY(-game.gl.camera.currentRot);
+        this.mesh.setRotationY(-Game.camera.currentRot);
     }
 
-    render(gl){
-        super.render(gl);
-        this.mesh.render(gl,this.shaderprogram, this.glTexture);
+    render(){
+        super.render();
+        this.mesh.render();
     }
 
     onStructureHit(game, pos){

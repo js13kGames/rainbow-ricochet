@@ -12,12 +12,10 @@ import Door from "../entity/door.js";
 import Key from "../entity/key.js";
 import UnicornHorn from "../entity/unicornhorn.js";
 import Light from "../entity/light.js";
+import Game from "../game.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height){
-        this.gl = game.gl;
-        this.shaderprogram = game.shaderProgram;
-        this.glTexture = game.glTexture;
         this.entities = [];
         this.particles = [];
         this.structures = [];
@@ -67,19 +65,19 @@ export default class Level{
     }
 
     addDoor(game, x,z,color){
-        this.addEntity(new Door(this,game.gl,game.shaderProgram,game.glTexture,x,0,z,color));
+        this.addEntity(new Door(this,x,0,z,color));
         this.setStructure(x,z,Structures.doorBlock);
     }
 
     addKey(game, x,z,color){
-        this.addEntity(new Key(game.gl,game.shaderProgram,game.glTexture,x,0,z,color));
+        this.addEntity(new Key(x,0,z,color));
         this.setStructure(x,z,Structures.floor);
     }
 
     addUnicornHorn(game,x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
-        this.addEntity(new UnicornHorn(game.gl, game.shaderProgram,game.glTexture,x,floor.height,z));
+        this.addEntity(new UnicornHorn(x,floor.height,z));
     }
 
     addDarkness(game,x,z){
@@ -90,7 +88,7 @@ export default class Level{
             height = floor.height;
         }
 
-        this.addEntity(new Darkness(game.gl,game.shaderProgram,game.glTexture,x,height,z));
+        this.addEntity(new Darkness(x,height,z));
     }
 
     buildLight(game){
@@ -98,7 +96,7 @@ export default class Level{
             for (let z = 0; z < this.size; z++){
                 var levelChar = l.charAt(x + (z*this.size));
                 if (levelChar == "l"){
-                    this.addEntity(new Light(game.gl,game.shaderProgram,game.glTexture,x,0,z,[0.5,0.5,0.8,1.0]));
+                    this.addEntity(new Light(x,0,z,[0.5,0.5,0.8,1.0]));
                     //this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
                     this.generateLight(x,z,12,4);
@@ -177,7 +175,7 @@ export default class Level{
     }
 
     buildWallLevel(){
-        let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
+        let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -199,7 +197,7 @@ export default class Level{
     }
 
     buildFloorLevel(){
-        let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
+        let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -222,7 +220,7 @@ export default class Level{
     }
 
     buildTransparentLevel(){
-        let meshBuild = MeshBuilder.start(this.gl,0,0,0,0.5);
+        let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
@@ -275,25 +273,25 @@ export default class Level{
         })
     }
 
-    render(gl){
-        this.wallMesh.render(gl,this.shaderprogram, this.glTexture);
-        this.floorMesh.render(gl,this.shaderprogram, this.glTexture);
+    render(){
+        this.wallMesh.render();
+        this.floorMesh.render();
         
         this.entities.forEach(e => {
-            e.render(gl);
+            e.render();
         });
 
         this.particles.forEach(e => {
-            e.render(gl);
+            e.render();
         });
 
 
-        gl.enable(this.gl.BLEND)
+        Game.gl.enable(Game.gl.BLEND)
 
-        this.transparentMesh.render(gl,this.shaderprogram, this.glTexture);
+        this.transparentMesh.render();
 
-        this.player.renderInHand(gl);
-        gl.disable(this.gl.BLEND);
+        this.player.renderInHand();
+        Game.gl.disable(Game.gl.BLEND);
 
        
     }

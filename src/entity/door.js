@@ -2,20 +2,19 @@ import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
 import Structures from "../structure/structures.js";
 import Entity from "./entity.js";
+import Game from "../game.js";
 
 export default class Door extends Entity{
     static blue = [0.0,0.0,1.0,1.0];
     static green = [0.0,1.0,0.0,1.0];
     static yellow = [1.0,1.0,0.0,1.0];
     
-    constructor(level,gl,shaderprogram,glTexture,x,y,z,color){
+    constructor(level,x,y,z,color){
         super(x,y,z);
         this.color = color;
-        this.texture = new Texture(glTexture,0,16,16,16);
-        this.shaderprogram = shaderprogram;
-        this.glTexture = glTexture;
+        this.texture = new Texture(Game.glTexture,0,16,16,16);
         this.locked = true;
-        let meshBuild = MeshBuilder.start(gl,0,0,0,0.5);
+        let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         MeshBuilder.left(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x-1,z)+0.5,3,color,null);
         MeshBuilder.right(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x+1,z)+0.5,3,color,null);
         MeshBuilder.front(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x,z+1)+0.5,3,color,null);
@@ -30,7 +29,7 @@ export default class Door extends Entity{
         this.AABB.maxY=this.position.y+level.height;
         this.AABB.maxZ=this.position.z+1.2;
 
-        meshBuild = MeshBuilder.start(gl,0,0,0,0.5);
+        meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         MeshBuilder.top(Structures.floor.texture.getUVs(),meshBuild,x,-1,z,level.getLight(x,z)+1,this.color,null);
         this.floorMesh = MeshBuilder.build(meshBuild);
     }
@@ -46,9 +45,9 @@ export default class Door extends Entity{
         
     }
 
-    render(gl){
-        this.mesh.render(gl,this.shaderprogram, this.glTexture);
-        this.floorMesh.render(gl,this.shaderprogram, this.glTexture);
+    render(){
+        this.mesh.render();
+        this.floorMesh.render();
     }
 
     unlockDoor(game,player){

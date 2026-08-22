@@ -89,7 +89,7 @@ export default class Entity{
 
     }
 
-    render(gl){
+    render(){
 
     }
 }

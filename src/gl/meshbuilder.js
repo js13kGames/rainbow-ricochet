@@ -1,6 +1,6 @@
 import Mesh from "../gl/mesh.js";
 let baseSize;
-const white = [1,1,1,1];
+var white = [1,1,1,1];
 //Create a square mesh by batching the various sides of it.
 export default class MeshBuilder{
 

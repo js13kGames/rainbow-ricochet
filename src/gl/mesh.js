@@ -1,7 +1,8 @@
 //The order of and index forming a triangle
-const indicies = [0,1,2,0,2,3];
+var indicies = [0,1,2,0,2,3];
 //The mesh class which is responsive for rendering an object on the screen. See WebGL or OpenGL-tutorials for more info how this works.
 //This one is only usable for boxes/squares
+import Game from "../game.js";
 export default class Mesh{
     constructor(gl, x,y,z){
         this.verticies = [];
@@ -9,17 +10,16 @@ export default class Mesh{
         this.position = [x,y,z];
 
         this.scale = [1,1,1];
-        this.gl = gl;
 
         this.rotX = 0;
         this.rotY = 0;
         this.setPos(x,y,z);
 
-        this.positionsBuffer = gl.createBuffer();
-        this.colorsBuffer = gl.createBuffer();
-        this.lightsBuffer = gl.createBuffer();
-        this.uvsBuffer = gl.createBuffer();
-        this.indiciesBuffer = gl.createBuffer();
+        this.positionsBuffer = Game.gl.createBuffer();
+        this.colorsBuffer = Game.gl.createBuffer();
+        this.lightsBuffer = Game.gl.createBuffer();
+        this.uvsBuffer = Game.gl.createBuffer();
+        this.indiciesBuffer = Game.gl.createBuffer();
 
     }
 
@@ -61,14 +61,14 @@ export default class Mesh{
         this.numberOfIndicies = counter;
 
         //Upload the arrays to the buffers on the graphic card
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionsBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, this.verticiesBuffer32, this.gl.DYNAMIC_DRAW);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.positionsBuffer);
+        Game.gl.bufferData(Game.gl.ARRAY_BUFFER, this.verticiesBuffer32, Game.gl.DYNAMIC_DRAW);
 
         this.uploadCols();
         this.uploadLights();
         this.uploadUVs();
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
-        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, this.gl.DYNAMIC_DRAW);
+        Game.gl.bindBuffer(Game.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
+        Game.gl.bufferData(Game.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer16, Game.gl.DYNAMIC_DRAW);
     }
 
     cleanUp(){
@@ -119,14 +119,14 @@ export default class Mesh{
 
     uploadCols(){
         this.cArrayBuffer32.set(this.cs);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorsBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, this.cArrayBuffer32, this.gl.DYNAMIC_DRAW);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.colorsBuffer);
+        Game.gl.bufferData(Game.gl.ARRAY_BUFFER, this.cArrayBuffer32, Game.gl.DYNAMIC_DRAW);
     }
     uploadLights(){
         this.lightArrayBuffer32 = new Float32Array(this.verticies.length*4);
         this.lightArrayBuffer32.set(this.lights);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.lightsBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, this.lightArrayBuffer32, this.gl.DYNAMIC_DRAW);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.lightsBuffer);
+        Game.gl.bufferData(Game.gl.ARRAY_BUFFER, this.lightArrayBuffer32, Game.gl.DYNAMIC_DRAW);
     }
     uploadUVs(){
         let counter = 0;
@@ -135,49 +135,45 @@ export default class Mesh{
             this.uvArrayBuffer32[counter+1] = uv[1];
             counter += 2;
         });
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvsBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, this.uvArrayBuffer32, this.gl.DYNAMIC_DRAW);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.uvsBuffer);
+        Game.gl.bufferData(Game.gl.ARRAY_BUFFER, this.uvArrayBuffer32, Game.gl.DYNAMIC_DRAW);
 
     }
     //Render the mesh with WebGL.
-    render(gl, shaderProgram, texture,targetCamera=null){
-        var camera = targetCamera == null ? gl.camera : targetCamera;
+    render(targetCamera=null){
+        var camera = targetCamera == null ? Game.camera : targetCamera;
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.positionsBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.vertexPosition, 3, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.vertexPosition);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.positionsBuffer);
+        Game.gl.vertexAttribPointer(Game.shaderProgram.locations.attribLocations.vertexPosition, 3, Game.gl.FLOAT, false, 0, 0);
+        Game.gl.enableVertexAttribArray(Game.shaderProgram.locations.attribLocations.vertexPosition);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.color, 4, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.color);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.colorsBuffer);
+        Game.gl.vertexAttribPointer(Game.shaderProgram.locations.attribLocations.color, 4, Game.gl.FLOAT, false, 0, 0);
+        Game.gl.enableVertexAttribArray(Game.shaderProgram.locations.attribLocations.color);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.lightsBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.light, 4, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.light);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.lightsBuffer);
+        Game.gl.vertexAttribPointer(Game.shaderProgram.locations.attribLocations.light, 4, Game.gl.FLOAT, false, 0, 0);
+        Game.gl.enableVertexAttribArray(Game.shaderProgram.locations.attribLocations.light);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.uvsBuffer);
-        gl.vertexAttribPointer(shaderProgram.locations.attribLocations.uv, 2, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(shaderProgram.locations.attribLocations.uv);
+        Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.uvsBuffer);
+        Game.gl.vertexAttribPointer(Game.shaderProgram.locations.attribLocations.uv, 2, Game.gl.FLOAT, false, 0, 0);
+        Game.gl.enableVertexAttribArray(Game.shaderProgram.locations.attribLocations.uv);
 
-        gl.useProgram(shaderProgram.shaderProgram);
+        Game.gl.useProgram(Game.shaderProgram.shaderProgram);
 
-        //gl.activeTexture(gl.TEXTURE0);
-        //gl.bindTexture(gl.TEXTURE_2D, texture.tex);
-        gl.uniform1i(shaderProgram.locations.uniformLocations.uSampler, 0);
+        Game.gl.uniform1i(Game.shaderProgram.locations.uniformLocations.uSampler, 0);
 
-        gl.uniform1f(shaderProgram.locations.uniformLocations.meshRotX, this.rotX);
-        gl.uniform1f(shaderProgram.locations.uniformLocations.meshRotY, this.rotY);
-        gl.uniform3f(shaderProgram.locations.uniformLocations.meshPosition, this.position[0], this.position[1], this.position[2]);
-        gl.uniform3f(shaderProgram.locations.uniformLocations.meshScale, this.scale[0], this.scale[1], this.scale[2]);
+        Game.gl.uniform1f(Game.shaderProgram.locations.uniformLocations.meshRotX, this.rotX);
+        Game.gl.uniform1f(Game.shaderProgram.locations.uniformLocations.meshRotY, this.rotY);
+        Game.gl.uniform3f(Game.shaderProgram.locations.uniformLocations.meshPosition, this.position[0], this.position[1], this.position[2]);
+        Game.gl.uniform3f(Game.shaderProgram.locations.uniformLocations.meshScale, this.scale[0], this.scale[1], this.scale[2]);
 
 
-        gl.uniform1f(shaderProgram.locations.uniformLocations.cameraRotX, camera.currentRotX);
-        gl.uniform1f(shaderProgram.locations.uniformLocations.cameraRotY, camera.currentRot);
-        gl.uniform3f(shaderProgram.locations.uniformLocations.cameraPosition, camera.position.x, camera.position.y, camera.position.z);
+        Game.gl.uniform1f(Game.shaderProgram.locations.uniformLocations.cameraRotX, camera.currentRotX);
+        Game.gl.uniform1f(Game.shaderProgram.locations.uniformLocations.cameraRotY, camera.currentRot);
+        Game.gl.uniform3f(Game.shaderProgram.locations.uniformLocations.cameraPosition, camera.position.x, camera.position.y, camera.position.z);
 
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
-        gl.drawElements(gl.TRIANGLES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);
-        //gl.drawElements(gl.POINTS,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);
-        //gl.drawElements(gl.LINES,  this.numberOfIndicies,gl.UNSIGNED_SHORT,0);
+        Game.gl.bindBuffer(Game.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
+        Game.gl.drawElements(Game.gl.TRIANGLES,  this.numberOfIndicies,Game.gl.UNSIGNED_SHORT,0);
     }
 }

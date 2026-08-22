@@ -31,7 +31,7 @@ rm bundle.js
 #roadroller -O2 -D g.js -o ./o.js
 
 # Use the parameters from a -OO session
-roadroller -D -Zab31 -Zdy0 -Zlr1910 -Zmc3 -Zmd117 -Zpr16 -S0,1,2,3,5,7,14,25,42,101,198,409 g.js -o ./o.js
+roadroller -D -Zab28 -Zdy0 -Zlr1910 -Zmc3 -Zmd145 -S0,1,2,3,5,7,14,25,42,101,198,409 g.js -o ./o.js
 
 
 

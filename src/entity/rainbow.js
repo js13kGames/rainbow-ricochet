@@ -5,16 +5,14 @@ import MathUtil from "../mathutil.js";
 import Bullet from "./bullet.js";
 
 export default class Rainbow extends Bullet{
-    constructor(gl,shaderprogram,glTexture,x,y,z,direction,speed,alpha=0.8){
+    constructor(x,y,z,direction,speed,alpha=0.8){
         super(x,y,z,direction,speed,true);
-        this.shaderprogram = shaderprogram;
-        this.glTexture = glTexture;
-        this.texture = new Texture(glTexture,63,0,1,1);
+        this.texture = new Texture(Game.glTexture,63,0,1,1);
         this.inHand = true;
         this.inHandYOffset = 0;
         this.inHandXOffset = 0;
 
-        let meshBuild = MeshBuilder.start(gl,x,y,z,0.25);
+        let meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.25);
 
         let light = 2;
         this.addBox(meshBuild,-0.5,0,-0.5,Game.rainbowColors[0],alpha,light);
@@ -62,20 +60,20 @@ export default class Rainbow extends Bullet{
         this.mesh.setRotationY(this.mesh.rotY+(5*deltaTime));
     }
 
-    render(gl){
-        super.render(gl);
-        this.mesh.render(gl,this.shaderprogram, this.glTexture);
+    render(){
+        super.render();
+        this.mesh.render();
     }
 
-    renderinHand(gl){
+    renderinHand(){
         this.mesh.setS(0.2);
         this.mesh.setPos(1.1+this.inHandXOffset,-0.55+this.inHandYOffset,-1);
         this.mesh.setRotationX(-0.1);
         this.mesh.setRotationY(-1.2+(this.inHandXOffset));
-        gl.enable(gl.BLEND)
-        gl.disable(gl.DEPTH_TEST);
-        this.mesh.render(gl,this.shaderprogram, this.glTexture,gl.uiCamera);
-        gl.enable(gl.DEPTH_TEST);
-        gl.disable(gl.BLEND);
+        Game.gl.enable(Game.gl.BLEND)
+        Game.gl.disable(Game.gl.DEPTH_TEST);
+        this.mesh.render(Game.uiCamera);
+        Game.gl.enable(Game.gl.DEPTH_TEST);
+        Game.gl.disable(Game.gl.BLEND);
     }
 }

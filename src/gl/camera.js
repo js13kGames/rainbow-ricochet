@@ -1,6 +1,6 @@
+import Game from "../game.js";
 export default class Camera{
-    constructor(gl, x,y,z){
-        this.gl = gl;
+    constructor(x,y,z){
         this.position = {x,y,z};
         this.heightOverGround = y;
         this.currentRot = 0;

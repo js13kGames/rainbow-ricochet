@@ -59,7 +59,7 @@ export default class Bullet extends Entity{
     explode(game,baseSize){
         for (let i = 0; i < 20; i++){
             var c = Game.rainbowColors[Math.floor(Math.random()*6)];
-            var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y,this.position.z,MathUtil.getRandom(0.5,1.9),{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[c[0],c[1],c[2],0.9],baseSize+MathUtil.getRandom(0.001,0.005));
+            var p = new Particle(this.position.x,this.position.y,this.position.z,MathUtil.getRandom(0.5,1.9),{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[c[0],c[1],c[2],0.9],baseSize+MathUtil.getRandom(0.001,0.005));
             game.level.addParticle(p);
         }
     }

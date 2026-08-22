@@ -5,13 +5,13 @@ import Floor from "../structure/floor.js";
 import Bullet from "./bullet.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
+import Game from "../game.js";
 export default class Darkness extends Entity{
-    constructor(gl,shaderprogram,glTexture,x,y,z) {
+    constructor(x,y,z) {
         super(x,y,z);
-        this.shaderprogram = shaderprogram;
-        this.glTexture = glTexture;
-        this.texture = new Texture(glTexture,16,16,16,16);
-        this.eyesTexture = new Texture(glTexture,63,0,1,1);
+        //Game.glTexture = glTexture;
+        this.texture = new Texture(Game.glTexture,16,16,16,16);
+        this.eyesTexture = new Texture(Game.glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
         this.health = 1;
         this.hitDelay = 0;
@@ -23,7 +23,7 @@ export default class Darkness extends Entity{
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
         this.meshes = [];
 
-        var meshBuild = MeshBuilder.start(gl,x,y,z,0.5);
+        var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
         
         MeshBuilder.billboard(this.texture.getUVs(),meshBuild,+0.5,0,0,this.light,1,tint,null);
         MeshBuilder.billboard(this.texture.getUVs(),meshBuild,-0.5,0,0,this.light,1,tint,null);
@@ -31,12 +31,12 @@ export default class Darkness extends Entity{
         m.scale[0] = 0.4;
         this.meshes.push(m);
 
-        meshBuild = MeshBuilder.start(gl,x,y,z,0.5);
+        meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
         MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0.1,0.8,0,this.light,1,tint,null);
         var m = MeshBuilder.build(meshBuild);
         this.meshes.push(m);
 
-        meshBuild = MeshBuilder.start(gl,x,y,z,0.25);
+        meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.25);
         MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,1.5,0,this.light,1,tint,null);
 
         var m = MeshBuilder.build(meshBuild);
@@ -44,7 +44,7 @@ export default class Darkness extends Entity{
         this.meshes.push(m);
 
 
-        meshBuild = MeshBuilder.start(gl,x,y,z,0.02);
+        meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.02);
 
         MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,-0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0],null);
         MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0],null);
@@ -62,7 +62,7 @@ export default class Darkness extends Entity{
             var xOffset = Math.sin(this.meshMoveCounter[i]);
             var yOffset = Math.cos(this.meshMoveCounter[i]);
             var zOffset = Math.sin(this.meshMoveCounter[i]+0.5);
-            m.setRotationY(-game.gl.camera.currentRot);
+            m.setRotationY(-Game.camera.currentRot);
             m.setPos(this.position.x+xOffset/14,this.position.y+0.1+yOffset/14,this.position.z+zOffset/14);
             if (i >1) m.scale[0] += yOffset/300;
             i++;
@@ -109,11 +109,11 @@ export default class Darkness extends Entity{
         }
     }
 
-     render(gl){
-        super.render(gl);
+     render(){
+        super.render();
 
         this.meshes.forEach(m=>{
-            m.render(gl,this.shaderprogram, this.glTexture);
+            m.render();
         });
 
 
@@ -128,7 +128,7 @@ export default class Darkness extends Entity{
                 this.disposed = true;
                 game.monsterDie();
                 for (let i = 0; i < 20; i++){
-                    var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.5,this.position.z,2.8,{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
+                    var p = new Particle(this.position.x,this.position.y+0.5,this.position.z,2.8,{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
                     game.level.addParticle(p);
                 }
                

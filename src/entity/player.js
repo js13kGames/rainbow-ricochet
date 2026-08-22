@@ -15,12 +15,12 @@ export default class Player extends Entity{
         this.strafe = {x:0,z:0};
         this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
-        this.hasRainbowInHand = false;
-        this.hasUnicornInHand = true;
+        //this.hasRainbowInHand = false;
+        //this.hasUnicornInHand = false;
         this.keysHold = [];
 
         //this.keysHold.push(Door.blue);
-       // this.keysHold.push(Door.green);
+        //this.keysHold.push(Door.green);
         //this.keysHold.push(Door.yellow);
     }
 
@@ -30,14 +30,14 @@ export default class Player extends Entity{
         this.primaryFireDelay -= deltaTime;
         this.secondaryFireDelay -= deltaTime;
 
-        game.gl.camera.rotate(-game.input.pointer.x/500);
-        game.gl.camera.rotateX(-game.input.pointer.y/500);
+        Game.camera.rotate(-game.input.pointer.x/500);
+        Game.camera.rotateX(-game.input.pointer.y/500);
         this.velocity.z = game.input.axes.y;
 
         this.strafe.x = 0;
         this.strafe.z = 0;
 
-        let cameraDirection = game.gl.camera.getDirection();
+        let cameraDirection = Game.camera.getDirection();
         if (game.input.axes.x < 0) MathUtil.crossProduct(this.strafe,cameraDirection,Game.up);
         if (game.input.axes.x > 0) MathUtil.crossProduct(this.strafe,cameraDirection,Game.down);
 
@@ -74,22 +74,22 @@ export default class Player extends Entity{
             }else if (moveZ.s == null) this.position.y = 0;
 
         }
-        game.gl.camera.position.x = this.position.x;
-        game.gl.camera.position.y = game.gl.camera.heightOverGround + this.position.y;
-        game.gl.camera.position.z = this.position.z;
+        Game.camera.position.x = this.position.x;
+        Game.camera.position.y = Game.camera.heightOverGround + this.position.y;
+        Game.camera.position.z = this.position.z;
 
         if (this.hasRainbowInHand && this.rainbowInHand == null){
-            this.rainbowInHand = new Rainbow(game.gl,game.shaderProgram,game.gl,0,0,0,{x:0,y:0,z:0},0,0.5);
+            this.rainbowInHand = new Rainbow(0,0,0,{x:0,y:0,z:0},0,0.5);
         }
 
         if (this.hasUnicornInHand && this.unicornInHand == null){
-            this.unicornInHand = new UnicornHorn(game.gl,game.shaderProgram,game.gl,0,0,0);
+            this.unicornInHand = new UnicornHorn(0,0,0);
             this.unicornInHand.inHandYOffset = 0.6;
         }
 
         // Fire unicornhorn bullets
         if (this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
-            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
+            game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
             this.primaryFireDelay = 0.3;
             game.playShoot();
             this.unicornInHand.inHandYOffset = 0.6;
@@ -97,7 +97,7 @@ export default class Player extends Entity{
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
+            game.level.addEntity(new Rainbow(this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
             game.throwRainbow();
@@ -148,13 +148,13 @@ export default class Player extends Entity{
         }
     }
 
-    renderInHand(gl){
+    renderInHand(){
         if (this.rainbowInHand != null && this.rainbowInHand.inHandYOffset > -1){
-            this.rainbowInHand.renderinHand(gl);
+            this.rainbowInHand.renderinHand();
         }
 
         if (this.unicornInHand != null){
-            this.unicornInHand.renderinHand(gl);
+            this.unicornInHand.renderinHand();
         }
     }
 }

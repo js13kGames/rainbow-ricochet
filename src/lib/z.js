@@ -50,7 +50,7 @@ export function zzfx(...parameters) { return ZZFX.play(...parameters) }
 
 ///////////////////////////////////////////////////////////////////////////////
 // ZZFX API for playing sounds
-export const ZZFX =
+export var ZZFX =
 {
     // master volume scale
     volume: .9,
@@ -72,10 +72,10 @@ export const ZZFX =
     playSamples: function(sampleChannels, volumeScale=1, rate=1, pan=0, loop=false)
     {
         // create buffer and source
-        const channelCount = sampleChannels.length;
-        const sampleLength = sampleChannels[0].length;
-        const buffer = this.audioContext.createBuffer(channelCount, sampleLength, this.sampleRate);
-        const source = this.audioContext.createBufferSource();
+        var channelCount = sampleChannels.length;
+        var sampleLength = sampleChannels[0].length;
+        var buffer = this.audioContext.createBuffer(channelCount, sampleLength, this.sampleRate);
+        var source = this.audioContext.createBufferSource();
 
         // copy samples to buffer and setup source
         sampleChannels.forEach((c,i)=> buffer.getChannelData(i).set(c));
@@ -84,12 +84,12 @@ export const ZZFX =
         source.loop = loop;
 
         // create and connect gain node
-        const gainNode = this.audioContext.createGain();
+        var gainNode = this.audioContext.createGain();
         gainNode.gain.value = this.volume*volumeScale;
         gainNode.connect(this.audioContext.destination);
 
         // connect source to stereo panner and gain
-        const pannerNode = new StereoPannerNode(this.audioContext, {'pan':pan});
+        var pannerNode = new StereoPannerNode(this.audioContext, {'pan':pan});
         source.connect(pannerNode).connect(gainNode);
         source.start();
 
@@ -151,7 +151,7 @@ export const ZZFX =
         x2 = 0, x1 = 0, y2 = 0, y1 = 0;
 
         // scale by sample rate
-        const minAttack = 9; // prevent pop if attack is 0
+        var minAttack = 9; // prevent pop if attack is 0
         attack = attack * sampleRate || minAttack;
         decay *= sampleRate;
         sustain *= sampleRate;
@@ -250,7 +250,7 @@ export class ZZFXSound
         if (!this.samples) return;
 
         // play the sound
-        const playbackRate = pitch + pitch * this.randomness*randomnessScale*(Math.random()*2-1);
+        var playbackRate = pitch + pitch * this.randomness*randomnessScale*(Math.random()*2-1);
         this.source = ZZFX.playSamples([this.samples], volume, playbackRate, pan, loop);
         return this.source;
     }
