@@ -9,6 +9,8 @@ import MathUtil from "../mathutil.js";
 import Lightblock from "../structure/lightblock.js";
 import Darkness from "../entity/darkness.js";
 import Door from "../entity/door.js";
+import Key from "../entity/key.js";
+import UnicornHorn from "../entity/unicornhorn.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height){
@@ -19,6 +21,7 @@ export default class Level{
         this.particles = [];
         this.structures = [];
         this.entities.push(player);
+        this.player = player;
 
         this.level = [size*size];
         this.lightMap = [size*size];
@@ -35,6 +38,10 @@ export default class Level{
                 else if (levelChar == "x") this.addDoor(game, x,z,Door.green);
                 else if (levelChar == "y") this.addDoor(game, x,z,Door.blue);
                 else if (levelChar == "z") this.addDoor(game, x,z,Door.yellow);
+                else if (levelChar == "u") this.addKey(game, x,z,Door.green);
+                else if (levelChar == "v") this.addKey(game, x,z,Door.blue);
+                else if (levelChar == "w") this.addKey(game, x,z,Door.yellow);
+                else if (levelChar == "h") this.addUnicornHorn(game, x,z);
                 else if (levelChar == "a") this.setStructure(x,z,Structures.floor1);
                 else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
                 else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
@@ -42,7 +49,7 @@ export default class Level{
                 else this.setStructure(x,z,Structures.floor);
                 if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
 
-                if (levelChar == "m") { this.addEntity(new Darkness(game.gl,game.shaderProgram,game.glTexture,x,0,z))}
+                if (levelChar == "m") this.addDarkness(game,x,z);
 
                 
                 if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
@@ -60,7 +67,28 @@ export default class Level{
     addDoor(game, x,z,color){
         this.addEntity(new Door(this,game.gl,game.shaderProgram,game.glTexture,x,0,z,color));
         this.setStructure(x,z,Structures.doorBlock);
-       //this.setStructure(x,z,Structures.floor);
+    }
+
+    addKey(game, x,z,color){
+        this.addEntity(new Key(game.gl,game.shaderProgram,game.glTexture,x,0,z,color));
+        this.setStructure(x,z,Structures.floor);
+    }
+
+    addUnicornHorn(game,x,z){
+        var floor = this.getStructure(x-1,z);
+        this.setStructure(x,z,floor);
+        this.addEntity(new UnicornHorn(game.gl, game.shaderProgram,game.glTexture,x,floor.height,z));
+    }
+
+    addDarkness(game,x,z){
+        var floor = this.getStructure(x-1,z);
+        var height = 0;
+        if (floor != Structure.floor){
+            this.setStructure(x,z,floor);
+            height = floor.height;
+        }
+
+        this.addEntity(new Darkness(game.gl,game.shaderProgram,game.glTexture,x,height,z));
     }
 
     buildLight(){
@@ -70,7 +98,7 @@ export default class Level{
                 if (levelChar == "l"){
                     this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
-                    this.generateLight(x,z,12,5);
+                    this.generateLight(x,z,12,4);
                 }
             }
         }
@@ -261,6 +289,7 @@ export default class Level{
 
         this.transparentMesh.render(gl,this.shaderprogram, this.glTexture);
 
+        this.player.renderInHand(gl);
         gl.disable(this.gl.BLEND);
 
        

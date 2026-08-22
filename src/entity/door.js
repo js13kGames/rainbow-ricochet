@@ -55,6 +55,7 @@ export default class Door extends Entity{
         player.keysHold.forEach(k => {
             if (k == this.color && this.locked){
                 this.locked = false;
+                game.openDoor();
             }
         });
     }

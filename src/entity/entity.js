@@ -8,6 +8,7 @@ export default class Entity{
         this.tempVector = {x:0,y:0,z:0};
         this.AABB = {minX:0,minY:0,minZ:0,maxX:0,maxY:0,maxZ:0};
         this.tempAABB = {minX:0,minY:0,minZ:0,maxX:0,maxY:0,maxZ:0};
+        this.yOffset = 0;
     }
 
     // Move the entity in x,y,z position (position + movement)
@@ -21,7 +22,7 @@ export default class Entity{
         this.AABB.minY=this.position.y;
         this.AABB.minZ=this.position.z;
         this.AABB.maxX=this.position.x+1;
-        this.AABB.maxY=this.position.y+2;
+        this.AABB.maxY=this.position.y+2+this.yOffset;
         this.AABB.maxZ=this.position.z+1;
     }
 
@@ -33,7 +34,7 @@ export default class Entity{
         this.tempAABB.minY=y;
         this.tempAABB.minZ=z;
         this.tempAABB.maxX=x+1;
-        this.tempAABB.maxY=y+2.25;
+        this.tempAABB.maxY=y+2.25+this.yOffset;
         this.tempAABB.maxZ=z+1;
        // console.log(this.tempAABB);
 

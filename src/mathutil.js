@@ -37,4 +37,8 @@ export default class MathUtil{
     static getRandom(min, max){
         return Math.random() * (max - min) + min
     }
+
+    static length(vector){
+        return Math.hypot(vector.x, vector.z);
+    }
 }

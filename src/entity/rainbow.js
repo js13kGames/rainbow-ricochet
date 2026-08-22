@@ -45,6 +45,7 @@ export default class Rainbow extends Bullet{
     }
 
     onStructureHit(game, pos){
+        game.playWallHit();
         this.bounces++;
         this.explode(game,0.01);
     }

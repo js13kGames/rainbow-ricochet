@@ -9,6 +9,8 @@ import Level from "./level/level.js";
 import MathUtil from "./mathutil.js";
 import Structures from "./structure/structures.js";
 
+import {zzfx} from './lib/z.js'
+
 
 
 export default class Game{
@@ -108,12 +110,11 @@ export default class Game{
 
         this.gl.camera = new Camera(this.gl,this.player.position.x,1.2,this.player.position.z);
         this.gl.uiCamera = new Camera(this.gl,0,0,0);
-        //this.gl.camera.setRotation(270);
-        this.gl.camera.setRotation(180);
+        this.gl.camera.setRotation(270);
 
         this.last = performance.now();
-        this.counter = 0;
-        this.fps = 0;
+        //this.counter = 0;
+        //this.fps = 0;
 
         this.level = new Level(this,64,this.player,0.1,5);
     }
@@ -126,7 +127,7 @@ export default class Game{
         if (deltaTime>500) deltaTime = 16; // Dont allow too big jump in time.
         this.last = now;
 
-        this.counter += deltaTime;
+        //this.counter += deltaTime;
 
        /*if (this.canvas.width < 854 * 2){
             this.canvas.width += deltaTime/2;
@@ -142,7 +143,6 @@ export default class Game{
 
             this.tick(deltaTime/1000);
 
-
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
             this.gl.clearColor(0.0,0.0,0.0,1.0);
 
@@ -153,14 +153,14 @@ export default class Game{
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
             this.render();
 
-            this.fps++;
+            //this.fps++;
 
 
 
         // FPS and tick counter
         if (this.counter > 1000){
-            console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
-            this.counter = this.fps = 0;
+            //console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
+            //this.counter = this.fps = 0;
         }
     }
 
@@ -176,5 +176,41 @@ export default class Game{
     render(){
         this.level.render(this.gl);
         //this.player.render(this.gl);
+    }
+
+    playShoot(){
+        zzfx(...[,.45,330,.02,.03,.18,,1.9,,-32,,,,.2,,,,.94,.03]); // Pickup 58
+    }
+
+    playWallHit(){
+        zzfx(...[1.1,,81,.01,.07,.38,4,3.4,,,,,,.5,,.6,,.44,.08]); // Explosion 77
+    }
+
+    throwRainbow(){
+        zzfx(...[.8,,334,.03,.19,.08,,3.2,-13,45,,,,,,.1,,.56,.08,,-1182]); // Shoot 81
+    }
+
+    catchRainbow(){
+        zzfx(...[2,,257,.01,.03,.17,,3.3,,-96,113,.07,,,,,.04,.51,.01,,-1409]); // Pickup 109
+    }
+
+    pickupKey(){
+        zzfx(...[.6,,270,,.09,.07,1,,,,396,.07,.09,,,,,.85,,,146]); // Pickup 135
+    }
+
+    openDoor(){
+        zzfx(...[2.1,,73,.02,.01,.56,2,3.6,,3,,,,.8,,.5,.27,.45,.17]); // Explosion 317
+    }
+
+    monsterHit(){
+        zzfx(...[1.5,,378,.02,.09,.15,,2.8,-9,,,,,1.7,,.4,.07,.81,.02,,-1900]); // Hit 342
+    }
+
+    monsterDie(){
+        zzfx(...[2,,89,.02,.01,.54,4,1.6,,8,,,,.8,,.3,.36,.49,.17]); // Explosion 344
+    }
+
+    monsterAggro(){
+        zzfx(...[1.2,,63,.06,.25,.41,3,1.6,,5,,,,1.3,3.2,.5,.47,.37,.12,,-3066]); // Explosion 404
     }
 }

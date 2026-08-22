@@ -3,7 +3,9 @@ import MathUtil from "../mathutil.js";
 import Floor from "../structure/floor.js";
 import Door from "./door.js";
 import Entity from "./entity.js";
+import Key from "./key.js";
 import Rainbow from "./rainbow.js";
+import UnicornHorn from "./unicornhorn.js";
 import UnicornhornBullet from "./unicornhornbullet.js";
 
 export default class Player extends Entity{
@@ -13,10 +15,13 @@ export default class Player extends Entity{
         this.strafe = {x:0,z:0};
         this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
-        this.hasRainbowInHand = true;
+        this.hasRainbowInHand = false;
+        this.hasUnicornInHand = false;
         this.keysHold = [];
 
-        this.keysHold.push(Door.green);
+       // this.keysHold.push(Door.blue);
+       // this.keysHold.push(Door.green);
+       // this.keysHold.push(Door.yellow);
     }
 
     tick(game,deltaTime){
@@ -73,14 +78,21 @@ export default class Player extends Entity{
         game.gl.camera.position.y = game.gl.camera.heightOverGround + this.position.y;
         game.gl.camera.position.z = this.position.z;
 
-         if (this.hasRainbowInHand && this.rainbowInHand == null){
-            this.rainbowInHand = new Rainbow(game.gl,game.shaderProgram,game.gl,0,0,0,{x:0,y:0,z:0},0,0.9);
+        if (this.hasRainbowInHand && this.rainbowInHand == null){
+            this.rainbowInHand = new Rainbow(game.gl,game.shaderProgram,game.gl,0,0,0,{x:0,y:0,z:0},0,0.5);
+        }
+
+        if (this.hasUnicornInHand && this.unicornInHand == null){
+            this.unicornInHand = new UnicornHorn(game.gl,game.shaderProgram,game.gl,0,0,0);
+            this.unicornInHand.inHandYOffset = 0.6;
         }
 
         // Fire unicornhorn bullets
-        if (game.input.firePressed && this.primaryFireDelay <= 0.0){
-            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,12));
+        if (this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
+            game.level.addEntity(new UnicornhornBullet(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,16));
             this.primaryFireDelay = 0.3;
+            game.playShoot();
+            this.unicornInHand.inHandYOffset = 0.6;
         }
 
         // Fire rainbow boomerang
@@ -88,9 +100,10 @@ export default class Player extends Entity{
             game.level.addEntity(new Rainbow(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
+            game.throwRainbow();
         }
 
-        if (!this.hasRainbowInHand && this.rainbowInHand.inHandYOffset > -1){
+        if (this.rainbowInHand != null && !this.hasRainbowInHand && this.rainbowInHand.inHandYOffset > -1){
             this.rainbowInHand.inHandYOffset -= deltaTime*3.5;
             this.rainbowInHand.inHandXOffset -= deltaTime*3.5;
             this.rainbowInHand.inHandYOffset = Math.max(-1,this.rainbowInHand.inHandYOffset);
@@ -101,12 +114,19 @@ export default class Player extends Entity{
             this.rainbowInHand.inHandYOffset = Math.min(0,this.rainbowInHand.inHandYOffset);
             this.rainbowInHand.inHandXOffset = Math.min(0,this.rainbowInHand.inHandXOffset);
         }
+
+        if (this.unicornInHand != null && this.unicornInHand.inHandYOffset > 0){
+            this.unicornInHand.inHandYOffset -= deltaTime*3;
+        }
+
+        
     }
 
     onEntityHit(game,entity){
         if (entity instanceof Rainbow){
             if (entity.bounces > 0){
                 this.hasRainbowInHand = true;
+                game.catchRainbow();
                 entity.dispose(game);
             }
         }
@@ -114,11 +134,27 @@ export default class Player extends Entity{
         if (entity instanceof Door){
             entity.unlockDoor(game,this);
         }
+
+        if (entity instanceof Key){
+            game.pickupKey();
+            this.keysHold.push(entity.keyType);
+            game.level.deleteEntity(entity);
+        }
+
+        if (entity instanceof UnicornHorn){
+            this.hasUnicornInHand = true;
+            game.pickupKey();
+            game.level.deleteEntity(entity);
+        }
     }
 
-    render(gl){
-        if (!this.rainbowInHand.inHandYOffset > -1){
+    renderInHand(gl){
+        if (this.rainbowInHand != null && this.rainbowInHand.inHandYOffset > -1){
             this.rainbowInHand.renderinHand(gl);
+        }
+
+        if (this.unicornInHand != null){
+            this.unicornInHand.renderinHand(gl);
         }
     }
 }
