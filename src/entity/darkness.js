@@ -122,9 +122,9 @@ export default class Darkness extends Entity{
      onEntityHit(game, entity){
         if (!(entity instanceof Bullet)) return;
         if (this.hitDelay <= 0){
-            this.health--;
+            this.currentHealth--;
 
-            if (this.health <=0){
+            if (this.currentHealth <=0){
                 this.disposed = true;
                 game.monsterDie();
                 for (let i = 0; i < 20; i++){

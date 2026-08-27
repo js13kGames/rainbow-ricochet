@@ -116,7 +116,7 @@ export default class Game{
         
         this.player = new Player(1,0,1);
 
-        Game.camera = new Camera(this.player.position.x,1.2,this.player.position.z);
+        Game.camera = new Camera(this.player.position.x,1.4,this.player.position.z);
         Game.uiCamera = new Camera(0,0,0);
         Game.camera.setRotation(270);
 

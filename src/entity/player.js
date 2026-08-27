@@ -15,7 +15,8 @@ export default class Player extends Entity{
         this.strafe = {x:0,z:0};
         this.speed = 8;
         this.primaryFireDelay = this.secondaryFireDelay = 0;
-        this.health = 10;
+        this.currentHealth = 8;
+        this.maxHealth = 10;
         this.headBobCounter = 0;
         //this.hasRainbowInHand = false;
         //this.hasUnicornInHand = false;
