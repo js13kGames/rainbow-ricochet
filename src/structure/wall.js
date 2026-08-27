@@ -6,7 +6,7 @@ export default class Wall extends Structure{
         super(new Texture(glTexture,0,16,16,16),tint);
     }
 
-    isSolid(){
+    isSolid(s){
         return true;
     }
 

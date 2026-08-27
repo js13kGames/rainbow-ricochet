@@ -5,7 +5,7 @@ export default class DoorBlock extends Structure{
         super(null,null);
     }
     
-    isSolid(){
+    isSolid(s){
         return false;
     }
 

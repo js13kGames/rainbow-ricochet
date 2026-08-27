@@ -6,8 +6,9 @@ export default class Glassblock extends Structure{
         super(new Texture(glTexture,16,0,16,16),tint);
     }
 
-    isSolid(){
-        return true;
+    isSolid(s){
+        if (s instanceof Glassblock) return true;
+        return false;
     }
 
     blocksLight(){
