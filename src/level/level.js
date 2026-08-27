@@ -96,7 +96,13 @@ export default class Level{
             for (let z = 0; z < this.size; z++){
                 var levelChar = l.charAt(x + (z*this.size));
                 if (levelChar == "l"){
-                    this.addEntity(new Light(x,0,z,[0.5,0.5,0.8,1.0]));
+                    var floor = this.getStructure(x-1,z);
+                    var height = 0;
+                    if (floor != Structure.floor){
+                        this.setStructure(x,z,floor);
+                        height = floor.height;
+                    }
+                    this.addEntity(new Light(x,height,z,[0.5,0.5,0.8,1.0]));
                     //this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
                     this.generateLight(x,z,12,4);
