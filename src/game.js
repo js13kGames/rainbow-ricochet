@@ -208,4 +208,8 @@ export default class Game{
     monsterAggro(){
         zzfx(...[1.2,,63,.06,.25,.41,3,1.6,,5,,,,1.3,3.2,.5,.47,.37,.12,,-3066]); // Explosion 404
     }
+
+    pickedUp(thing){
+        this.ui.queueMessage("You picked up "+thing+"!");
+    }
 }
