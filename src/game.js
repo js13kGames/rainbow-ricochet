@@ -210,6 +210,6 @@ export default class Game{
     }
 
     pickedUp(thing){
-        this.ui.queueMessage("You picked up "+thing+"!");
+        this.ui.queueMessage("PICKED UP "+thing+".");
     }
 }

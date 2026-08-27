@@ -139,13 +139,14 @@ export default class Player extends Entity{
         if (entity instanceof Key){
             game.pickupKey();
             this.keysHold.push(entity.keyType);
+            game.pickedUp("A KEY");
             game.level.deleteEntity(entity);
         }
 
         if (entity instanceof UnicornHorn){
             this.hasUnicornInHand = true;
             game.pickupKey();
-            game.pickedUp("an Unicorn horn");
+            game.pickedUp("AN UNICORN HORN");
             game.level.deleteEntity(entity);
         }
     }
