@@ -68,7 +68,7 @@ export default class Level{
     }
 
     addDoor(game, x,z,color){
-        this.addEntity(new Door(this,x,0,z,color));
+        this.addEntity(new Door(this,x,0,z,color,this.wallTint));
         this.setStructure(x,z,Structures.doorBlock);
     }
 

@@ -9,17 +9,22 @@ export default class Door extends Entity{
     static green = [0.0,1.0,0.0,1.0];
     static yellow = [1.0,1.0,0.0,1.0];
     
-    constructor(level,x,y,z,color){
+    constructor(level,x,y,z,color,wallColor){
         super(x,y,z);
         this.color = color;
         this.texture = new Texture(Game.glTexture,0,16,16,16);
+        this.lockTexture = new Texture(Game.glTexture,32,16,16,16);
         this.locked = true;
         let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
-        MeshBuilder.left(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x-1,z)+0.5,3,color,null);
-        MeshBuilder.right(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x+1,z)+0.5,3,color,null);
-        MeshBuilder.front(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x,z+1)+0.5,3,color,null);
-        MeshBuilder.back(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x,z-1)+0.5,3,color,null);
-        MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,0,z,level.getLight(x,z-1)+0.5,color,null);
+        MeshBuilder.left(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
+        MeshBuilder.left(this.lockTexture.getUVs(),meshBuild,x-0.01,0,z,0.8,3,color,null);
+        MeshBuilder.right(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
+        MeshBuilder.right(this.lockTexture.getUVs(),meshBuild,x+0.01,0,z,0.8,3,color,null);
+        MeshBuilder.front(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
+        MeshBuilder.front(this.lockTexture.getUVs(),meshBuild,x,0,z+0.01,0.8,3,color,null);
+        MeshBuilder.back(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
+        MeshBuilder.back(this.lockTexture.getUVs(),meshBuild,x,0,z-0.01,0.8,3,color,null);
+        MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,0,z,0.6,wallColor,null);
 
         this.mesh = MeshBuilder.build(meshBuild);
         this.AABB.minX=x-0.2;
@@ -35,11 +40,10 @@ export default class Door extends Entity{
     }
 
     tick(game,deltaTime){
-        if (!this.locked && this.mesh.position[1] < 2){
-            this.mesh.position[1] += deltaTime;
+        if (!this.locked && this.mesh.position[1] < 2.5){
+            this.mesh.position[1] += deltaTime*1.5;
         }
-        if (!this.locked && this.mesh.position[1] >=2){
-            //game.level.removeStructure(this.position.x,this.position.z);
+        if (!this.locked && this.mesh.position[1] >=2.0){
             game.level.setStructure(this.position.x,this.position.z,Structures.floor);
         }
         
