@@ -15,7 +15,7 @@ import Light from "../entity/light.js";
 import Game from "../game.js";
 
 export default class Level{
-    constructor(game,size,player,ambientLight,height){
+    constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint){
         this.entities = [];
         this.particles = [];
         this.structures = [];
@@ -27,6 +27,9 @@ export default class Level{
         this.size = size;
         this.ambientLight = ambientLight;
         this.height = height;
+        this.wallTint = wallTint;
+        this.floorTint = floorTint;
+        this.glassTint = glassTint;
 
 
         for (let x = 0; x < size; x++) {
@@ -191,10 +194,10 @@ export default class Level{
                     let r = this.getStructure(x+1,z);
                     let f = this.getStructure(x,z+1);
                     let b = this.getStructure(x,z-1);
-                    if (l!= null && !l.isSolid(s)) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),this.height,s.tint,null);
-                    if (r!= null && !r.isSolid(s)) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,s.tint,null);
-                    if (f!= null && !f.isSolid(s)) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,s.tint,null);
-                    if (b!= null && !b.isSolid(s)) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,s.tint,null);
+                    if (l!= null && !l.isSolid(s)) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),this.height,this.wallTint,null);
+                    if (r!= null && !r.isSolid(s)) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,this.wallTint,null);
+                    if (f!= null && !f.isSolid(s)) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,this.wallTint,null);
+                    if (b!= null && !b.isSolid(s)) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,this.wallTint,null);
                 }
             }
         }
@@ -208,16 +211,16 @@ export default class Level{
             for (let z = 0; z < this.size; z++){
                 let s = this.getStructure(x,z);
                 if (s instanceof Floor){
-                    if (s.height == 0) MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),s.tint,null);
+                    if (s.height == 0) MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),this.floorTint,null);
                     else if (s.height > 0){
-                        MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1+s.height,z,this.getLight(x,z),s.tint,null);
+                        MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1+s.height,z,this.getLight(x,z),this.floorTint,null);
 
-                        MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),1,s.tint,null,s.height-0.5);
-                        MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),1,s.tint,null,s.height-0.5);
-                        MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),1,s.tint,null,s.height-0.5);
-                        MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),1,s.tint,null,s.height-0.5);
+                        MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),1,this.floorTint,null,s.height-0.5);
+                        MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),1,this.floorTint,null,s.height-0.5);
+                        MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),1,this.floorTint,null,s.height-0.5);
+                        MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),1,this.floorTint,null,s.height-0.5);
                     }
-                    MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),s.tint,null);
+                    MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
                 }
             }
         }
@@ -235,10 +238,10 @@ export default class Level{
                     let r = this.getStructure(x+1,z);
                     let f = this.getStructure(x,z+1);
                     let b = this.getStructure(x,z-1);
-                    if (l!= null && !l.isSolid(s)) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),this.height,s.tint,null);
-                    if (r!= null && !r.isSolid(s)) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,s.tint,null);
-                    if (f!= null && !f.isSolid(s)) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,s.tint,null);
-                    if (b!= null && !b.isSolid(s)) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,s.tint,null);
+                    if (l!= null && !l.isSolid(s)) MeshBuilder.left(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x-1,z),this.height,this.glassTint,null);
+                    if (r!= null && !r.isSolid(s)) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,this.glassTint,null);
+                    if (f!= null && !f.isSolid(s)) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,this.glassTint,null);
+                    if (b!= null && !b.isSolid(s)) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,this.glassTint,null);
 
                 }
             }

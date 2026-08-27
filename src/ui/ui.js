@@ -23,6 +23,8 @@ export default class UI{
         this.drawTextAt("HEALTH:",56,40,24);
         this.drawTextAt(game.player.health, 126,42,26,"red");
 
+        this.drawTextAt(game.stableFPS +" FPS", this.canvas.width-100,42,26,"white");
+
     }
 
 

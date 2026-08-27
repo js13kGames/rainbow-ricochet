@@ -1,9 +1,8 @@
 import Floor from "./floor.js";
 
 export default class Structure{
-    constructor(texture,tint,height=0){
+    constructor(texture,height=0){
         this.texture = texture;
-        this.tint = tint;
         this.height = height;
         this.AABB = {minX:0,minY:0,minZ:0,maxX:0,maxY:0,maxZ:0};
     }

@@ -121,54 +121,43 @@ export default class Game{
         Game.camera.setRotation(270);
 
         this.last = performance.now();
-        //this.counter = 0;
-        //this.fps = 0;
+        this.counter = 0;
+        this.fps = 0;
 
-        this.level = new Level(this,64,this.player,0.1,5);
+        this.level = new Level(this,64,this.player,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0]);
     }
 
     update(){
         if (Game.glTexture.dirty) return;
-        //this.canvas.width += 1;
+
         var now = performance.now();
         var deltaTime = now - this.last;
         if (deltaTime>500) deltaTime = 16; // Dont allow too big jump in time.
         this.last = now;
 
-        //this.counter += deltaTime;
+        this.counter += deltaTime;
 
-       /*if (this.canvas.width < 854 * 2){
-            this.canvas.width += deltaTime/2;
-            Game.gl.viewport(0, 0, Game.gl.canvas.width, Game.gl.canvas.height);
-        }
+        this.tick(deltaTime/1000);
 
-        if (this.canvas.height < 480 * 2){
-            this.canvas.height += deltaTime/2;
-            Game.gl.viewport(0, 0, Game.gl.canvas.width, Game.gl.canvas.height);
-        }*/
+        Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
+        Game.gl.clearColor(0.0,0.0,0.0,1.0);
 
+        Game.gl.enable(Game.gl.DEPTH_TEST);
+        Game.gl.depthFunc(Game.gl.LESS);
+        Game.gl.enable(Game.gl.CULL_FACE);
 
+        Game.gl.blendFunc(Game.gl.SRC_ALPHA, Game.gl.ONE_MINUS_SRC_ALPHA);
+        this.render();
 
-            this.tick(deltaTime/1000);
-
-            Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
-            Game.gl.clearColor(0.0,0.0,0.0,1.0);
-
-            Game.gl.enable(Game.gl.DEPTH_TEST);
-            Game.gl.depthFunc(Game.gl.LESS);
-            Game.gl.enable(Game.gl.CULL_FACE);
-
-            Game.gl.blendFunc(Game.gl.SRC_ALPHA, Game.gl.ONE_MINUS_SRC_ALPHA);
-            this.render();
-
-            //this.fps++;
+        this.fps++;
 
 
 
         // FPS and tick counter
         if (this.counter > 1000){
+            this.stableFPS = this.fps;
             //console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
-            //this.counter = this.fps = 0;
+            this.counter = this.fps = 0;
         }
     }
 
