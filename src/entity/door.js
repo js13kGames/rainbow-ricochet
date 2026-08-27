@@ -17,22 +17,22 @@ export default class Door extends Entity{
         this.locked = true;
         let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         MeshBuilder.left(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
-        MeshBuilder.left(this.lockTexture.getUVs(),meshBuild,x-0.01,0,z,0.8,3,color,null);
+        MeshBuilder.left(this.lockTexture.getUVs(),meshBuild,x-0.01,1,z,0.8,1,color,null);
         MeshBuilder.right(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
-        MeshBuilder.right(this.lockTexture.getUVs(),meshBuild,x+0.01,0,z,0.8,3,color,null);
+        MeshBuilder.right(this.lockTexture.getUVs(),meshBuild,x+0.01,1,z,0.8,1,color,null);
         MeshBuilder.front(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
-        MeshBuilder.front(this.lockTexture.getUVs(),meshBuild,x,0,z+0.01,0.8,3,color,null);
+        MeshBuilder.front(this.lockTexture.getUVs(),meshBuild,x,1,z+0.01,0.8,1,color,null);
         MeshBuilder.back(this.texture.getUVs(),meshBuild,x,0,z,0.6,3,wallColor,null);
-        MeshBuilder.back(this.lockTexture.getUVs(),meshBuild,x,0,z-0.01,0.8,3,color,null);
+        MeshBuilder.back(this.lockTexture.getUVs(),meshBuild,x,1,z-0.01,0.8,1,color,null);
         MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,0,z,0.6,wallColor,null);
 
         this.mesh = MeshBuilder.build(meshBuild);
-        this.AABB.minX=x-0.2;
+        this.AABB.minX=x-0.5;
         this.AABB.minY=y;
-        this.AABB.minZ=z-0.2;
-        this.AABB.maxX=this.position.x+1.2;
+        this.AABB.minZ=z-0.5;
+        this.AABB.maxX=this.position.x+1.5;
         this.AABB.maxY=this.position.y+level.height;
-        this.AABB.maxZ=this.position.z+1.2;
+        this.AABB.maxZ=this.position.z+1.5;
 
         meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
         MeshBuilder.top(Structures.floor.texture.getUVs(),meshBuild,x,-1,z,level.getLight(x,z)+1,this.color,null);

@@ -105,7 +105,7 @@ export default class Level{
                         this.setStructure(x,z,floor);
                         height = floor.height;
                     }
-                    this.addEntity(new Light(x,height,z,[0.5,0.5,0.8,1.0]));
+                    this.addEntity(new Light(x,height,z,[0.5,0.5,1.0,1.0]));
                     //this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
                     this.generateLight(x,z,12,4);
