@@ -13,15 +13,15 @@ export default class UI{
     }
 
     tick(deltaTime){
-
+        
     }
 
     render(game){
         this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-
-        //this.drawTextAt(game.level.player.position.x.toFixed(2)+" "+game.level.player.position.z.toFixed(2), 100,64,18);
-        this.drawTextAt("abcdefghijklmnopqrstuvwxyz",100,64,18);
         this.context.drawImage(Game.glTexture.image,0,59,5,5,(this.canvas.width/2)-8,(this.canvas.height/2)-2,16,16);
+
+        this.drawTextAt("health",10,40,14);
+        this.drawTextAt(""+game.player.health, 140,38,18);
 
     }
 

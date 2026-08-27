@@ -9,6 +9,7 @@ export default class Entity{
         this.AABB = {minX:0,minY:0,minZ:0,maxX:0,maxY:0,maxZ:0};
         this.tempAABB = {minX:0,minY:0,minZ:0,maxX:0,maxY:0,maxZ:0};
         this.yOffset = 0;
+        this.health = 1;
     }
 
     // Move the entity in x,y,z position (position + movement)

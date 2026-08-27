@@ -175,6 +175,8 @@ export default class Game{
     tick(deltaTime){
         this.input.tick(this);
         this.level.tick(this,deltaTime);
+        
+        this.ui.tick(deltaTime);
     }
 
     render(){

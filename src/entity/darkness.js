@@ -13,7 +13,7 @@ export default class Darkness extends Entity{
         this.texture = new Texture(Game.glTexture,16,16,16,16);
         this.eyesTexture = new Texture(Game.glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
-        this.health = 1;
+        
         this.hitDelay = 0;
         this.light = 0.3;
         this.distanceToPlayer = {x:0, z:0};
