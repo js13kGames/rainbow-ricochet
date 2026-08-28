@@ -18,13 +18,13 @@ export default class Player extends Entity{
         this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.currentHealth = 8;
         this.maxHealth = 10;
-        this.headBobCounter = 0;
-        this.hasRainbowInHand = true;
+        this.bobCounter = 0;
+        //this.hasRainbowInHand = true;
         this.hasUnicornInHand = true;
         this.keysHold = [];
 
         //this.keysHold.push(Door.blue);
-        this.keysHold.push(Door.green);
+        //this.keysHold.push(Door.green);
         //this.keysHold.push(Door.yellow);
         this.move(0,0,0);
     }
@@ -49,9 +49,9 @@ export default class Player extends Entity{
         if (game.input.axes.x > 0) MathUtil.crossProduct(this.strafe,cameraDirection,Game.down);
 
         if (this.velocity.x !=0 || this.velocity.z != 0){
-            this.headBobCounter += deltaTime;
+            this.bobCounter += deltaTime;
         }else{
-            this.headBobCounter = 0;
+            this.bobCounter = 0;
         }
 
         if (this.velocity.x !=0 || this.velocity.z != 0 || this.strafe.x != 0 || this.strafe.z !=0){
@@ -88,7 +88,7 @@ export default class Player extends Entity{
 
         }
         Game.camera.position.x = this.position.x;
-        Game.camera.position.y = Game.camera.heightOverGround + this.position.y + (Math.sin(this.headBobCounter*10)/15);
+        Game.camera.position.y = Game.camera.heightOverGround + this.position.y + (Math.sin(this.bobCounter*10)/15);
         Game.camera.position.z = this.position.z;
 
         if (this.hasRainbowInHand && this.rainbowInHand == null){
@@ -98,6 +98,15 @@ export default class Player extends Entity{
         if (this.hasUnicornInHand && this.unicornInHand == null){
             this.unicornInHand = new UnicornHorn(0,0,0);
             this.unicornInHand.inHandYOffset = 0.6;
+        }
+        if (this.hasRainbowInHand){
+            this.rainbowInHand.bobZ = Math.sin(this.bobCounter*10)/55;
+            this.rainbowInHand.bobX = Math.cos(this.bobCounter*8)/55;
+        }
+
+        if (this.hasUnicornInHand){
+            this.unicornInHand.bobZ = -Math.sin(this.bobCounter*10)/55;
+            this.unicornInHand.bobX = -Math.cos(this.bobCounter*8)/55;
         }
 
         // Fire unicornhorn bullets
@@ -145,7 +154,10 @@ export default class Player extends Entity{
         }
 
         if (entity instanceof Rainbow){
-            if (entity.pickup && !entity.disposed) game.pickedUp("A RAINBOW");
+            if (entity.pickup && !entity.disposed){
+                game.pickedUp("A RAINBOW");
+                game.ui.queueMessage("FIRE WITH RIGHT MOUSE BUTTON.");
+            }
             if (entity.bounces > 0 || entity.pickup){
                 this.hasRainbowInHand = true;
                 game.catchRainbow();

@@ -12,6 +12,8 @@ export default class Rainbow extends Bullet{
         this.inHand = true;
         this.inHandYOffset = 0;
         this.inHandXOffset = 0;
+        this.bobX = 0;
+        this.bobZ = 0;
         this.pickup = pickup;
 
         let meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.25);
@@ -82,7 +84,7 @@ export default class Rainbow extends Bullet{
 
     renderinHand(){
         this.mesh.setS(0.2);
-        this.mesh.setPos(1.1+this.inHandXOffset,-0.55+this.inHandYOffset,-1);
+        this.mesh.setPos(1.1+this.inHandXOffset+this.bobX,-0.55+this.inHandYOffset+this.bobZ,-1);
         this.mesh.setRotationX(-0.1);
         this.mesh.setRotationY(-1.2+(this.inHandXOffset));
         Game.gl.enable(Game.gl.BLEND)

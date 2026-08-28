@@ -106,7 +106,6 @@ export default class Level{
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
         this.player.position = {x:x,y:floor.height,z:z};
-        console.log(this.player.position);
     }
 
     addDarkness(game,x,z){
