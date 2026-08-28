@@ -41,7 +41,10 @@ echo "</style>" >> index-template.html
 echo "<canvas id=\"u\"></canvas>" >> index-template.html
 echo "<canvas id=\"c\"></canvas>" >> index-template.html
 echo "<script>" >> index-template.html
-cat ../src/l.js >> index-template.html
+cat ../src/l1.js >> index-template.html
+echo "</script>" >> index-template.html
+echo "<script>" >> index-template.html
+cat ../src/l2.js >> index-template.html
 echo "</script>" >> index-template.html
 echo "<script charset=\"utf8\">" >> index-template.html
 cat o.js >> index-template.html

@@ -17,7 +17,7 @@ import UnicornhornBullet from "../entity/unicornhornbullet.js";
 import LevelExit from "../entity/levelexit.js";
 
 export default class Level{
-    constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint){
+    constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint,levelData){
         this.entities = [];
         this.particles = [];
         this.structures = [];
@@ -33,10 +33,12 @@ export default class Level{
         this.floorTint = floorTint;
         this.glassTint = glassTint;
 
+        this.levelData = levelData;
+
 
         for (let x = 0; x < size; x++) {
             for (let z = 0; z < size; z++){
-                var levelChar = l.charAt(x + (z*this.size));
+                var levelChar = this.levelData.charAt(x + (z*this.size));
 
                 if (levelChar == "#") this.setStructure(x,z,Structures.wall);
                 else if (levelChar == "g") this.setStructure(x,z,Structures.glassBlock);
@@ -109,7 +111,7 @@ export default class Level{
     buildLight(game){
         for (let x = 0; x < this.size; x++) {
             for (let z = 0; z < this.size; z++){
-                var levelChar = l.charAt(x + (z*this.size));
+                var levelChar = this.levelData.charAt(x + (z*this.size));
                 if (levelChar == "l"){
                     var floor = this.getStructure(x-1,z);
                     var height = 0;

@@ -14,7 +14,16 @@ level.fill(" ");
 let metaData = new Array(width*height);
 metaData.fill(" ");
 
-loadImage("level1.png").then((image) => {
+
+let levelId = process.argv[2];
+if (!levelId){
+    console.log("Enter a levelId as first argument");
+    return;
+}
+
+console.log("Building level " + levelId);
+
+loadImage("level"+levelId+".png").then((image) => {
     ctx.drawImage(image, 0, 0);
         //Draw the image and then loop over it
         for (let x = 0; x < width; x++) {
@@ -59,8 +68,8 @@ loadImage("level1.png").then((image) => {
             }
         }
     
-        saveLevel("../src/l.js",getLevelString(level));
-        saveLevel("../src/m.js",getMetadataString(metaData));
+        saveLevel("../src/l"+levelId+".js",getLevelString(level,levelId));
+        //saveLevel("../src/m.js",getMetadataString(metaData));
 });
 
 // Save the metadata and level data to a text file that will be used in the game.
@@ -68,17 +77,17 @@ function saveLevel(filename, data){
     fs = require('fs');
     fs.writeFile(filename, data, "ascii", function (err) {
         if (err) return console.log(err);
-        console.log("save successfully");
+        console.log("saved successfully: "+filename);
       });   
 }
 
 function addToLevel(level,x,y,data){
-    console.log(x+ " "+y+" "+data);
+    //console.log(x+ " "+y+" "+data);
     level[x + (y*width)] = data;
 }
 
-function getLevelString(level){
-    let txt = "const l=\"";
+function getLevelString(level,levelId){
+    let txt = "const l"+levelId+"=\"";
     for (let x = 0; x < width; x++) {
         for (let y = 0; y < height; y++) {
             txt += level[y + (x*height)];
