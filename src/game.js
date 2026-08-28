@@ -123,8 +123,22 @@ export default class Game{
         this.last = performance.now();
         this.counter = 0;
         this.fps = 0;
+        this.levelSwitchDelay = 0;
 
-        this.level = new Level(this,64,this.player,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1);
+        this.levels = [
+            [64,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1],
+            [64,0.4,5,[0.2,0.4,0.2,1.0],[0.1,0.8,0.5,1.0],[0.1,0.5,0.1,1.0],l2]
+        ];
+
+        //this.levels = [
+        //    new Level(this,64,this.player,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1),
+       //    new Level(this,64,this.player,0.9,5,[0.8,0.8,0.1,1.0],[0.2,0.5,0.8,1.0],[0.1,0.4,0.5,6.0],l1)
+       // ];
+        //this.currentLevel = -1;
+        this.currentLevel = 0;
+        
+        this.switchLevel();
+        
     }
 
     update(){
@@ -136,6 +150,10 @@ export default class Game{
         this.last = now;
 
         this.counter += deltaTime;
+
+        if (this.levelSwitchDelay >0) this.levelSwitchDelay -= deltaTime/1000;
+        
+        
 
         this.tick(deltaTime/1000);
 
@@ -219,5 +237,13 @@ export default class Game{
 
     pickedUp(thing){
         this.ui.queueMessage("PICKED UP "+thing+".");
+    }
+
+    switchLevel(){
+        if (this.levelSwitchDelay >0) return;
+        this.currentLevel++;
+        var lArgs = this.levels[this.currentLevel];
+        this.level = new Level(this,lArgs[0],this.player,lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[6]);
+        this.levelSwitchDelay = 1;
     }
 }

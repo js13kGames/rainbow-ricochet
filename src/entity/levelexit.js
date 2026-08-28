@@ -2,8 +2,14 @@ import Game from "../game.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
 export default class LevelExit extends Entity{
-    constructor(x,y,z){
+    constructor(level,x,y,z){
         super(x,y,z);
+        this.AABB.minX=x-0.5;
+        this.AABB.minY=y;
+        this.AABB.minZ=z-0.5;
+        this.AABB.maxX=this.position.x+1.5;
+        this.AABB.maxY=this.position.y+level.height;
+        this.AABB.maxZ=this.position.z+1.5;
     }
 
 

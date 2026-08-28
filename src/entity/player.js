@@ -4,6 +4,7 @@ import Floor from "../structure/floor.js";
 import Door from "./door.js";
 import Entity from "./entity.js";
 import Key from "./key.js";
+import LevelExit from "./levelexit.js";
 import Rainbow from "./rainbow.js";
 import UnicornHorn from "./unicornhorn.js";
 import UnicornhornBullet from "./unicornhornbullet.js";
@@ -18,13 +19,14 @@ export default class Player extends Entity{
         this.currentHealth = 8;
         this.maxHealth = 10;
         this.headBobCounter = 0;
-        //this.hasRainbowInHand = false;
+        this.hasRainbowInHand = true;
         this.hasUnicornInHand = true;
         this.keysHold = [];
 
-        this.keysHold.push(Door.blue);
+        //this.keysHold.push(Door.blue);
         this.keysHold.push(Door.green);
-        this.keysHold.push(Door.yellow);
+        //this.keysHold.push(Door.yellow);
+        this.move(0,0,0);
     }
 
     tick(game,deltaTime){
@@ -143,7 +145,8 @@ export default class Player extends Entity{
         }
 
         if (entity instanceof Rainbow){
-            if (entity.bounces > 0){
+            if (entity.pickup && !entity.disposed) game.pickedUp("A RAINBOW");
+            if (entity.bounces > 0 || entity.pickup){
                 this.hasRainbowInHand = true;
                 game.catchRainbow();
                 entity.dispose(game);
@@ -152,6 +155,10 @@ export default class Player extends Entity{
 
         if (entity instanceof Door){
             entity.unlockDoor(game,this);
+        }
+
+        if (entity instanceof LevelExit){
+            game.switchLevel();
         }
 
         if (entity instanceof Key){

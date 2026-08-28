@@ -57,7 +57,7 @@ loadImage("level"+levelId+".png").then((image) => {
                 if (c == 0x4aaaaa) addToLevel(level,x,y,"w"); // Yellow key
 
                 if (c == 0x00bdff) addToLevel(level,x,y,"h"); // Unicorn horn
-     
+                if (c == 0x7dddff) addToLevel(level,x,y,"r"); // Rainbow     
                 // Height floor
 
                 if (c == 0xff5555) addToLevel(level,x,y,"a");
@@ -82,7 +82,7 @@ function saveLevel(filename, data){
 }
 
 function addToLevel(level,x,y,data){
-    //console.log(x+ " "+y+" "+data);
+    console.log(x+ " "+y+" "+data);
     level[x + (y*width)] = data;
 }
 

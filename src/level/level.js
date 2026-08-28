@@ -49,13 +49,16 @@ export default class Level{
                 else if (levelChar == "v") this.addKey(game, x,z,Door.blue);
                 else if (levelChar == "w") this.addKey(game, x,z,Door.yellow);
                 else if (levelChar == "h") this.addUnicornHorn(game, x,z);
+                else if (levelChar == "r") this.addRainbow(game, x,z);
                 else if (levelChar == "a") this.setStructure(x,z,Structures.floor1);
                 else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
                 else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
                 else if (levelChar == "d") this.setStructure(x,z,Structures.floor4);
                 else if (levelChar == "e") this.addExit(x,z);
                 else this.setStructure(x,z,Structures.floor);
-                if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
+
+                //if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
+                if (levelChar == "p") this.addPlayer(x,z);
 
                 if (levelChar == "m") this.addDarkness(game,x,z);
 
@@ -78,7 +81,7 @@ export default class Level{
     }
 
     addExit(x,z){
-        this.addEntity(new LevelExit(x,0,z));
+        this.addEntity(new LevelExit(this,x,0,z));
         this.setStructure(x,z,Structures.floor);
     }
 
@@ -91,6 +94,19 @@ export default class Level{
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
         this.addEntity(new UnicornHorn(x,floor.height,z));
+    }
+
+    addRainbow(game,x,z){
+        var floor = this.getStructure(x-1,z);
+        this.setStructure(x,z,floor);
+        this.addEntity(new Rainbow(x,floor.height+0.5,z,null,0,0.8,true));
+    }
+
+    addPlayer(x,z){
+        var floor = this.getStructure(x-1,z);
+        this.setStructure(x,z,floor);
+        this.player.position = {x:x,y:floor.height,z:z};
+        console.log(this.player.position);
     }
 
     addDarkness(game,x,z){

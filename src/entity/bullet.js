@@ -19,7 +19,7 @@ export default class Bullet extends Entity{
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
-
+        if (this.direction == null) return;
         this.tempVector.x = this.position.x - this.direction.x * (this.speed * deltaTime);
         this.tempVector.z = this.position.z - this.direction.z * (this.speed * deltaTime);
 
@@ -53,8 +53,8 @@ export default class Bullet extends Entity{
     }
     onEntityHit(game,entity){
         if (
-            (entity instanceof Darkness && !(this.owner instanceof Darkness))
-            || (entity instanceof Player && !(this.owner instanceof Player)) 
+            ((entity instanceof Darkness && !(this.owner instanceof Darkness))
+            || (entity instanceof Player && !(this.owner instanceof Player))) 
             && !(this instanceof RainBow)){
             this.disposed = true;
             this.explode(game);
