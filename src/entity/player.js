@@ -3,6 +3,7 @@ import MathUtil from "../mathutil.js";
 import Floor from "../structure/floor.js";
 import Door from "./door.js";
 import Entity from "./entity.js";
+import HealthPickup from "./health.js";
 import Key from "./key.js";
 import LevelExit from "./levelexit.js";
 import Rainbow from "./rainbow.js";
@@ -16,12 +17,13 @@ export default class Player extends Entity{
         this.strafe = {x:0,z:0};
         this.speed = 8;
         this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 0;
-        this.currentHealth = 8;
+        this.currentHealth = 7;
         this.maxHealth = 10;
         this.bobCounter = 0;
         //this.hasRainbowInHand = true;
-        this.hasUnicornInHand = true;
+        //this.hasUnicornInHand = true;
         this.keysHold = [];
+        this.keysHold.push(Door.secret);
 
         //this.keysHold.push(Door.blue);
         //this.keysHold.push(Door.green);
@@ -146,6 +148,7 @@ export default class Player extends Entity{
     }
 
     onEntityHit(game,entity){
+        if (entity.disposed) return;
 
         if (entity instanceof UnicornhornBullet && !(entity.owner instanceof Player) && this.hurtDelay <=0){
             this.currentHealth--;
@@ -163,6 +166,15 @@ export default class Player extends Entity{
                 game.catchRainbow();
                 entity.dispose(game);
             }
+        }
+
+        if (entity instanceof HealthPickup){
+            if (this.currentHealth < this.maxHealth){
+                game.healthPickedUp();
+                this.currentHealth += entity.ammount;
+                entity.dispose(game);
+            }
+            
         }
 
         if (entity instanceof Door){

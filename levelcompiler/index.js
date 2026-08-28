@@ -55,9 +55,11 @@ loadImage("level"+levelId+".png").then((image) => {
                 if (c == 0xe03971) addToLevel(level,x,y,"v"); // Blue key
                 if (c == 0x6eddc8) addToLevel(level,x,y,"z"); // Yellow door
                 if (c == 0x4aaaaa) addToLevel(level,x,y,"w"); // Yellow key
+                if (c == 0x777777) addToLevel(level,x,y,"t"); // Secret door
 
                 if (c == 0x00bdff) addToLevel(level,x,y,"h"); // Unicorn horn
-                if (c == 0x7dddff) addToLevel(level,x,y,"r"); // Rainbow     
+                if (c == 0x7dddff) addToLevel(level,x,y,"r"); // Rainbow
+                if (c == 0x9d9dff) addToLevel(level,x,y,"s"); // Health     
                 // Height floor
 
                 if (c == 0xff5555) addToLevel(level,x,y,"a");

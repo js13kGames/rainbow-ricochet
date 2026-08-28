@@ -135,7 +135,7 @@ export default class Game{
        //    new Level(this,64,this.player,0.9,5,[0.8,0.8,0.1,1.0],[0.2,0.5,0.8,1.0],[0.1,0.4,0.5,6.0],l1)
        // ];
         //this.currentLevel = -1;
-        this.currentLevel = 0;
+        this.currentLevel = -1;
         
         this.switchLevel();
         
@@ -233,6 +233,10 @@ export default class Game{
 
     playerHurt(){
         zzfx(...[2,.5,185,.01,.04,.07,,.8,-4,,,,,.7,7.4,.4,,.59,.03]); // Hit 439
+    }
+
+    healthPickedUp(){
+        zzfx(...[.3,.45,672,.02,.02,.2,1,.6,,,324,.06,.02,,,,,.91,.03]); // Pickup 521
     }
 
     pickedUp(thing){

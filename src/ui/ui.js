@@ -28,7 +28,7 @@ export default class UI{
         this.context.drawImage(Game.glTexture.image,0,59,5,5,(this.canvas.width/2)-8,(this.canvas.height/2)-2,16,16);
 
         this.drawTextAt("HEALTH:",56,this.canvas.height-100,24);
-        this.drawTextAt(((game.player.currentHealth/game.player.maxHealth)*100+"%"), 166,this.canvas.height-100,26,"red");
+        this.drawTextAt(((game.player.currentHealth/game.player.maxHealth)*100).toFixed(0)+"%", 166,this.canvas.height-100,26,"red");
 
         this.drawTextAt(game.stableFPS +" FPS", this.canvas.width-100,42,26,"white");
 

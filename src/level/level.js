@@ -15,10 +15,12 @@ import Light from "../entity/light.js";
 import Game from "../game.js";
 import UnicornhornBullet from "../entity/unicornhornbullet.js";
 import LevelExit from "../entity/levelexit.js";
+import HealthPickup from "../entity/health.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint,levelData){
         this.entities = [];
+        this.doors = [];
         this.particles = [];
         this.structures = [];
         this.entities.push(player);
@@ -42,14 +44,12 @@ export default class Level{
 
                 if (levelChar == "#") this.setStructure(x,z,Structures.wall);
                 else if (levelChar == "g") this.setStructure(x,z,Structures.glassBlock);
-                else if (levelChar == "x") this.addDoor(game, x,z,Door.green);
-                else if (levelChar == "y") this.addDoor(game, x,z,Door.blue);
-                else if (levelChar == "z") this.addDoor(game, x,z,Door.yellow);
                 else if (levelChar == "u") this.addKey(game, x,z,Door.green);
                 else if (levelChar == "v") this.addKey(game, x,z,Door.blue);
                 else if (levelChar == "w") this.addKey(game, x,z,Door.yellow);
                 else if (levelChar == "h") this.addUnicornHorn(game, x,z);
                 else if (levelChar == "r") this.addRainbow(game, x,z);
+                else if (levelChar == "s") this.addHealth(game, x,z);
                 else if (levelChar == "a") this.setStructure(x,z,Structures.floor1);
                 else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
                 else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
@@ -69,6 +69,15 @@ export default class Level{
 
         this.buildLight(game);
         
+        for (let x = 0; x < size; x++) {
+            for (let z = 0; z < size; z++){
+                var levelChar = this.levelData.charAt(x + (z*this.size));
+                if (levelChar == "x") this.addDoor(game, x,z,Door.green);
+                else if (levelChar == "y") this.addDoor(game, x,z,Door.blue);
+                else if (levelChar == "z") this.addDoor(game, x,z,Door.yellow);
+                else if (levelChar == "t") this.addDoor(game, x,z,Door.secret);
+            }
+        }
 
         this.buildWallLevel();
         this.buildFloorLevel();
@@ -76,7 +85,7 @@ export default class Level{
     }
 
     addDoor(game, x,z,color){
-        this.addEntity(new Door(this,x,0,z,color,this.wallTint));
+        this.doors.push(new Door(this,x,0,z,color,this.wallTint));
         this.setStructure(x,z,Structures.doorBlock);
     }
 
@@ -100,6 +109,12 @@ export default class Level{
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
         this.addEntity(new Rainbow(x,floor.height+0.5,z,null,0,0.8,true));
+    }
+
+    addHealth(game,x,z){
+        var floor = this.getStructure(x-1,z);
+        this.setStructure(x,z,floor);
+        this.addEntity(new HealthPickup(x,floor.height,z,0.5));
     }
 
     addPlayer(x,z){
@@ -293,6 +308,12 @@ export default class Level{
             else a.tick(game,deltaTime);
         });
 
+        // A bit messed up but doors needed to be rendered blended (for the secret doors barley visible keys) so they needed to be ticked also
+        this.doors.forEach(a => {
+            if (a.disposed) this.deleteEntity(a);
+            else a.tick(game,deltaTime);
+        });
+
         this.particles.forEach(a =>{
             if (a.disposed) this.deleteParticle(a);
             else a.tick(game,deltaTime);
@@ -309,9 +330,20 @@ export default class Level{
                 }
             })
         })
+
+        // A bit messed up but doors needed to be rendered blended (for the secret doors barley visible keys) so they needed to be checked for collisions too
+        this.doors.forEach(a => {
+            this.entities.forEach(b => {
+                if(a.doesCollidesWithEntity(game,b)){
+                    a.onEntityHit(game,b);
+                    b.onEntityHit(game,a);
+                }
+            })
+        })
     }
 
     render(){
+
         this.wallMesh.render();
         this.floorMesh.render();
         
@@ -324,11 +356,14 @@ export default class Level{
         });
 
 
-        Game.gl.enable(Game.gl.BLEND)
+        Game.gl.enable(Game.gl.BLEND);
 
         this.transparentMesh.render();
 
         this.player.renderInHand();
+        this.doors.forEach(e => {
+            e.render();
+        });
         Game.gl.disable(Game.gl.BLEND);
 
        
