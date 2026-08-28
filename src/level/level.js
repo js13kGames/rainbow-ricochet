@@ -14,6 +14,7 @@ import UnicornHorn from "../entity/unicornhorn.js";
 import Light from "../entity/light.js";
 import Game from "../game.js";
 import UnicornhornBullet from "../entity/unicornhornbullet.js";
+import LevelExit from "../entity/levelexit.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint){
@@ -50,6 +51,7 @@ export default class Level{
                 else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
                 else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
                 else if (levelChar == "d") this.setStructure(x,z,Structures.floor4);
+                else if (levelChar == "e") this.addExit(x,z);
                 else this.setStructure(x,z,Structures.floor);
                 if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
 
@@ -71,6 +73,11 @@ export default class Level{
     addDoor(game, x,z,color){
         this.addEntity(new Door(this,x,0,z,color,this.wallTint));
         this.setStructure(x,z,Structures.doorBlock);
+    }
+
+    addExit(x,z){
+        this.addEntity(new LevelExit(x,0,z));
+        this.setStructure(x,z,Structures.floor);
     }
 
     addKey(game, x,z,color){

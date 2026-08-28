@@ -37,6 +37,7 @@ loadImage("level1.png").then((image) => {
                 if (c == 0x00ffff) addToLevel(level,x,y,"l"); // Lightsource
                 if (c == 0x5c5c5e) addToLevel(level,x,y,"g"); // Glassblock
                 if (c == 0x00ff00) addToLevel(level,x,y,"p"); // Player start position
+                if (c == 0xffd700) addToLevel(level,x,y,"e"); // Level exit
                 if (c == 0x0000ff) addToLevel(level,x,y,"m"); // Monster
 
                 if (c == 0x007700) addToLevel(level,x,y,"x"); // Green door
