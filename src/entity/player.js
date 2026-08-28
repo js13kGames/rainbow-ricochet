@@ -14,17 +14,17 @@ export default class Player extends Entity{
 
         this.strafe = {x:0,z:0};
         this.speed = 8;
-        this.primaryFireDelay = this.secondaryFireDelay = 0;
+        this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.currentHealth = 8;
         this.maxHealth = 10;
         this.headBobCounter = 0;
         //this.hasRainbowInHand = false;
-        //this.hasUnicornInHand = false;
+        this.hasUnicornInHand = true;
         this.keysHold = [];
 
-        //this.keysHold.push(Door.blue);
-        //this.keysHold.push(Door.green);
-        //this.keysHold.push(Door.yellow);
+        this.keysHold.push(Door.blue);
+        this.keysHold.push(Door.green);
+        this.keysHold.push(Door.yellow);
     }
 
     tick(game,deltaTime){
@@ -32,6 +32,8 @@ export default class Player extends Entity{
 
         this.primaryFireDelay -= deltaTime;
         this.secondaryFireDelay -= deltaTime;
+        this.hurtDelay -= deltaTime;
+        
 
         Game.camera.rotate(-game.input.pointer.x/500);
         Game.camera.rotateX(-game.input.pointer.y/500);
@@ -98,7 +100,8 @@ export default class Player extends Entity{
 
         // Fire unicornhorn bullets
         if (this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
-            game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
+            //game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
+            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this);
             this.primaryFireDelay = 0.3;
             game.playShoot();
             this.unicornInHand.inHandYOffset = 0.6;
@@ -132,6 +135,13 @@ export default class Player extends Entity{
     }
 
     onEntityHit(game,entity){
+
+        if (entity instanceof UnicornhornBullet && !(entity.owner instanceof Player) && this.hurtDelay <=0){
+            this.currentHealth--;
+            game.playerHurt();
+            this.hurtDelay = 0.5;
+        }
+
         if (entity instanceof Rainbow){
             if (entity.bounces > 0){
                 this.hasRainbowInHand = true;

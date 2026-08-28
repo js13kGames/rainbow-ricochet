@@ -2,18 +2,20 @@ import Game from "../game.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
 import Bullet from "./bullet.js";
+import Darkness from "./darkness.js";
 
 export default class UnicornhornBullet extends Bullet{
-    constructor(x,y,z,direction,speed){
-        super(x,y,z,direction,speed,false);
+    constructor(x,y,z,direction,speed,owner,size=0.05,ttl=1.5){
+        super(x,y,z,direction,speed,owner,false);
             this.texture = new Texture(Game.glTexture,63,0,1,1);
 
             var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
             var c = Game.rainbowColors[Math.floor(Math.random()*6)];
+            if (owner instanceof Darkness) c = [0.3,0.3,0.3];
             MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,2,1,[c[0],c[1],c[2],0.9],null);
             this.mesh = MeshBuilder.build(meshBuild);
-            this.mesh.setS(0.05);
-            this.ttl = 1.5;
+            this.mesh.setS(size);
+            this.ttl = ttl;
     }
 
     tick(game,deltaTime){
@@ -30,6 +32,7 @@ export default class UnicornhornBullet extends Bullet{
 
     onStructureHit(game, pos){
         game.level.deleteEntity(this);
+        game.playWallHit();
         this.explode(game,0);
     }
 }

@@ -13,6 +13,7 @@ import Key from "../entity/key.js";
 import UnicornHorn from "../entity/unicornhorn.js";
 import Light from "../entity/light.js";
 import Game from "../game.js";
+import UnicornhornBullet from "../entity/unicornhornbullet.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint){
@@ -92,6 +93,10 @@ export default class Level{
         }
 
         this.addEntity(new Darkness(x,height,z));
+    }
+
+    shootBullet(x,y,z,direction,speed,owner,size,ttl){
+        this.addEntity(new UnicornhornBullet(x,y,z,direction,speed,owner,size,ttl));
     }
 
     buildLight(game){

@@ -6,6 +6,7 @@ import Bullet from "./bullet.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
 import Game from "../game.js";
+
 export default class Darkness extends Entity{
     constructor(x,y,z) {
         super(x,y,z);
@@ -76,6 +77,7 @@ export default class Darkness extends Entity{
         if (this.hitDelay > 0) this.hitDelay -= deltaTime;
 
         this.distanceToPlayer.x = game.player.position.x - this.position.x;
+        this.distanceToPlayer.y = 0;
         this.distanceToPlayer.z = game.player.position.z - this.position.z;
         var length = MathUtil.length(this.distanceToPlayer);
 
@@ -104,6 +106,13 @@ export default class Darkness extends Entity{
             this.hasPlayerAggro = false;
         }
 
+         if (this.hasPlayerAggro && Math.random() < 0.008){
+            MathUtil.normalize(this.distanceToPlayer);
+            var direction = {x:-this.distanceToPlayer.x,y:0,z:-this.distanceToPlayer.z};
+            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,6,this,0.2,3);
+        }
+
+
         if (this.hasPlayerAggro && Math.random() < 0.001){
             game.monsterAggro();
         }
@@ -121,6 +130,7 @@ export default class Darkness extends Entity{
 
      onEntityHit(game, entity){
         if (!(entity instanceof Bullet)) return;
+        if (entity.owner instanceof Darkness) return;
         if (this.hitDelay <= 0){
             this.currentHealth--;
 

@@ -3,16 +3,18 @@ import MathUtil from "../mathutil.js";
 import Darkness from "./darkness.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
+import Player from "./player.js";
 import RainBow from "./rainbow.js";
 
 export default class Bullet extends Entity{
-    constructor(x,y,z,direction,speed,bounce=false){
+    constructor(x,y,z,direction,speed,owner,bounce=false){
         super(x,y,z);
         this.heightOverGround = y;
         this.direction = direction;
         this.speed = speed;
         this.bounce = bounce;
         this.ignoreCollisions = false;
+        this.owner = owner;
     }
 
     tick(game,deltaTime){
@@ -50,7 +52,10 @@ export default class Bullet extends Entity{
     onStructureHit(game, pos){
     }
     onEntityHit(game,entity){
-        if (entity instanceof Darkness && !(this instanceof RainBow)){
+        if (
+            (entity instanceof Darkness && !(this.owner instanceof Darkness))
+            || (entity instanceof Player && !(this.owner instanceof Player)) 
+            && !(this instanceof RainBow)){
             this.disposed = true;
             this.explode(game);
         }
