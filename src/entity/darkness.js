@@ -109,7 +109,7 @@ export default class Darkness extends Entity{
          if (this.hasPlayerAggro && Math.random() < 0.008){
             MathUtil.normalize(this.distanceToPlayer);
             var direction = {x:-this.distanceToPlayer.x,y:0,z:-this.distanceToPlayer.z};
-            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,6,this,0.2,3);
+            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.2,3);
         }
 
 
