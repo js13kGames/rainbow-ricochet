@@ -1,8 +1,52 @@
+import MathUtil from "../mathutil.js";
+import Floor from "../structure/floor.js";
 import Entity from "./entity.js";
+import Particle from "./particle.js";
 
 export default class PoisionEntity extends Entity{
     constructor(x,y,z){
         super(x,y,z);
         this.move(0,0,0);
+        this.distanceToPlayer = {x:0, z:0};
+        this.aggroRange = 20;
+        this.hasPlayerAggro = false;
+    }
+
+    tick(game,deltaTime){
+        this.distanceToPlayer.x = game.player.position.x - this.position.x;
+        this.distanceToPlayer.y = 0;
+        this.distanceToPlayer.z = game.player.position.z - this.position.z;
+        var length = MathUtil.length(this.distanceToPlayer);
+
+        // Reused from Darkness. Also kept the variablenames (aggro should be active) just to make zip compression more happy.
+        if (length < this.aggroRange){
+            var p = MathUtil.bresenham(Math.ceil(this.position.x), Math.ceil(this.position.z), Math.ceil(game.player.position.x), Math.ceil(game.player.position.z), Math.ceil(length));
+            for (let pi = 0; pi < p.length; pi++){
+                var point = p[pi];
+                var s = game.level.getStructure(point.x, point.y);
+                if (s != null && !s.blocksLight()) {
+                    if ((s instanceof Floor && s.height > 0)){
+                        this.hasPlayerAggro = false;
+                        break;
+                    }
+                    if (point.x == Math.ceil(game.player.position.x) && point.y == Math.ceil(game.player.position.z)){
+                        if (!this.hasPlayerAggro){
+                                this.hasPlayerAggro = true;
+                            }
+                        }
+                }else{
+                    this.hasPlayerAggro = false;
+                    break;
+                } 
+            }
+        }else {
+            this.hasPlayerAggro = false;
+        }
+        if (this.hasPlayerAggro){
+            if (Math.random()<0.005){
+                game.level.addParticle(new Particle((this.position.x-0.5)+Math.random(),this.position.y-1,(this.position.z-0.5)+Math.random(),6,{x:0,y:1,z:0},Math.max(0.01,Math.random()/80),[0.0,1.0,0.0,0.9],0.05));
+            }
+        }
+        
     }
 }
