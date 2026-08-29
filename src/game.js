@@ -135,7 +135,7 @@ export default class Game{
        //    new Level(this,64,this.player,0.9,5,[0.8,0.8,0.1,1.0],[0.2,0.5,0.8,1.0],[0.1,0.4,0.5,6.0],l1)
        // ];
         //this.currentLevel = -1;
-        this.currentLevel = -1;
+        this.currentLevel = 0;
         
         this.switchLevel();
         
@@ -158,7 +158,7 @@ export default class Game{
         this.tick(deltaTime/1000);
 
         Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
-        Game.gl.clearColor(0.0,0.0,0.0,1.0);
+        Game.gl.clearColor(0.0,0.0,1.0,1.0);
 
         Game.gl.enable(Game.gl.DEPTH_TEST);
         Game.gl.depthFunc(Game.gl.LESS);

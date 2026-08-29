@@ -16,6 +16,8 @@ import Game from "../game.js";
 import UnicornhornBullet from "../entity/unicornhornbullet.js";
 import LevelExit from "../entity/levelexit.js";
 import HealthPickup from "../entity/health.js";
+import Poision from "../structure/poision.js";
+import PoisionEntity from "../entity/poisionentity.js";
 
 export default class Level{
     constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint,levelData){
@@ -55,6 +57,7 @@ export default class Level{
                 else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
                 else if (levelChar == "d") this.setStructure(x,z,Structures.floor4);
                 else if (levelChar == "e") this.addExit(x,z);
+                else if (levelChar == "o") this.addPoision(x,z);
                 else this.setStructure(x,z,Structures.floor);
 
                 //if (levelChar == "p") { player.position = {x:x,y:0,z:z}; this.setStructure(x,z,Structures.floor); }
@@ -97,6 +100,11 @@ export default class Level{
     addKey(game, x,z,color){
         this.addEntity(new Key(x,0,z,color));
         this.setStructure(x,z,Structures.floor);
+    }
+
+    addPoision(x,z){
+        this.addEntity(new PoisionEntity(x,0,z));
+        this.setStructure(x,z,Structures.poision);
     }
 
     addUnicornHorn(game,x,z){
@@ -152,6 +160,8 @@ export default class Level{
                     this.addEntity(new Light(x,height,z,[0.5,0.5,1.0,1.0]));
                     //this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
+                    this.generateLight(x,z,12,4);
+                }else if (levelChar == "o"){
                     this.generateLight(x,z,12,4);
                 }
             }
@@ -265,6 +275,11 @@ export default class Level{
                         MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),1,this.floorTint,null,s.height-0.5);
                     }
                     MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
+                }else if (s instanceof Poision){
+                    MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z)+0.1,s.tint,null);
+                    if (!(x > 21 && x < 39 && z > 1 && z < 12)){
+                        MeshBuilder.bottom(Structures.floor.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
+                    }
                 }
             }
         }
@@ -357,13 +372,14 @@ export default class Level{
 
 
         Game.gl.enable(Game.gl.BLEND);
+         this.doors.forEach(e => {
+            e.render();
+        });
 
         this.transparentMesh.render();
 
         this.player.renderInHand();
-        this.doors.forEach(e => {
-            e.render();
-        });
+       
         Game.gl.disable(Game.gl.BLEND);
 
        

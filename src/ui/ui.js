@@ -21,10 +21,17 @@ export default class UI{
             this.messages.pop();
             if (this.messages.length > 0) this.messageCountdown = 3.5;
         }
+
+        if(this.playerHurt>0) this.playerHurt-= deltaTime;
     }
 
     render(game){
         this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+        if (this.playerHurt >0){
+            this.context.fillStyle = "salmon";
+            this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
+        }
+
         this.context.drawImage(Game.glTexture.image,0,59,5,5,(this.canvas.width/2)-8,(this.canvas.height/2)-2,16,16);
 
         this.drawTextAt("HEALTH:",56,this.canvas.height-100,24);
@@ -51,6 +58,10 @@ export default class UI{
     queueMessage(message){
         this.messages.push(message);
         this.messageCountdown = 3.5;
+    }
+
+    showPlayerHurt(){
+        this.playerHurt = 0.2;
     }
 
 

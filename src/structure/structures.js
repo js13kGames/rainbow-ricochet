@@ -1,6 +1,7 @@
 import DoorBlock from "./doorblock.js";
 import Floor from "./floor.js";
 import Glassblock from "./glassblock.js";
+import Poision from "./poision.js";
 import Wall from "./wall.js";
 
 export default class Structures{
@@ -12,6 +13,7 @@ export default class Structures{
     static floor4;
     static glassBlock;
     static doorBlock;
+    static poision;
 
     constructor(glTexture){
         Structures.wall = new Wall(glTexture);
@@ -22,5 +24,6 @@ export default class Structures{
         Structures.floor4 = new Floor(glTexture,2.25);
         Structures.glassBlock = new Glassblock(glTexture);
         Structures.doorBlock = new DoorBlock();
+        Structures.poision = new Poision(glTexture);
     }
 }

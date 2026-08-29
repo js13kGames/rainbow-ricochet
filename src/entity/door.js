@@ -45,10 +45,10 @@ export default class Door extends Entity{
         this.floorMesh = MeshBuilder.build(meshBuild);
 
         meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
-        MeshBuilder.left(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x-1,z),level.height,wallColor,null);
-        MeshBuilder.right(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x+1,z),level.height,wallColor,null);
-        MeshBuilder.front(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x,z+1),level.height,wallColor,null);
-        MeshBuilder.back(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x,z-1),level.height,wallColor,null);
+        MeshBuilder.left(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x-1,z),level.height-3,wallColor,null);
+        MeshBuilder.right(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x+1,z),level.height-3,wallColor,null);
+        MeshBuilder.front(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x,z+1),level.height-3,wallColor,null);
+        MeshBuilder.back(this.texture.getUVs(),meshBuild,x,3,z,level.getLight(x,z-1),level.height-3,wallColor,null);
         this.wallMesh = MeshBuilder.build(meshBuild);
 
     }
@@ -64,7 +64,7 @@ export default class Door extends Entity{
     }
 
     render(){
-                Game.gl.enable(Game.gl.BLEND);
+        Game.gl.enable(Game.gl.BLEND);
         this.mesh.render();
         this.floorMesh.render();
         this.wallMesh.render();

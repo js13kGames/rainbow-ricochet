@@ -6,6 +6,7 @@ import Entity from "./entity.js";
 import HealthPickup from "./health.js";
 import Key from "./key.js";
 import LevelExit from "./levelexit.js";
+import PoisionEntity from "./poisionentity.js";
 import Rainbow from "./rainbow.js";
 import UnicornHorn from "./unicornhorn.js";
 import UnicornhornBullet from "./unicornhornbullet.js";
@@ -20,8 +21,8 @@ export default class Player extends Entity{
         this.currentHealth = 7;
         this.maxHealth = 10;
         this.bobCounter = 0;
-        //this.hasRainbowInHand = true;
-        //this.hasUnicornInHand = true;
+        this.hasRainbowInHand = true;
+        this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
@@ -150,8 +151,9 @@ export default class Player extends Entity{
     onEntityHit(game,entity){
         if (entity.disposed) return;
 
-        if (entity instanceof UnicornhornBullet && !(entity.owner instanceof Player) && this.hurtDelay <=0){
+        if ((entity instanceof UnicornhornBullet || entity instanceof PoisionEntity) && !(entity.owner instanceof Player) && this.hurtDelay <=0){
             this.currentHealth--;
+            game.ui.showPlayerHurt();
             game.playerHurt();
             this.hurtDelay = 0.5;
         }
