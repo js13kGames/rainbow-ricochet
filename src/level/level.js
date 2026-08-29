@@ -98,8 +98,9 @@ export default class Level{
     }
 
     addKey(game, x,z,color){
-        this.addEntity(new Key(x,0,z,color));
-        this.setStructure(x,z,Structures.floor);
+        var floor = this.getStructure(x-1,z);
+        this.addEntity(new Key(x,floor.height,z,color));
+        this.setStructure(x,z,floor);
     }
 
     addPoision(x,z){

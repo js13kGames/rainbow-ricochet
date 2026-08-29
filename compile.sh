@@ -48,7 +48,7 @@ cat ../src/l2.js >> index-template.html
 echo "</script>" >> index-template.html
 echo "<script charset=\"utf8\">" >> index-template.html
 cat o.js >> index-template.html
-echo "</script><div id="s">Press any key to start</div>" >> index-template.html
+echo "</script>" >> index-template.html
 
 cat index-template.html | tr -d '\n' > index.html
 

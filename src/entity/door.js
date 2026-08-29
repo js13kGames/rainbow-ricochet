@@ -8,7 +8,7 @@ export default class Door extends Entity{
     static blue = [0.0,0.0,1.0,1.0];
     static green = [0.0,1.0,0.0,1.0];
     static yellow = [1.0,1.0,0.0,1.0];
-    static secret = [0.5,0.5,0.5,0.2];
+    static secret = [0.5,0.5,0.5,0.5];
     
     constructor(level,x,y,z,color,wallColor){
         super(x,y,z);
