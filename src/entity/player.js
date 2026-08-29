@@ -21,7 +21,7 @@ export default class Player extends Entity{
         this.currentHealth = 7;
         this.maxHealth = 10;
         this.bobCounter = 0;
-        this.hasRainbowInHand = true;
+        //this.hasRainbowInHand = true;
         this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);
@@ -123,7 +123,7 @@ export default class Player extends Entity{
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
+            game.level.addEntity(new Rainbow(game,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
             game.throwRainbow();
@@ -166,6 +166,7 @@ export default class Player extends Entity{
             if (entity.bounces > 0 || entity.pickup){
                 this.hasRainbowInHand = true;
                 game.catchRainbow();
+                if (entity.sensor) entity.sensor.disposed = true;
                 entity.dispose(game);
             }
         }

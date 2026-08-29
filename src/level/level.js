@@ -116,7 +116,7 @@ export default class Level{
     addRainbow(game,x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
-        this.addEntity(new Rainbow(x,floor.height+0.5,z,null,0,0.8,true));
+        this.addEntity(new Rainbow(game,x,floor.height+0.5,z,null,0,0.8,true));
     }
 
     addHealth(game,x,z){
