@@ -5,8 +5,8 @@ import Bullet from "./bullet.js";
 import Darkness from "./darkness.js";
 
 export default class UnicornhornBullet extends Bullet{
-    constructor(x,y,z,direction,speed,owner,size=0.05,ttl=1.5){
-        super(x,y,z,direction,speed,owner,false);
+    constructor(level,x,y,z,direction,speed,owner,size=0.05,ttl=1.5){
+        super(level,x,y,z,direction,speed,owner,false);
             this.texture = new Texture(Game.glTexture,63,0,1,1);
 
             var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);

@@ -12,8 +12,8 @@ import UnicornHorn from "./unicornhorn.js";
 import UnicornhornBullet from "./unicornhornbullet.js";
 
 export default class Player extends Entity{
-    constructor(x,y,z) {
-        super(x,y,z);
+    constructor(level,x,y,z) {
+        super(level,x,y,z);
 
         this.strafe = {x:0,z:0};
         this.speed = 8;
@@ -102,11 +102,11 @@ export default class Player extends Entity{
 
 
         if (this.hasRainbowInHand && this.rainbowInHand == null){
-            this.rainbowInHand = new Rainbow(0,0,0,{x:0,y:0,z:0},0,0.5);
+            this.rainbowInHand = new Rainbow(game.level,game,0,0,0,{x:0,y:0,z:0},0,0.5);
         }
 
         if (this.hasUnicornInHand && this.unicornInHand == null){
-            this.unicornInHand = new UnicornHorn(0,0,0);
+            this.unicornInHand = new UnicornHorn(game.level,0,0,0);
             this.unicornInHand.inHandYOffset = 0.6;
         }
         if (this.hasRainbowInHand){
@@ -130,7 +130,7 @@ export default class Player extends Entity{
 
         // Fire rainbow boomerang
         if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
+            game.level.addEntity(new Rainbow(game.level,game,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
             this.secondaryFireDelay = 0.9;
             this.hasRainbowInHand = false;
             game.throwRainbow();

@@ -4,8 +4,8 @@ import Texture from "../gl/texture.js";
 import Entity from "./entity.js";
 
 export default class HealthPickup extends Entity{
-    constructor(x,y,z,ammount){
-        super(x,y,z);
+    constructor(level,x,y,z,ammount){
+        super(level,x,y,z);
         this.ammount = ammount;
         this.texture = new Texture(Game.glTexture,5,59,5,5);
         this.yOffset = 2;

@@ -18,15 +18,24 @@ import LevelExit from "../entity/levelexit.js";
 import HealthPickup from "../entity/health.js";
 import Poision from "../structure/poision.js";
 import PoisionEntity from "../entity/poisionentity.js";
+import Player from "../entity/player.js";
 
 export default class Level{
+    static SECTORSIZE = 4;
+    static SECTORMAXPOS = 128;
+    static SECTORGRIDSIZE = Math.ceil((Level.SECTORMAXPOS * 2)/Level.SECTORSIZE);
+    static SECTORRADIUS = 2;
+
     constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint,levelData){
         this.entities = [];
         this.doors = [];
         this.particles = [];
         this.structures = [];
-        this.entities.push(player);
-        this.player = player;
+        this.sectors = [];
+        
+        
+
+        //this.entities.push(player);
 
         this.level = [size*size];
         this.lightMap = [size*size];
@@ -38,6 +47,14 @@ export default class Level{
         this.glassTint = glassTint;
 
         this.levelData = levelData;
+
+        for (let x = -Level.SECTORRADIUS; x < Level.SECTORGRIDSIZE; x++) {
+            this.sectors[x] = [];
+            for (let z = -Level.SECTORRADIUS; z < Level.SECTORGRIDSIZE; z++) {
+                this.sectors[x][z] = { entities: [] };
+            }
+        }
+
 
 
         for (let x = 0; x < size; x++) {
@@ -85,6 +102,8 @@ export default class Level{
         this.buildWallLevel();
         this.buildFloorLevel();
         this.buildTransparentLevel();
+
+        console.log(this.sectors);
     }
 
     addDoor(game, x,z,color){
@@ -99,37 +118,39 @@ export default class Level{
 
     addKey(game, x,z,color){
         var floor = this.getStructure(x-1,z);
-        this.addEntity(new Key(x,floor.height,z,color));
+        this.addEntity(new Key(this,x,floor.height,z,color));
         this.setStructure(x,z,floor);
     }
 
     addPoision(x,z){
-        this.addEntity(new PoisionEntity(x,0,z));
+        this.addEntity(new PoisionEntity(this,x,0,z));
         this.setStructure(x,z,Structures.poision);
     }
 
     addUnicornHorn(game,x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
-        this.addEntity(new UnicornHorn(x,floor.height,z));
+        this.addEntity(new UnicornHorn(this,x,floor.height,z));
     }
 
     addRainbow(game,x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
-        this.addEntity(new Rainbow(game,x,floor.height+0.5,z,null,0,0.8,true));
+        this.addEntity(new Rainbow(this,game,x,floor.height+0.5,z,null,0,0.8,true));
     }
 
     addHealth(game,x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
-        this.addEntity(new HealthPickup(x,floor.height,z,0.5));
+        this.addEntity(new HealthPickup(this,x,floor.height,z,0.5));
     }
 
     addPlayer(x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
-        this.player.position = {x:x,y:floor.height,z:z};
+        this.player = new Player(this,x,floor.height,z);
+        this.entities.push(this.player);
+        //this.player.position = {x:x,y:floor.height,z:z};
     }
 
     addDarkness(game,x,z){
@@ -140,11 +161,11 @@ export default class Level{
             height = floor.height;
         }
 
-        this.addEntity(new Darkness(x,height,z));
+        this.addEntity(new Darkness(this,x,height,z));
     }
 
     shootBullet(x,y,z,direction,speed,owner,size,ttl){
-        this.addEntity(new UnicornhornBullet(x,y,z,direction,speed,owner,size,ttl));
+        this.addEntity(new UnicornhornBullet(this,x,y,z,direction,speed,owner,size,ttl));
     }
 
     buildLight(game){
@@ -158,7 +179,7 @@ export default class Level{
                         this.setStructure(x,z,floor);
                         height = floor.height;
                     }
-                    this.addEntity(new Light(x,height,z,[0.5,0.5,1.0,1.0]));
+                    this.addEntity(new Light(this,x,height,z,[0.5,0.5,1.0,1.0]));
                     //this.setStructure(x,z,Structures.lightBlock);
                     //if (Math.random() > 0.4) this.generateLight(x,z,10,5);
                     this.generateLight(x,z,12,4);
@@ -191,6 +212,7 @@ export default class Level{
     }
 
     deleteEntity(entity){
+        this.deleteFromList(entity, this.sectors[entity.sectorX][entity.sectorZ].entities);
         this.deleteFromList(entity,this.entities);
     }
 
@@ -342,7 +364,7 @@ export default class Level{
         // Bad performance thing but here we are :)
         // If I have time and space make it check just areas surronding each entity
 
-        this.entities.forEach(a => {
+        /*this.entities.forEach(a => {
             this.entities.forEach(b => {
                 if (a.noCollision || b.noCollision) return;
                //if (a.constructor.name === b.constructor.name) return;
@@ -351,7 +373,20 @@ export default class Level{
                     //b.onEntityHit(game,a);
                 }
             })
-        })
+        })*/
+
+            //console.log(this.entities.length);
+
+        this.entities.forEach(entity => {
+            if (entity.collisions){
+                for(var xx = entity.sectorX-Level.SECTORRADIUS;xx < entity.sectorX+Level.SECTORRADIUS;xx++){
+                    for(var zz = entity.sectorZ-Level.SECTORRADIUS;zz < entity.sectorZ+Level.SECTORRADIUS;zz++){
+                        this.checkCollisions(game,entity,xx,zz);
+                    }
+                }
+                
+           }
+        });
 
         // A bit messed up but doors needed to be rendered blended (for the secret doors barley visible keys) so they needed to be checked for collisions too
         this.doors.forEach(a => {
@@ -362,6 +397,29 @@ export default class Level{
                 }
             })
         })
+    }
+
+    checkCollisions(game,entity,sectorX, sectorZ) {
+        this.sectors[sectorX][sectorZ].entities.forEach(otherEntity => {
+            if (entity == otherEntity) return;
+            if ((!entity.disposed || !otherEntity.disposed || !entity.collisions || !otherEntity.collisions) && entity.doesCollidesWithEntity(game,otherEntity)) {
+                entity.onEntityHit(game,otherEntity);
+            }
+        });
+    }
+
+    setEntitySector(oldX,oldZ,newX,newZ,entity){
+        //console.log(oldX + " " + oldZ + "     "+newX+ "  "+newZ+ "    "+entity.constructor.name);
+        if (oldX != null || oldZ != null){
+            this.deleteFromList(entity, this.sectors[oldX][oldZ].entities);
+        }
+        this.sectors[newX][newZ].entities.push(entity);
+    }
+
+    worldPosToGrid(position){
+        let grid = Math.floor(((position - -Level.SECTORMAXPOS) / Level.SECTORSIZE)-Level.SECTORGRIDSIZE/2);
+       // let clamped = Math.max(0, Math.min(grid, Engine.SECTORGRIDSIZE - 1));
+        return grid;
     }
 
     render(){

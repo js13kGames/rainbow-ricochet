@@ -7,8 +7,8 @@ import Darkness from "./darkness.js";
 import Sensor from "./sensor.js";
 
 export default class Rainbow extends Bullet{
-    constructor(game,x,y,z,direction,speed,alpha=0.8,pickup=false){
-        super(x,y,z,direction,speed,null,true);
+    constructor(level,game,x,y,z,direction,speed,alpha=0.8,pickup=false){
+        super(level,x,y,z,direction,speed,null,true);
         this.texture = new Texture(Game.glTexture,63,0,1,1);
         this.inHand = true;
         this.inHandYOffset = 0;
@@ -76,9 +76,9 @@ export default class Rainbow extends Bullet{
 
         if (this.bounces > 4){
             this.ignoreCollisions = true;
-            this.direction = {x: this.position.x - game.player.position.x, y: this.position.y - game.player.position.y, z: this.position.z - game.player.position.z};
+            this.direction = {x: this.position.x - game.level.player.position.x, y: this.position.y - game.level.player.position.y, z: this.position.z - game.level.player.position.z};
             MathUtil.normalize(this.direction);
-            this.position.y = game.player.position.y+0.9;
+            this.position.y = game.level.player.position.y+0.9;
             this.sensor.disposed = true;
         }
     }

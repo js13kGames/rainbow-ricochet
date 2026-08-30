@@ -2,7 +2,7 @@ import Floor from "../structure/floor.js";
 import Wall from "../structure/wall.js";
 
 export default class Entity{
-    constructor(x,y,z,radius){
+    constructor(level,x,y,z,radius,collisions=true){
         this.velocity = {x:0,z:0};
         this.position = {x:x,y:y,z:z};
         this.tempVector = {x:0,y:0,z:0};
@@ -11,6 +11,10 @@ export default class Entity{
         this.yOffset = 0;
         this.currentHealth = 1;
         this.maxHealth = 1;
+        this.sectorX = level.worldPosToGrid(x);
+        this.sectorZ = level.worldPosToGrid(z);
+        this.collisions = collisions;
+        if (this.collisions) level.setEntitySector(null,null,this.sectorX,this.sectorZ,this);
     }
 
     // Move the entity in x,y,z position (position + movement)
@@ -26,6 +30,17 @@ export default class Entity{
         this.AABB.maxX=this.position.x+1;
         this.AABB.maxY=this.position.y+2+this.yOffset;
         this.AABB.maxZ=this.position.z+1;
+    }
+
+    updateSector(level){
+        if (!this.collisions) return;
+        let newSectorX = level.worldPosToGrid(this.position.x);
+        let newSectorZ = level.worldPosToGrid(this.position.z);
+        if (newSectorX != this.sectorX || newSectorZ != this.sectorZ){
+            level.setEntitySector(this.sectorX, this.sectorZ,newSectorX,newSectorZ,this);
+            this.sectorX = newSectorX;
+            this.sectorZ = newSectorZ;
+        }
     }
 
     // Check if the entity can move to the position it wants to move to
@@ -81,10 +96,10 @@ export default class Entity{
 
     // Called when we are hit by an entity and which entity
     onEntityHit(game, entity){
-        /*console.log(this.constructor.name+ ":  "+entity.constructor.name);
-        console.log(entity.position);
-        console.log(this.position);
-        console.log("================================");*/
+        //console.log(this.constructor.name+ ":  "+entity.constructor.name);
+        //console.log(entity.position);
+        //console.log(this.position);
+        //console.log("================================");
     }
 
     dispose(game){
@@ -92,7 +107,7 @@ export default class Entity{
     }
 
     tick(game,deltaTime){
-
+        this.updateSector(game.level);
     }
 
     render(){

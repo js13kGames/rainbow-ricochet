@@ -8,8 +8,8 @@ import Particle from "./particle.js";
 import Game from "../game.js";
 
 export default class Darkness extends Entity{
-    constructor(x,y,z) {
-        super(x,y,z);
+    constructor(level,x,y,z) {
+        super(level,x,y,z);
         //Game.glTexture = glTexture;
         this.texture = new Texture(Game.glTexture,16,16,16,16);
         this.eyesTexture = new Texture(Game.glTexture,63,0,1,1);
@@ -76,13 +76,13 @@ export default class Darkness extends Entity{
 
         if (this.hitDelay > 0) this.hitDelay -= deltaTime;
 
-        this.distanceToPlayer.x = game.player.position.x - this.position.x;
+        this.distanceToPlayer.x = game.level.player.position.x - this.position.x;
         this.distanceToPlayer.y = 0;
-        this.distanceToPlayer.z = game.player.position.z - this.position.z;
+        this.distanceToPlayer.z = game.level.player.position.z - this.position.z;
         var length = MathUtil.length(this.distanceToPlayer);
 
         if (length < this.aggroRange){
-            var p = MathUtil.bresenham(Math.ceil(this.position.x), Math.ceil(this.position.z), Math.ceil(game.player.position.x), Math.ceil(game.player.position.z), Math.ceil(length));
+            var p = MathUtil.bresenham(Math.ceil(this.position.x), Math.ceil(this.position.z), Math.ceil(game.level.player.position.x), Math.ceil(game.level.player.position.z), Math.ceil(length));
             for (let pi = 0; pi < p.length; pi++){
                 var point = p[pi];
                 var s = game.level.getStructure(point.x, point.y);
@@ -91,7 +91,7 @@ export default class Darkness extends Entity{
                         this.hasPlayerAggro = false;
                         break;
                     }
-                    if (point.x == Math.ceil(game.player.position.x) && point.y == Math.ceil(game.player.position.z)){
+                    if (point.x == Math.ceil(game.level.player.position.x) && point.y == Math.ceil(game.level.player.position.z)){
                         if (!this.hasPlayerAggro){
                             this.hasPlayerAggro = true;
                             game.monsterAggro();
@@ -138,7 +138,7 @@ export default class Darkness extends Entity{
                 this.disposed = true;
                 game.monsterDie();
                 for (let i = 0; i < 20; i++){
-                    var p = new Particle(this.position.x,this.position.y+0.5,this.position.z,2.8,{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
+                    var p = new Particle(game.level,this.position.x,this.position.y+0.5,this.position.z,2.8,{x:MathUtil.getRandom(-0.3,0.3), y: Math.random()/1.5, z: MathUtil.getRandom(-0.3,0.3)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
                     game.level.addParticle(p);
                 }
                

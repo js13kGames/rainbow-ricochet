@@ -4,7 +4,7 @@ import Rainbow from "./rainbow.js";
 
 export default class Sensor extends Entity{
     constructor(level,x,y,z,size,filter) {
-        super(x,y,z);
+        super(level,x,y,z);
         this.size = size;
         this.updateAABB(level);
         this.list = new Set();
@@ -18,6 +18,7 @@ export default class Sensor extends Entity{
     }
 
     tick(game,deltaTime){
+        super.tick(game,deltaTime);
         this.listReset++;
         if (this.listReset >=3){
             this.list.clear();

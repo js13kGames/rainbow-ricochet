@@ -11,7 +11,7 @@ export default class Door extends Entity{
     static secret = [0.5,0.5,0.5,0.5];
     
     constructor(level,x,y,z,color,wallColor){
-        super(x,y,z);
+        super(level,x,y,z);
         this.color = color;
         this.lightReduction = 0;
         if (color == Door.secret){
@@ -54,6 +54,7 @@ export default class Door extends Entity{
     }
 
     tick(game,deltaTime){
+        super.tick(game,deltaTime);
         if (!this.locked && this.mesh.position[1] < 2.5){
             this.mesh.position[1] += deltaTime*1.5;
         }

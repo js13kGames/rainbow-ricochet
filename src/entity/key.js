@@ -5,8 +5,8 @@ import Game from "../game.js";
 
 
 export default class Key extends Entity{
-    constructor(x,y,z,keyType){
-        super(x,y,z);
+    constructor(level,x,y,z,keyType){
+        super(level,x,y,z);
         this.keyType = keyType;
         this.texture = new Texture(Game.glTexture,32,16,16,16);
 

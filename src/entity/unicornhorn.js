@@ -4,8 +4,8 @@ import Entity from "./entity.js";
 import Game from "../game.js";
 
 export default class UnicornHorn extends Entity{
-    constructor(x,y,z){
-            super(x,y,z);
+    constructor(level,x,y,z){
+            super(level,x,y,z);
             
             this.texture = new Texture(Game.glTexture,32,0,16,16);
     

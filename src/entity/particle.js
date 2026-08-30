@@ -4,8 +4,8 @@ import Entity from "./entity.js";
 import Game from "../game.js";
 
 export default class Particle extends Entity{
-    constructor(x,y,z,ttl,direction,speed,tint,size=1) {
-        super(x,y,z);
+    constructor(level,x,y,z,ttl,direction,speed,tint,size=1) {
+        super(level,x,y,z,0,false);
         this.texture = new Texture(Game.glTexture,63,0,1,1);
         this.ttl = ttl;
         this.direction = direction;
