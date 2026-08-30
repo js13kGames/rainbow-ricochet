@@ -81,6 +81,10 @@ export default class Entity{
 
     // Called when we are hit by an entity and which entity
     onEntityHit(game, entity){
+        /*console.log(this.constructor.name+ ":  "+entity.constructor.name);
+        console.log(entity.position);
+        console.log(this.position);
+        console.log("================================");*/
     }
 
     dispose(game){

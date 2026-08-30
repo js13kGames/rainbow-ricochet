@@ -344,6 +344,8 @@ export default class Level{
 
         this.entities.forEach(a => {
             this.entities.forEach(b => {
+                if (a.noCollision || b.noCollision) return;
+               //if (a.constructor.name === b.constructor.name) return;
                 if(a.doesCollidesWithEntity(game,b)){
                     a.onEntityHit(game,b);
                     //b.onEntityHit(game,a);

@@ -15,11 +15,18 @@ export default class HealthPickup extends Entity{
         MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,0.9,1,[1.0,1.0,1.0,0.9],null);
         this.mesh = MeshBuilder.build(meshBuild);
         this.mesh.setS(0.4);
+
+        this.AABB.minX=x+0.2;
+        this.AABB.minY=y;
+        this.AABB.minZ=z+0.2;
+        this.AABB.maxX=x+0.4;
+        this.AABB.maxY=y+this.yOffset;
+        this.AABB.maxZ=z+0.4;
     }
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
-        this.move(0,0,0);
+        //this.move(0,0,0);
         this.mesh.setRotationY(-Game.camera.currentRot);
     }
 

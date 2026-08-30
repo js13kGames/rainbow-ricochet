@@ -10,6 +10,12 @@ export default class PoisionEntity extends Entity{
         this.distanceToPlayer = {x:0, z:0};
         this.aggroRange = 20;
         this.hasPlayerAggro = false;
+        this.AABB.minX=x+0.3;
+        this.AABB.minY=y;
+        this.AABB.minZ=z+0.3;
+        this.AABB.maxX=x+0.3;
+        this.AABB.maxY=y+1;
+        this.AABB.maxZ=z+0.3;
     }
 
     tick(game,deltaTime){
@@ -48,5 +54,5 @@ export default class PoisionEntity extends Entity{
             }
         }
         
-    }
+    }    
 }

@@ -35,3 +35,86 @@ If I do the 3D-game I can use my 3D-template I did plan on use..
 the rainbow boomerang thing can be fun if I can get the feeling right..
 
 
+Object { x: 43, y: 0, z: 16 }
+entity.js:85:17
+Object { x: 43, y: 0, z: 17 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 2 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 1 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 1 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 2 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 3 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 2 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 2 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 3 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 4 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 3 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 3 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 4 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 12 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 11 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 11 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 12 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 13 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 12 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 12 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 13 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 14 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 13 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 46, y: 0, z: 13 }
+entity.js:85:17
+Object { x: 46, y: 0, z: 14 }
+entity.js:86:17
+================================ entity.js:87:17
+HealthPickup:  HealthPickup entity.js:84:17
+Object { x: 56, y: 0, z: 2 }
+entity.js:85:17
+================================ entity.js:87:17
+
+​
