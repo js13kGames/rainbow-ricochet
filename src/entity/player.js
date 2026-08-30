@@ -21,7 +21,7 @@ export default class Player extends Entity{
         this.currentHealth = 7;
         this.maxHealth = 10;
         this.bobCounter = 0;
-        //this.hasRainbowInHand = true;
+        this.hasRainbowInHand = true;
         this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);

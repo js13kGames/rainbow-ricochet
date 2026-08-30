@@ -282,6 +282,10 @@ export default class Level{
                     if (!(x > 21 && x < 39 && z > 1 && z < 12)){
                         MeshBuilder.bottom(Structures.floor.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
                     }
+                }else if (s instanceof Glassblock){
+
+                    MeshBuilder.top(Structures.floor.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z),this.floorTint,null);
+                    MeshBuilder.bottom(Structures.floor.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
                 }
             }
         }
@@ -303,7 +307,6 @@ export default class Level{
                     if (r!= null && !r.isSolid(s)) MeshBuilder.right(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x+1,z),this.height,this.glassTint,null);
                     if (f!= null && !f.isSolid(s)) MeshBuilder.front(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z+1),this.height,this.glassTint,null);
                     if (b!= null && !b.isSolid(s)) MeshBuilder.back(s.texture.getUVs(),meshBuild,x,0,z,this.getLight(x,z-1),this.height,this.glassTint,null);
-
                 }
             }
         }
