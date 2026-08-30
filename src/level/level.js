@@ -199,6 +199,7 @@ export default class Level{
     }
 
     deleteParticle(particle){
+        //console.log("delete particle: "+particle);
         this.deleteFromList(particle,this.particles);
     }
 
@@ -342,7 +343,7 @@ export default class Level{
             this.entities.forEach(b => {
                 if(a.doesCollidesWithEntity(game,b)){
                     a.onEntityHit(game,b);
-                    b.onEntityHit(game,a);
+                    //b.onEntityHit(game,a);
                 }
             })
         })

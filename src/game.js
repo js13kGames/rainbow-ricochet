@@ -12,7 +12,8 @@ import Structures from "./structure/structures.js";
 import {zzfx} from './lib/z.js'
 import UI from "./ui/ui.js";
 
-
+const TICK_RATE = 1000 / 60;
+const MAX_STEPS = 5;
 
 export default class Game{
     static up = {x:0,y:1,z:0};
@@ -121,9 +122,7 @@ export default class Game{
         Game.camera.setRotation(270);
 
         this.last = performance.now();
-        this.counter = 0;
-        this.fps = 0;
-        this.levelSwitchDelay = 0;
+        this.accumulator = this.counter = this.fps = this.tickTime = this.levelSwitchDelay = 0;
 
         this.levels = [
             [64,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1],
@@ -146,44 +145,64 @@ export default class Game{
 
         var now = performance.now();
         var deltaTime = now - this.last;
-        if (deltaTime>500) deltaTime = 16; // Dont allow too big jump in time.
+
         this.last = now;
 
+        if (deltaTime > 250) deltaTime = 250; // Dont allow too big jump in time.
+
         this.counter += deltaTime;
+        this.accumulator += deltaTime;
+
+       this.input.tick(this);
+        this.player.updateCamera(this);
+        
 
         if (this.levelSwitchDelay >0) this.levelSwitchDelay -= deltaTime/1000;
         
-        
+        var steps = 0;
+        var tickStart = performance.now();
+        var ticked = false;
 
-        this.tick(deltaTime/1000);
+        while (this.accumulator >= TICK_RATE && steps < MAX_STEPS) {
+            this.tick(TICK_RATE / 1000);
+            this.accumulator -= TICK_RATE;
+            steps++;
+            ticked = true;
+        }
+        if (steps === MAX_STEPS) this.accumulator = 0;
+        this.tickTime = performance.now() - tickStart;
 
-        Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
-        Game.gl.clearColor(0.0,0.0,1.0,1.0);
+        if (ticked){
+            var renderStart = performance.now();
+            Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
+            Game.gl.clearColor(0.0,0.0,1.0,1.0);
 
-        Game.gl.enable(Game.gl.DEPTH_TEST);
-        Game.gl.depthFunc(Game.gl.LESS);
-        Game.gl.enable(Game.gl.CULL_FACE);
+            Game.gl.enable(Game.gl.DEPTH_TEST);
+            Game.gl.depthFunc(Game.gl.LESS);
+            Game.gl.enable(Game.gl.CULL_FACE);
 
-        Game.gl.blendFunc(Game.gl.SRC_ALPHA, Game.gl.ONE_MINUS_SRC_ALPHA);
-        this.render();
+            Game.gl.blendFunc(Game.gl.SRC_ALPHA, Game.gl.ONE_MINUS_SRC_ALPHA);
+            this.render();
 
-        this.fps++;
-
-
+            this.renderTime = performance.now() - renderStart;
+            this.fps++;
+        }
 
         // FPS and tick counter
         if (this.counter > 1000){
             this.stableFPS = this.fps;
+            this.stableTick = this.tickTime;
+            this.stableRend = this.renderTime;
             //console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
+            console.log(this.level.entities.length+" "+this.level.particles.length);
             this.counter = this.fps = 0;
         }
     }
 
-    tick(deltaTime){
-        this.input.tick(this);
-        this.level.tick(this,deltaTime);
-        
-        this.ui.tick(deltaTime);
+    tick(frameTime){
+        //this.input.tick(this);
+        this.level.tick(this,frameTime);
+        this.ui.tick(frameTime);
     }
 
     render(){

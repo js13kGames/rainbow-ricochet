@@ -69,10 +69,10 @@ export default class Darkness extends Entity{
             i++;
         })
 
-        if (Math.random()< 0.05){
-            var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.5,this.position.z,0.8,{x:MathUtil.getRandom(-0.2,0.2), y: Math.random()/1.5, z: MathUtil.getRandom(-0.2,0.2)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
-            game.level.addParticle(p);
-        }
+       //if (Math.random()< 0.05){
+            //var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.5,this.position.z,0.8,{x:MathUtil.getRandom(-0.2,0.2), y: Math.random()/1.5, z: MathUtil.getRandom(-0.2,0.2)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
+            //game.level.addParticle(p);
+       // }
 
         if (this.hitDelay > 0) this.hitDelay -= deltaTime;
 

@@ -26,10 +26,22 @@ export default class Player extends Entity{
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
+        this.cameraSensitivity = 500;
+
         //this.keysHold.push(Door.blue);
         //this.keysHold.push(Door.green);
         //this.keysHold.push(Door.yellow);
         this.move(0,0,0);
+    }
+
+    updateCamera(game){
+        Game.camera.rotate(-game.input.pointer.x/this.cameraSensitivity);
+        Game.camera.rotateX(-game.input.pointer.y/this.cameraSensitivity);
+        game.input.resetMouse();
+
+        Game.camera.position.x = this.position.x;
+        Game.camera.position.y = Game.camera.heightOverGround + this.position.y + (Math.sin(this.bobCounter*10)/15);
+        Game.camera.position.z = this.position.z;
     }
 
     tick(game,deltaTime){
@@ -39,9 +51,6 @@ export default class Player extends Entity{
         this.secondaryFireDelay -= deltaTime;
         this.hurtDelay -= deltaTime;
         
-
-        Game.camera.rotate(-game.input.pointer.x/500);
-        Game.camera.rotateX(-game.input.pointer.y/500);
         this.velocity.z = game.input.axes.y;
 
         this.strafe.x = 0;
@@ -90,9 +99,7 @@ export default class Player extends Entity{
             }else if (moveZ.s == null) this.position.y = 0;
 
         }
-        Game.camera.position.x = this.position.x;
-        Game.camera.position.y = Game.camera.heightOverGround + this.position.y + (Math.sin(this.bobCounter*10)/15);
-        Game.camera.position.z = this.position.z;
+
 
         if (this.hasRainbowInHand && this.rainbowInHand == null){
             this.rainbowInHand = new Rainbow(0,0,0,{x:0,y:0,z:0},0,0.5);

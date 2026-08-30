@@ -2,9 +2,10 @@ export default class Input {
     constructor() {
         this.keys = [];
         this.buttons = [];
+        this.pointerX = this.pointerY = 0;
 
         onkeydown = onkeyup = e => this.keys[e.keyCode] = e.type;
-        onmousemove = e => { this.pointerX = e.movementX; this.pointerY = e.movementY; };
+        onmousemove = e => { this.pointerX += e.movementX; this.pointerY += e.movementY; };
         onmousedown = onmouseup = e => this.buttons[e.button] = e.type;
         onclick = e => e.target.requestPointerLock();
         oncontextmenu = e => e.preventDefault();
@@ -15,9 +16,11 @@ export default class Input {
         this.pointer = { x: this.pointerX || 0, y: this.pointerY || 0 };
         this.firePressed = this.buttons[0] == "mousedown";
         this.secondFirePressed = this.buttons[2] == "mousedown";
-        
+        this.buttons[2] = this.keys[32] = null;
+    }
+
+    resetMouse(){
         this.pointerX = 0;
         this.pointerY = 0;
-        this.buttons[2] = this.keys[32] = null;
     }
 }
