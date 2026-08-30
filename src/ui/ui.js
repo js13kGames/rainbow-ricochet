@@ -40,6 +40,9 @@ export default class UI{
         this.drawTextAt("FPS: "+game.stableFPS, this.canvas.width-120,42,20,"white");
         this.drawTextAt("tick:" + game.stableTick+" ms", this.canvas.width-120,72,20,"white");
         this.drawTextAt("rend:" + game.stableRend+" ms", this.canvas.width-120,102,20,"white");
+        this.drawTextAt("accu:" + game.accumulator.toFixed(1)+" ", this.canvas.width-120,132,20,"white");
+        this.drawTextAt("time:" + game.time.toFixed(1)+" ", this.canvas.width-120,162,20,"white");
+        this.drawTextAt("step:" + game.stepTime.toFixed(1)+" ", this.canvas.width-120,192,20,"white");
 
         if (this.messages.length >0){
             for (let i =0;i < 3; i++){

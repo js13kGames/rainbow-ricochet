@@ -151,10 +151,16 @@ export default class Game{
         if (deltaTime > 250) deltaTime = 250; // Dont allow too big jump in time.
 
         this.counter += deltaTime;
-        this.accumulator += deltaTime;
 
-       this.input.tick(this);
-       this.level.player.updateCamera(this);
+
+        this.stepTime = deltaTime;
+        if (Math.abs(this.stepTime - TICK_RATE) < 0.3) this.stepTime = TICK_RATE;
+        this.accumulator += this.stepTime;
+
+        this.time = deltaTime - TICK_RATE;
+
+        this.input.tick(this);
+        this.level.player.updateCamera(this);
         
 
         if (this.levelSwitchDelay >0) this.levelSwitchDelay -= deltaTime/1000;
