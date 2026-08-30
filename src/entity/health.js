@@ -8,7 +8,7 @@ export default class HealthPickup extends Entity{
         super(level,x,y,z);
         this.ammount = ammount;
         this.texture = new Texture(Game.glTexture,5,59,5,5);
-        this.yOffset = 2;
+        this.yOffset = 4;
 
         var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
         
