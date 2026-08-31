@@ -28,8 +28,8 @@ export default class Game{
 
     constructor(){
         this.canvas = document.getElementById("c");
-        this.canvas.width = 852*2;
-        this.canvas.height = 480*2;
+        this.canvas.width = 852;
+        this.canvas.height = 480;
         Game.gl = this.canvas.getContext("webgl",{antialias: false});
 
         this.input = new Input();
@@ -154,7 +154,7 @@ export default class Game{
 
 
         this.stepTime = deltaTime;
-        if (Math.abs(this.stepTime - TICK_RATE) < 0.3) this.stepTime = TICK_RATE;
+        if (Math.abs(this.stepTime - TICK_RATE) < 0.5) this.stepTime = TICK_RATE;
         this.accumulator += this.stepTime;
 
         this.time = deltaTime - TICK_RATE;
@@ -176,6 +176,8 @@ export default class Game{
             ticked = true;
         }
         if (steps === MAX_STEPS) this.accumulator = 0;
+
+        
         this.tickTime = performance.now() - tickStart;
 
         if (ticked){

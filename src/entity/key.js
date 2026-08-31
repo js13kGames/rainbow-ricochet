@@ -21,8 +21,8 @@ export default class Key extends Entity{
         this.move(0,0,0);
     }
 
-    render(){
-        super.render();
+    render(alpha){
+        super.render(alpha);
         this.mesh.render();
     }
 }

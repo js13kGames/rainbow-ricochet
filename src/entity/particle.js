@@ -27,8 +27,8 @@ export default class Particle extends Entity{
         this.mesh.setRotationY(-Game.camera.currentRot);
     }
 
-    render(){
-        super.render();
+    render(alpha){
+        super.render(alpha);
         this.mesh.render();
     }
 }
