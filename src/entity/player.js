@@ -17,20 +17,20 @@ export default class Player extends Entity{
 
         this.strafe = {x:0,z:0};
         this.speed = 10;
-        this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 0;
+        this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 2;
         this.currentHealth = 7;
         this.maxHealth = 10;
         this.bobCounter = 0;
-        this.hasRainbowInHand = true;
-        this.hasUnicornInHand = true;
+        //this.hasRainbowInHand = true;
+        //this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
         this.cameraSensitivity = 400;
 
         //this.keysHold.push(Door.blue);
-        this.keysHold.push(Door.green);
-        this.keysHold.push(Door.yellow);
+        //this.keysHold.push(Door.green);
+        //this.keysHold.push(Door.yellow);
         this.move(0,0,0);
     }
 
