@@ -44,7 +44,7 @@ export default class UI{
         this.drawTextAt("time:" + game.time.toFixed(1)+" ", this.canvas.width-120,162,20,"white");
         this.drawTextAt("step:" + game.stepTime.toFixed(1)+" ", this.canvas.width-120,192,20,"white");
 
-        this.drawTextAt("x:" + game.level.player.position.x.toFixed(0)+" z:"+game.level.player.position.z.toFixed(0), this.canvas.width-150,222,20,"white");
+        this.drawTextAt("x:" + game.level.player.position.x.toFixed(1)+" z:"+game.level.player.position.z.toFixed(1), this.canvas.width-150,222,20,"white");
 
         if (this.messages.length >0){
             for (let i =0;i < 3; i++){
