@@ -28,7 +28,7 @@ export default class Entity{
         this.AABB.minY=this.position.y;
         this.AABB.minZ=this.position.z;
         this.AABB.maxX=this.position.x+1;
-        this.AABB.maxY=this.position.y+2+this.yOffset;
+        this.AABB.maxY=this.position.y+4.25+this.yOffset;
         this.AABB.maxZ=this.position.z+1;
     }
 
@@ -51,7 +51,7 @@ export default class Entity{
         this.tempAABB.minY=y;
         this.tempAABB.minZ=z;
         this.tempAABB.maxX=x+1;
-        this.tempAABB.maxY=y+2.25+this.yOffset;
+        this.tempAABB.maxY=y+4.25+this.yOffset;
         this.tempAABB.maxZ=z+1;
        // console.log(this.tempAABB);
 

@@ -16,7 +16,7 @@ export default class Player extends Entity{
         super(level,x,y,z);
 
         this.strafe = {x:0,z:0};
-        this.speed = 8;
+        this.speed = 10;
         this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.currentHealth = 7;
         this.maxHealth = 10;
@@ -26,11 +26,11 @@ export default class Player extends Entity{
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
-        this.cameraSensitivity = 500;
+        this.cameraSensitivity = 400;
 
         //this.keysHold.push(Door.blue);
-        //this.keysHold.push(Door.green);
-        //this.keysHold.push(Door.yellow);
+        this.keysHold.push(Door.green);
+        this.keysHold.push(Door.yellow);
         this.move(0,0,0);
     }
 

@@ -65,10 +65,14 @@ loadImage("level"+levelId+".png").then((image) => {
                 if (c == 0x9d9dff) addToLevel(level,x,y,"s"); // Health     
                 // Height floor
 
-                if (c == 0xff5555) addToLevel(level,x,y,"a");
-                if (c == 0xff6666) addToLevel(level,x,y,"b");
-                if (c == 0xff7777) addToLevel(level,x,y,"c");
-                if (c == 0xff8888) addToLevel(level,x,y,"d");
+                if (c == 0xff5555) addToLevel(level,x,y,"1");
+                if (c == 0xff6666) addToLevel(level,x,y,"2");
+                if (c == 0xff7777) addToLevel(level,x,y,"3");
+                if (c == 0xff8888) addToLevel(level,x,y,"4");
+                if (c == 0xff9999) addToLevel(level,x,y,"5");
+                if (c == 0xffaaaa) addToLevel(level,x,y,"6");
+                if (c == 0xffbbbb) addToLevel(level,x,y,"7");
+                if (c == 0xffcccc) addToLevel(level,x,y,"8");
 
             }
         }

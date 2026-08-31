@@ -69,10 +69,14 @@ export default class Level{
                 else if (levelChar == "h") this.addUnicornHorn(game, x,z);
                 else if (levelChar == "r") this.addRainbow(game, x,z);
                 else if (levelChar == "s") this.addHealth(game, x,z);
-                else if (levelChar == "a") this.setStructure(x,z,Structures.floor1);
-                else if (levelChar == "b") this.setStructure(x,z,Structures.floor2);
-                else if (levelChar == "c") this.setStructure(x,z,Structures.floor3);
-                else if (levelChar == "d") this.setStructure(x,z,Structures.floor4);
+                else if (levelChar == "1") this.setStructure(x,z,Structures.floor1);
+                else if (levelChar == "2") this.setStructure(x,z,Structures.floor2);
+                else if (levelChar == "3") this.setStructure(x,z,Structures.floor3);
+                else if (levelChar == "4") this.setStructure(x,z,Structures.floor4);
+                else if (levelChar == "5") this.setStructure(x,z,Structures.floor5);
+                else if (levelChar == "6") this.setStructure(x,z,Structures.floor6);
+                else if (levelChar == "7") this.setStructure(x,z,Structures.floor7);
+                else if (levelChar == "8") this.setStructure(x,z,Structures.floor8);
                 else if (levelChar == "e") this.addExit(x,z);
                 else if (levelChar == "o") this.addPoision(x,z);
                 else this.setStructure(x,z,Structures.floor);
@@ -301,7 +305,7 @@ export default class Level{
                     MeshBuilder.bottom(s.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
                 }else if (s instanceof Poision){
                     MeshBuilder.top(s.texture.getUVs(),meshBuild,x,-1,z,this.getLight(x,z)+0.1,s.tint,null);
-                    if (!(x > 21 && x < 39 && z > 1 && z < 12)){
+                    if (!(x > 21 && x < 39 && z > 1 && z < 12) && !(x > 4 && x < 13 && z > 47 && z < 61)){
                         MeshBuilder.bottom(Structures.floor.texture.getUVs(),meshBuild,x,this.height,z,this.getLight(x,z),this.floorTint,null);
                     }
                 }else if (s instanceof Glassblock){
