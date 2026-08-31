@@ -28,8 +28,8 @@ export default class Game{
 
     constructor(){
         this.canvas = document.getElementById("c");
-        this.canvas.width = 852;
-        this.canvas.height = 480;
+        this.canvas.width = 852*2;
+        this.canvas.height = 480*2;
         Game.gl = this.canvas.getContext("webgl",{antialias: false});
 
         this.input = new Input();
