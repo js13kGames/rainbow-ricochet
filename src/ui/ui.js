@@ -37,14 +37,14 @@ export default class UI{
         this.drawTextAt("HEALTH:",56,this.canvas.height-100,24);
         this.drawTextAt(((game.level.player.currentHealth/game.level.player.maxHealth)*100).toFixed(0)+"%", 166,this.canvas.height-100,26,"red");
 
-        this.drawTextAt("FPS: "+game.stableFPS, this.canvas.width-120,42,20,"white");
+        /*this.drawTextAt("FPS: "+game.stableFPS, this.canvas.width-120,42,20,"white");
         this.drawTextAt("tick:" + game.stableTick+" ms", this.canvas.width-120,72,20,"white");
         this.drawTextAt("rend:" + game.stableRend+" ms", this.canvas.width-120,102,20,"white");
         this.drawTextAt("accu:" + game.accumulator.toFixed(1)+" ", this.canvas.width-120,132,20,"white");
         this.drawTextAt("time:" + game.time.toFixed(1)+" ", this.canvas.width-120,162,20,"white");
         this.drawTextAt("step:" + game.stepTime.toFixed(1)+" ", this.canvas.width-120,192,20,"white");
 
-        this.drawTextAt("x:" + game.level.player.position.x.toFixed(1)+" z:"+game.level.player.position.z.toFixed(1), this.canvas.width-150,222,20,"white");
+        this.drawTextAt("x:" + game.level.player.position.x.toFixed(1)+" z:"+game.level.player.position.z.toFixed(1), this.canvas.width-150,222,20,"white");*/
 
         if (this.messages.length >0){
             for (let i =0;i < 3; i++){

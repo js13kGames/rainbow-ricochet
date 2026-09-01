@@ -136,10 +136,6 @@ export default class Game{
             [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4],
         ];
 
-        //this.levels = [
-        //    new Level(this,64,this.player,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1),
-       //    new Level(this,64,this.player,0.9,5,[0.8,0.8,0.1,1.0],[0.2,0.5,0.8,1.0],[0.1,0.4,0.5,6.0],l1)
-       // ];
         this.currentLevel = -1;
         //this.currentLevel = 1;
         
@@ -163,7 +159,7 @@ export default class Game{
 
         if (deltaTime > 250) deltaTime = 250; // Dont allow too big jump in time.
 
-        this.counter += deltaTime;
+        //this.counter += deltaTime;
 
 
         this.stepTime = deltaTime;
@@ -181,20 +177,20 @@ export default class Game{
         
         var steps = 0;
         var tickStart = performance.now();
-        var ticked = false;
+        //var ticked = false;
 
         while (this.accumulator >= TICK_RATE && steps < MAX_STEPS) {
             this.tick(TICK_RATE / 1000);
             this.accumulator -= TICK_RATE;
             steps++;
-            ticked = true;
+           // ticked = true;
         }
         if (steps === MAX_STEPS) this.accumulator = 0;
 
         
         this.tickTime = performance.now() - tickStart;
 
-        if (ticked){
+      //  if (ticked){
             var renderStart = performance.now();
             Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
             if (this.state == "game") Game.gl.clearColor(0.7,0.7,1.0,1.0);
@@ -208,18 +204,16 @@ export default class Game{
             this.render();
 
             this.renderTime = performance.now() - renderStart;
-            this.fps++;
-        }
+            //this.fps++;
+      //  }
 
         // FPS and tick counter
-        if (this.counter > 1000){
+        /*if (this.counter > 1000){
             this.stableFPS = this.fps;
             this.stableTick = this.tickTime;
             this.stableRend = this.renderTime;
-            //console.log("FPS: "+this.fps, " "+Math.ceil(this.player.position.x)+ " "+Math.ceil(this.player.position.z));
-            //console.log(this.level.entities.length+" "+this.level.particles.length);
             this.counter = this.fps = 0;
-        }
+        }*/
     }
 
     tick(frameTime){
