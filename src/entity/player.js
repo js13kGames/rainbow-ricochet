@@ -32,6 +32,8 @@ export default class Player extends Entity{
         this.keysHold.push(Door.green);
         this.keysHold.push(Door.yellow);
         this.move(0,0,0);
+        this.cameraYOffset = 0;
+        this.yTarget = 0;
     }
 
     updateCamera(game){
@@ -40,12 +42,16 @@ export default class Player extends Entity{
         game.input.resetMouse();
 
         Game.camera.position.x = this.position.x;
-        Game.camera.position.y = Game.camera.heightOverGround + this.position.y + (Math.sin(this.bobCounter*10)/15);
+        //Game.camera.position.y = Game.camera.heightOverGround + this.cameraYOffset + this.position.y + (Math.sin(this.bobCounter*10)/15);
+        Game.camera.position.y = Game.camera.heightOverGround + this.cameraYOffset + (Math.sin(this.bobCounter*10)/15);
         Game.camera.position.z = this.position.z;
     }
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
+
+        var cameraYTargetDiff = this.yTarget - this.cameraYOffset;
+        this.cameraYOffset = Math.abs(cameraYTargetDiff) > 0.08 ? this.cameraYOffset + (cameraYTargetDiff > 0 ? 0.08 : -0.2) : this.yTarget;
 
         this.primaryFireDelay -= deltaTime;
         this.secondaryFireDelay -= deltaTime;
@@ -91,12 +97,26 @@ export default class Player extends Entity{
 
             if (moveX.s != null && (moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76)){
                 this.move(this.tempVector.x-this.position.x,0,0);
+                if (this.position.y != moveX.s.height){
+                    console.log("sdflkjhsdlkjf");
+                    this.yTarget = moveX.s.height;
+                }
                 this.position.y = moveX.s.height;
-            }else if (moveX.s == null) this.position.y = 0;
+            }else if (moveX.s == null){
+                this.position.y = 0;
+                this.yTarget = 0;
+            }
             if (moveZ.s != null && (moveZ.s instanceof Floor && moveZ.s.height >0 && moveZ.s.height - this.position.y < 0.76)){
                 this.move(0,moveZ.s.height,this.tempVector.z-this.position.z);
+                if (this.position.y != moveZ.s.height){
+                     console.log("sdflkjhsdlkjf");
+                     this.yTarget = moveZ.s.height;
+                }
                 this.position.y = moveZ.s.height;
-            }else if (moveZ.s == null) this.position.y = 0;
+            }else if (moveZ.s == null){
+                this.position.y = 0;
+                this.yTarget = 0;
+            }
 
         }
 
