@@ -192,7 +192,7 @@ export default class Game{
         if (ticked){
             var renderStart = performance.now();
             Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
-            if (this.state == "game") Game.gl.clearColor(0.0,0.0,1.0,1.0);
+            if (this.state == "game") Game.gl.clearColor(0.7,0.7,1.0,1.0);
             else if (this.state == "intro") Game.gl.clearColor(0.0,0.0,0.0,1.0);
 
             Game.gl.enable(Game.gl.DEPTH_TEST);
