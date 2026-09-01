@@ -16,6 +16,7 @@ export default class Rainbow extends Bullet{
         this.bobX = 0;
         this.bobZ = 0;
         this.pickup = pickup;
+        this.orginalSpeed = speed;
 
         let meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.25);
 
@@ -75,6 +76,7 @@ export default class Rainbow extends Bullet{
 
 
         if (this.bounces > 4){
+            this.speed = this.orginalSpeed;
             this.ignoreCollisions = true;
             this.direction = {x: this.position.x - game.level.player.position.x, y: this.position.y - game.level.player.position.y, z: this.position.z - game.level.player.position.z};
             MathUtil.normalize(this.direction);
@@ -87,7 +89,8 @@ export default class Rainbow extends Bullet{
         super.onEntityHit(game,entity);
         if (this.pickup) return;
         if (entity instanceof Darkness){
-            this.bounces += 0.5;
+            this.bounces += 1;
+            this.speed -= 2;
             var targets = Array.from(this.sensor.list)
             .sort((a,b)=>{
                 return Math.hypot(a.position.x - this.position.x, a.position.z - this.position.z) - Math.hypot(b.position.x - this.position.x, b.position.z - this.position.z);
