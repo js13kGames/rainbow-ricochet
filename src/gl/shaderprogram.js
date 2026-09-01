@@ -31,7 +31,8 @@ export default class ShaderProgram{
                 meshScale: Game.gl.getUniformLocation(this.shaderProgram, 'ms'),
                 cameraRotX: Game.gl.getUniformLocation(this.shaderProgram,'crX'),
                 cameraRotY: Game.gl.getUniformLocation(this.shaderProgram,'crY'),
-                cameraPosition: Game.gl.getUniformLocation(this.shaderProgram,'cp')
+                cameraPosition: Game.gl.getUniformLocation(this.shaderProgram,'cp'),
+                fog: Game.gl.getUniformLocation(this.shaderProgram, "o")
               },
         };
 

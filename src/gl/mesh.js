@@ -173,6 +173,8 @@ export default class Mesh{
         Game.gl.uniform1f(Game.shaderProgram.locations.uniformLocations.cameraRotY, camera.currentRot);
         Game.gl.uniform3f(Game.shaderProgram.locations.uniformLocations.cameraPosition, camera.position.x, camera.position.y, camera.position.z);
 
+        Game.gl.uniform4f(Game.shaderProgram.locations.uniformLocations.fog,Game.fogColor[0],Game.fogColor[1],Game.fogColor[2],Game.fogColor[3]);
+
         Game.gl.bindBuffer(Game.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         Game.gl.drawElements(Game.gl.TRIANGLES,  this.numberOfIndicies,Game.gl.UNSIGNED_SHORT,0);
     }

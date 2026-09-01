@@ -25,6 +25,7 @@ export default class Game{
     static shaderProgram;
     static camera;
     static uiCamera;
+    static fogColor;
 
 
     constructor(){
@@ -42,80 +43,83 @@ export default class Game{
         this.state = "intro";
 
         Game.uiCamera = new Camera(0,0,0);
-
-        Game.shaderProgram = new ShaderProgram(Game.gl,`precision highp float; attribute vec4 p; attribute vec4 c; attribute vec4 l; attribute vec2 u; uniform float rX; uniform float rY; uniform float crX; uniform float crY; uniform vec3 cp; uniform vec3 mp; uniform vec3 ms; varying vec4 vc; varying vec2 uv; varying float d; varying vec4 li; mat4 rmX(float rX){ return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1); } mat4 rmY(float rY){ return mat4( cos(rY),0,sin(rY),0, 0,1,0,0, -sin(rY),0,cos(rY),0, 0,0,0,1 ); } mat4 cpm(float fov, float aspect, float near, float far) { float f = 1.0 / tan(fov / 2.0); return mat4( f / aspect, 0.0, 0.0, 0.0, 0.0, f, 0.0, 0.0, 0.0, 0.0, (far + near) / (near - far), -1.0, 0.0, 0.0, (2.0 * far * near) / (near - far), 0.0 ); } void main(){ vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.0); mat4 proj = cpm(1.2,2.0,0.1,40.0) * rmX(crX) * rmY(crY); gl_Position = proj * rp; vc=c; li=l; uv=u; }`,` precision highp float; varying vec4 vc; varying vec2 uv; varying float d; varying vec4 li; uniform sampler2D s; void main(){ vec4 col=texture2D(s,uv)*vc;vec4 c=vec4(col.rgb,col.a)*li; if (col.rgb == vec3(0.0,0.0,0.0)) discard; gl_FragColor=c; }`);
+        Game.shaderProgram = new ShaderProgram(Game.gl,`precision highp float;attribute vec4 p;attribute vec4 c;attribute vec4 l;attribute vec2 u;attribute vec4 f;uniform float rX;uniform float rY;uniform float crX;uniform float crY;uniform vec3 cp;uniform vec3 mp;uniform vec3 ms;uniform vec4 o;varying vec4 vc; varying vec2 uv;varying vec4 fc;varying float d;varying vec4 li;mat4 rmX(float rX){return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1);}mat4 rmY(float rY){return mat4( cos(rY),0,sin(rY),0, 0,1,0,0, -sin(rY),0,cos(rY),0, 0,0,0,1 );}mat4 cpm(float fov, float aspect, float near, float far) {float f = 1.0 / tan(fov / 2.0);return mat4( f / aspect, 0.0, 0.0, 0.0, 0.0, f, 0.0, 0.0, 0.0, 0.0, (far + near) / (near - far), -1.0, 0.0, 0.0, (2.0 * far * near) / (near - far), 0.0 );}void main(){vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.0);mat4 proj = cpm(1.2,2.0,0.1,40.0) * rmX(crX) * rmY(crY);gl_Position = proj * rp;vc=c;li=l;uv=u;fc=o;}`,`precision highp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;varying vec4 fc;uniform sampler2D s;void main(){float z=(gl_FragCoord.z/gl_FragCoord.w);float fogFactor=exp2(-0.05*0.05*z*z*1.4);fogFactor=clamp(fogFactor,0.0,1.0);vec4 col=texture2D(s,uv)*vc;vec4 c=vec4(col.rgb,col.a)*li;if (col.rgb == vec3(0.0,0.0,0.0)) discard;gl_FragColor=mix(fc,c,fogFactor);}`);
 
         {
         // The shader program above expanded:
-        // this.shaderProgram = new ShaderProgram(Game.gl,`
-        //     precision highp float;
+        // Game.shaderProgram = new ShaderProgram(Game.gl,`
+        //     precision highp float; 
         //     attribute vec4 p;
-        //     attribute vec4 c;
-        //     attribute vec4 l;
+        //     attribute vec4 c; 
+        //     attribute vec4 l; 
         //     attribute vec2 u;
-        //     uniform float rX;
-        //     uniform float rY;
-        //     uniform float crX;
-        //     uniform float crY;
-        //     uniform vec3 cp;
-        //     uniform vec3 mp;
+        //     attribute vec4 f; 
+        //     uniform float rX; 
+        //     uniform float rY; 
+        //     uniform float crX; 
+        //     uniform float crY; 
+        //     uniform vec3 cp; 
+        //     uniform vec3 mp; 
         //     uniform vec3 ms;
-            
-        //     varying vec4 vc;
+        //     uniform vec4 o;
+        //     varying vec4 vc; 
         //     varying vec2 uv;
-        //     varying float d;
+        //     varying vec4 fc;
+        //     varying float d; 
         //     varying vec4 li;
-
-        //     mat4 rmX(float rX){
-        //         return mat4(
-        //         1,0,0,0,
-        //         0,cos(rX),-sin(rX),0,
-        //         0,sin(rX),cos(rX),0,
-        //         0,0,0,1);
-        //     }
-
-        //     mat4 rmY(float rY){
-        //         return mat4(
-        //         cos(rY),0,sin(rY),0,
-        //         0,1,0,0,
-        //         -sin(rY),0,cos(rY),0,
-        //         0,0,0,1
-        //       );
-        //     }
-
-        //     mat4 cpm(float fov, float aspect, float near, float far) {
+        //     mat4 rmX(float rX){ 
+        //         return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1); 
+        //     } 
+        //     mat4 rmY(float rY){ 
+        //         return mat4( cos(rY),0,sin(rY),0, 0,1,0,0, -sin(rY),0,cos(rY),0, 0,0,0,1 ); 
+        //     } 
+        //     mat4 cpm(float fov, float aspect, float near, float far) { 
         //         float f = 1.0 / tan(fov / 2.0);
-        //         return mat4(
-        //             f / aspect, 0.0, 0.0, 0.0,
-        //             0.0, f, 0.0, 0.0,
-        //             0.0, 0.0, (far + near) / (near - far), -1.0,
-        //             0.0, 0.0, (2.0 * far * near) / (near - far), 0.0
-        //         );
-        //     }
+        //         return mat4( f / aspect, 0.0, 0.0, 0.0, 0.0, f, 0.0, 0.0, 0.0, 0.0, (far + near) / (near - far), -1.0, 0.0, 0.0, (2.0 * far * near) / (near - far), 0.0 ); 
+        //     } 
             
+        //     void main(){ 
+        //         vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.0); 
+        //         mat4 proj = cpm(1.2,2.0,0.1,40.0) * rmX(crX) * rmY(crY); 
+        //         gl_Position = proj * rp;
+        //         vc=c;
+        //         li=l;
+        //         uv=u;
+        //         fc=o; 
+        //     }
+                
+        //     `,`
 
-        //     void main(){
-        //       vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.0);
-        //       mat4 proj = cpm(1.2,2.0,0.1,20.0) * rmX(crX) * rmY(crY);
-
-        //       gl_Position = proj * rp;
-        //       vc=c;
-        //       li=l;
-        //       uv=u;
-        //     }`,`
-        //     precision highp float;
-        //     varying vec4 vc;
-        //     varying vec2 uv;
-        //     varying float d;
+        //     precision highp float; 
+        //     varying vec4 vc; 
+        //     varying vec2 uv; 
+        //     varying float d; 
         //     varying vec4 li;
+        //     varying vec4 fc;
         //     uniform sampler2D s;
+
         //     void main(){
-        //       vec4 col=texture2D(s,uv)*vc;
-        //       vec4 c=vec4(col.rgb,col.a)*li;
-        //       if (col.rgb == vec3(0.0,0.0,0.0))
-        //         discard;
-        //       gl_FragColor=c;
-        //     }`);
+        //         float z=(gl_FragCoord.z/gl_FragCoord.w);
+        //         float fogFactor=exp2(-0.05*0.05*z*z*1.4);
+        //         fogFactor=clamp(fogFactor,0.0,1.0);
+        //         vec4 col=texture2D(s,uv)*vc;
+        //         vec4 c=vec4(col.rgb,col.a)*li;
+        //         if (col.rgb == vec3(0.0,0.0,0.0)) discard; 
+                
+        //         gl_FragColor=mix(fc,c,fogFactor); // level 1
+        //     }
+        //     `);
+
+
+
+
+
+
+
+
+
+
+
         }
 
         Game.glTexture = new GlTexture(Game.gl, "t.png");
@@ -125,18 +129,19 @@ export default class Game{
         this.accumulator = this.counter = this.fps = this.tickTime = this.levelSwitchDelay = 0;
 
         this.levels = [
-            [64,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1],
-            [64,0.4,5,[0.2,0.4,0.2,1.0],[0.1,0.8,0.5,1.0],[0.1,0.5,0.1,1.0],l2],
-            [64,0.1,8,[0.7,0.7,0.2,1.0],[0.8,0.8,0.5,1.0],[0.9,0.9,0.1,1.0],l3],
-            [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],l4],
+        // size,ambientlight,height,wallColor,floorColor,glassColor,fogColor,levelData
+            [64,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],[0.2,0.2,1.0,1],l1],
+            [64,0.4,5,[0.2,0.4,0.2,1.0],[0.1,0.8,0.5,1.0],[0.1,0.5,0.1,1.0],[0.0,1.0,0.0,1],l2],
+            [64,0.1,8,[0.7,0.7,0.2,1.0],[0.8,0.8,0.5,1.0],[0.9,0.9,0.1,1.0],[1.0,1.0,0.0,1],l3],
+            [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4],
         ];
 
         //this.levels = [
         //    new Level(this,64,this.player,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],l1),
        //    new Level(this,64,this.player,0.9,5,[0.8,0.8,0.1,1.0],[0.2,0.5,0.8,1.0],[0.1,0.4,0.5,6.0],l1)
        // ];
-        //this.currentLevel = -1;
-        this.currentLevel = 2;
+        this.currentLevel = -1;
+        //this.currentLevel = 1;
         
         this.switchLevel();
         
@@ -292,7 +297,8 @@ export default class Game{
         if (this.levelSwitchDelay >0) return;
         this.currentLevel++;
         var lArgs = this.levels[this.currentLevel];
-        this.level = new Level(this,lArgs[0],this.player,lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[6]);
+        this.level = new Level(this,lArgs[0],this.player,lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[7]);
+        Game.fogColor = lArgs[6];
         this.levelSwitchDelay = 1;
     }
 }
