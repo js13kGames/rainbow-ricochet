@@ -32,8 +32,8 @@ export default class Player extends Entity{
         this.keysHold.push(Door.green);
         this.keysHold.push(Door.yellow);
         this.move(0,0,0);
-        this.cameraYOffset = 0;
-        this.yTarget = 0;
+        this.cameraYOffset = y;
+        this.yTarget = y;
     }
 
     updateCamera(game){
@@ -98,7 +98,6 @@ export default class Player extends Entity{
             if (moveX.s != null && (moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76)){
                 this.move(this.tempVector.x-this.position.x,0,0);
                 if (this.position.y != moveX.s.height){
-                    console.log("sdflkjhsdlkjf");
                     this.yTarget = moveX.s.height;
                 }
                 this.position.y = moveX.s.height;
@@ -109,7 +108,6 @@ export default class Player extends Entity{
             if (moveZ.s != null && (moveZ.s instanceof Floor && moveZ.s.height >0 && moveZ.s.height - this.position.y < 0.76)){
                 this.move(0,moveZ.s.height,this.tempVector.z-this.position.z);
                 if (this.position.y != moveZ.s.height){
-                     console.log("sdflkjhsdlkjf");
                      this.yTarget = moveZ.s.height;
                 }
                 this.position.y = moveZ.s.height;
