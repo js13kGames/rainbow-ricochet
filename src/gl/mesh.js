@@ -25,7 +25,8 @@ export default class Mesh{
 
     //Add verticies, colors, UVs and lights to this mesh
     addVerticies(verticies, cols, uvs,lights){
-        this.verticies.push(...verticies);
+        //this.verticies.push(...verticies);
+        verticies.forEach(v=>{this.verticies.push(v)});
         this.updateCols(cols);
         this.updateUVs(uvs);
         this.updateLights(lights);
