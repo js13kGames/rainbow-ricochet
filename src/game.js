@@ -43,10 +43,10 @@ export default class Game{
         this.state = "intro";
 
         Game.uiCamera = new Camera(0,0,0);
-        Game.shaderProgram = new ShaderProgram(Game.gl,`precision highp float;attribute vec4 p;attribute vec4 c;attribute vec4 l;attribute vec2 u;attribute vec4 f;uniform float rX;uniform float rY;uniform float crX;uniform float crY;uniform vec3 cp;uniform vec3 mp;uniform vec3 ms;uniform vec4 o;varying vec4 vc; varying vec2 uv;varying vec4 fc;varying float d;varying vec4 li;mat4 rmX(float rX){return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1);}mat4 rmY(float rY){return mat4( cos(rY),0,sin(rY),0, 0,1,0,0, -sin(rY),0,cos(rY),0, 0,0,0,1 );}mat4 cpm(float fov, float aspect, float near, float far) {float f = 1.0 / tan(fov / 2.0);return mat4( f / aspect, 0.0, 0.0, 0.0, 0.0, f, 0.0, 0.0, 0.0, 0.0, (far + near) / (near - far), -1.0, 0.0, 0.0, (2.0 * far * near) / (near - far), 0.0 );}void main(){vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.0);mat4 proj = cpm(1.2,2.0,0.1,40.0) * rmX(crX) * rmY(crY);gl_Position = proj * rp;vc=c;li=l;uv=u;fc=o;}`,`precision highp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;varying vec4 fc;uniform sampler2D s;void main(){float z=(gl_FragCoord.z/gl_FragCoord.w);float fogFactor=exp2(-0.05*0.05*z*z*1.4);fogFactor=clamp(fogFactor,0.0,1.0);vec4 col=texture2D(s,uv);if (col.a == 0.0) discard;vec4 c=vec4(col.rgb,col.a)*vc*li;gl_FragColor=mix(fc,c,fogFactor);}`);
+        Game.shaderProgram = new ShaderProgram(Game.gl,`precision highp float;attribute vec4 p;attribute vec4 c;attribute vec4 l;attribute vec2 u;attribute vec4 f;uniform float rX;uniform float rY;uniform float crX;uniform float crY;uniform vec3 cp;uniform vec3 mp;uniform vec3 ms;uniform vec4 o;varying vec4 vc; varying vec2 uv;varying vec4 fc;varying float d;varying vec4 li;varying float cz;mat4 rmX(float rX){return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1);}mat4 rmY(float rY){return mat4( cos(rY),0,sin(rY),0, 0,1,0,0, -sin(rY),0,cos(rY),0, 0,0,0,1 );}mat4 cpm(float fov, float aspect, float near, float far) {float f = 1.0 / tan(fov / 2.0);return mat4( f / aspect, 0.0, 0.0, 0.0, 0.0, f, 0.0, 0.0, 0.0, 0.0, (far + near) / (near - far), -1.0, 0.0, 0.0, (2.0 * far * near) / (near - far), 0.0 );}void main(){vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.0);mat4 proj = cpm(1.2,2.0,0.1,40.0) * rmX(crX) * rmY(crY);gl_Position = proj * rp;vc=c;li=l;uv=u;fc=o;cz = -rp.z;}`,`precision highp float;varying vec4 vc;varying vec2 uv;varying float d;varying vec4 li;varying vec4 fc;uniform sampler2D s;varying float cz;uniform float t;void main(){float fogFactor = clamp(exp2(-0.05 * 0.05 * cz * cz * 1.4),0.0, 1.0);vec4 col=texture2D(s,uv);if (col.a == 0.0) discard;vec4 c=vec4(col.rgb,col.a)*vc*li;float time = t/1000.0;float flicker = 0.8 + 0.03* sin(time*5.0) + 0.06 * cos(time*3.0) + 0.04 * sin(time*6.0);c.rgb *= flicker;gl_FragColor=mix(fc,c,fogFactor);}`);
 
         {
-        // The shader program above expanded:
+       // The shader program above expanded:
         // Game.shaderProgram = new ShaderProgram(Game.gl,`
         //     precision highp float; 
         //     attribute vec4 p;
@@ -67,6 +67,7 @@ export default class Game{
         //     varying vec4 fc;
         //     varying float d; 
         //     varying vec4 li;
+        //     varying float cz;
         //     mat4 rmX(float rX){ 
         //         return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1); 
         //     } 
@@ -85,7 +86,8 @@ export default class Game{
         //         vc=c;
         //         li=l;
         //         uv=u;
-        //         fc=o; 
+        //         fc=o;
+        //         cz = -rp.z;
         //     }
                 
         //     `,`
@@ -97,17 +99,22 @@ export default class Game{
         //     varying vec4 li;
         //     varying vec4 fc;
         //     uniform sampler2D s;
+        //     varying float cz;
+        //     uniform float t;
 
         //     void main(){
-        //         float z=(gl_FragCoord.z/gl_FragCoord.w);
-        //         float fogFactor=exp2(-0.05*0.05*z*z*1.4);
-        //         fogFactor=clamp(fogFactor,0.0,1.0);
+        //         float fogFactor = clamp(exp2(-0.05 * 0.05 * cz * cz * 1.4),0.0, 1.0);
+        //         //fogFactor = clamp(fogFactor, 0.0, 1.0);
         //         vec4 col=texture2D(s,uv);
         //         if (col.a == 0.0) discard;
         //         vec4 c=vec4(col.rgb,col.a)*vc*li;
+        //         float time = t/1000.0;
+        //         float flicker = 0.8 + 0.03* sin(time*5.0) + 0.06 * cos(time*3.0) + 0.04 * sin(time*6.0);
+                
+        //         c.rgb *= flicker;
         //         gl_FragColor=mix(fc,c,fogFactor);
         //       }
-        //     
+            
         //     `);
 
 
@@ -136,8 +143,8 @@ export default class Game{
             [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4],
         ];
 
-        this.currentLevel = -1;
-        //this.currentLevel = 0;
+        //this.currentLevel = -1;
+        this.currentLevel = 0;
         
         this.switchLevel();
         
@@ -159,7 +166,7 @@ export default class Game{
 
         if (deltaTime > 250) deltaTime = 250; // Dont allow too big jump in time.
 
-        this.counter += deltaTime;
+        //this.counter += deltaTime;
 
 
         this.stepTime = deltaTime;
@@ -204,16 +211,16 @@ export default class Game{
             this.render();
 
             this.renderTime = performance.now() - renderStart;
-            this.fps++;
+            //this.fps++;
       //  }
 
         // FPS and tick counter
-        if (this.counter > 1000){
+        /*if (this.counter > 1000){
             this.stableFPS = this.fps;
             this.stableTick = this.tickTime;
             this.stableRend = this.renderTime;
             this.counter = this.fps = 0;
-        }
+        }*/
     }
 
     tick(frameTime){

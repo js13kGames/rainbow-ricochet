@@ -176,6 +176,8 @@ export default class Mesh{
 
         Game.gl.uniform4f(Game.shaderProgram.locations.uniformLocations.fog,Game.fogColor[0],Game.fogColor[1],Game.fogColor[2],Game.fogColor[3]);
 
+        Game.gl.uniform1f(Game.shaderProgram.locations.uniformLocations.time,performance.now());
+
         Game.gl.bindBuffer(Game.gl.ELEMENT_ARRAY_BUFFER, this.indiciesBuffer);
         Game.gl.drawElements(Game.gl.TRIANGLES,  this.numberOfIndicies,Game.gl.UNSIGNED_SHORT,0);
     }
