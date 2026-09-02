@@ -18,7 +18,7 @@ export default class Door extends Entity{
             this.secretDoor = true;
             this.lightReduction = 0.1;
         }
-        this.texture = new Texture(Game.glTexture,0,16,16,16);
+        this.texture = new Texture(Game.glTexture,48,48,16,16);
         this.lockTexture = new Texture(Game.glTexture,32,16,16,16);
         this.locked = true;
         let meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.502);
@@ -65,7 +65,7 @@ export default class Door extends Entity{
     }
 
     render(){
-        Game.gl.enable(Game.gl.BLEND);
+        //Game.gl.enable(Game.gl.BLEND);
         this.mesh.render();
         this.floorMesh.render();
         this.wallMesh.render();
