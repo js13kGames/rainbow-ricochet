@@ -1,6 +1,7 @@
 import Game from "../game.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
+import Glassblock from "../structure/glassblock.js";
 import Bullet from "./bullet.js";
 import Darkness from "./darkness.js";
 
@@ -30,9 +31,11 @@ export default class UnicornhornBullet extends Bullet{
         this.mesh.render();
     }
 
-    onStructureHit(game, pos){
+    onStructureHit(game, pos,structure){
+        if (structure != null && structure instanceof Glassblock) game.playGlassHit();
+        else game.playWallHit();
         game.level.deleteEntity(this);
-        game.playWallHit();
+        //game.playWallHit();
         this.explode(game,0);
     }
 }

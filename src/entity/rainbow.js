@@ -2,6 +2,7 @@ import Game from "../game.js";
 import MeshBuilder from "../gl/meshbuilder.js";
 import Texture from "../gl/texture.js";
 import MathUtil from "../mathutil.js";
+import Glassblock from "../structure/glassblock.js";
 import Bullet from "./bullet.js";
 import Darkness from "./darkness.js";
 import Sensor from "./sensor.js";
@@ -51,9 +52,11 @@ export default class Rainbow extends Bullet{
         MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,y,z,light,[r,g,b,alpha],null);
     }
 
-    onStructureHit(game, pos){
+    onStructureHit(game, pos,structure){
         if (this.pickup) return;
-        game.playWallHit();
+        if (structure != null && structure instanceof Glassblock) game.playGlassHit();
+        else game.playWallHit();
+
         this.bounces++;
         this.explode(game,0.01);
     }

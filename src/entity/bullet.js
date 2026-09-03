@@ -26,22 +26,24 @@ export default class Bullet extends Entity{
         if (this.ignoreCollisions){
             this.move(this.tempVector.x-this.position.x,0,this.tempVector.z-this.position.z);
         }else{
-            if (this.canMove(game, this.tempVector.x,this.heightOverGround,this.position.z,0.2).i){
+            var collisionX = this.canMove(game, this.tempVector.x,this.heightOverGround,this.position.z,0.2);
+            var collisionZ = this.canMove(game, this.position.x,this.heightOverGround,this.tempVector.z,0.2);
+            if (collisionX.i){
                 this.move(this.tempVector.x-this.position.x,0,0);
                 this.position.y = this.heightOverGround;
             }
             else{
                 if (this.bounce) this.direction.x = -this.direction.x;
-                this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
+                this.onStructureHit(game,this.tempVector,collisionX.s); // This should probably move to the entity class
             }
                 
-            if (this.canMove(game, this.position.x,this.heightOverGround,this.tempVector.z,0.2).i){
+            if (collisionZ.i){
                 this.move(0,0,this.tempVector.z-this.position.z);
                 this.position.y = this.heightOverGround;
             }
             else{
                 if (this.bounce) this.direction.z = -this.direction.z;
-                this.onStructureHit(game,this.tempVector); // This should probably move to the entity class
+                this.onStructureHit(game,this.tempVector,collisionZ.s); // This should probably move to the entity class
             }
         }
 
