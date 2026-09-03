@@ -12,6 +12,7 @@ import Structures from "./structure/structures.js";
 import {zzfx} from './lib/z.js'
 import UI from "./ui/ui.js";
 import Intro from "./ui/intro.js";
+import LevelSwitch from "./ui/levelswitch.js";
 
 const TICK_RATE = 1000 / 60;
 const MAX_STEPS = 5;
@@ -39,6 +40,7 @@ export default class Game{
 
         this.intro = new Intro(1280,720);
         this.ui = new UI(1280,720);
+        this.levelSwitch = new LevelSwitch(1280,720);
 
         this.state = "intro";
 
@@ -137,16 +139,16 @@ export default class Game{
 
         this.levels = [
         // size,ambientlight,height,wallColor,floorColor,glassColor,fogColor,levelData
-            [64,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],[0.2,0.2,1.0,1],l1],
-            [64,0.4,5,[0.2,0.4,0.2,1.0],[0.1,0.8,0.5,1.0],[0.1,0.5,0.1,1.0],[0.0,1.0,0.0,1],l2],
-            [64,0.1,8,[0.7,0.7,0.2,1.0],[0.8,0.8,0.5,1.0],[0.9,0.9,0.1,1.0],[1.0,1.0,0.0,1],l3],
-            [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4],
+            [64,0.2,5,[0.2,0.2,0.8,1.0],[0.1,0.5,0.8,1.0],[0.1,0.1,0.5,1.0],[0.2,0.2,1.0,1],l1,"Blue"],
+            [64,0.4,5,[0.2,0.4,0.2,1.0],[0.1,0.8,0.5,1.0],[0.1,0.5,0.1,1.0],[0.0,1.0,0.0,1],l2,"Green"],
+            [64,0.1,8,[0.7,0.7,0.2,1.0],[0.8,0.8,0.5,1.0],[0.9,0.9,0.1,1.0],[1.0,1.0,0.0,1],l3,"Yellow"],
+            [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4,"Red"],
         ];
 
-        //this.currentLevel = -1;
-        this.currentLevel = 1;
+        this.currentLevel = -1;
+        //this.currentLevel = 3;
         
-        this.switchLevel();
+
         
     }
 
@@ -229,6 +231,8 @@ export default class Game{
             this.ui.tick(frameTime);
         }else if (this.state == "intro"){
             this.intro.tick(frameTime);
+        }else if (this.state == "levelswitch"){
+            this.levelSwitch.tick(frameTime);
         }
 
     }
@@ -239,6 +243,8 @@ export default class Game{
             this.ui.render(this);
         }else if (this.state == "intro"){
             this.intro.render(this);
+        }else if (this.state == "levelswitch"){
+            this.levelSwitch.render(this);
         }
     }
 
@@ -306,9 +312,16 @@ export default class Game{
         if (this.levelSwitchDelay >0) return;
         this.levelSwitchDelay = 1;
         this.currentLevel++;
-        var lArgs = this.levels[this.currentLevel];
-        this.level = new Level(this,lArgs[0],this.player,lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[7]);
-        Game.fogColor = lArgs[6];
+        this.state = "levelswitch";
+        if (this.level)this.level.endTime = performance.now();
         
+    }
+
+    nextLevel(){
+        
+        var lArgs = this.levels[this.currentLevel];
+        this.level = new Level(this,lArgs[0],this.player,lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[7],lArgs[8]);
+        Game.fogColor = lArgs[6];
+        this.state = "game";
     }
 }

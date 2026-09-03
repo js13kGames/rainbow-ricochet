@@ -49,17 +49,34 @@ export default class UI{
         if (this.messages.length >0){
             for (let i =0;i < 3; i++){
                 let message = this.messages[i];
-                if(message != null) this.drawTextAt(message,27,33+(i*40),28,"black");
-                if(message != null) this.drawTextAt(message,24,30+(i*40),28,"red");
+                if(message != null) this.drawTextAt(message,27,33+(i*40),28,"black",false);
+                if(message != null) this.drawTextAt(message,24,30+(i*40),28,"red",false);
             }
         }
     }
 
-    drawTextAt(text,x,y,size,color="white"){
+    drawBackground(image,ix,iy,w,h,tint){
+        for (let x = 0; x <10; x++){
+            for (let y = 0; y < 10;y++){
+                this.context.drawImage(image,ix,iy,w,h,x*256,y*256,256,256);
+                this.context.globalCompositeOperation = 'multiply';
+                this.context.fillStyle = tint;
+                this.context.fillRect(x*256,y*256,256,256);
+                this.context.globalCompositeOperation = 'source-over';
+            }
+        }
+    }
+
+     drawShadowedTextAt(message,x,y,size,color1,color2,center=false){
+        this.drawTextAt(message,x+6,y+6,size,color2,center);
+        this.drawTextAt(message,x,y,size,color1,center);
+    }
+
+    drawTextAt(text,x,y,size,color="white",center=false){
         this.context.font=size+"px monospace";
         this.context.fillStyle = color;
-        //this.context.textAlign = "center";
-        this.context.fillText(text,x,y);
+        if (center)this.context.textAlign = "center";
+        this.context.fillText(text,center?this.canvas.width/2:x,y);
     }
 
     queueMessage(message){

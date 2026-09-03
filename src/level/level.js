@@ -26,7 +26,7 @@ export default class Level{
     static SECTORGRIDSIZE = Math.ceil((Level.SECTORMAXPOS * 2)/Level.SECTORSIZE);
     static SECTORRADIUS = 2;
 
-    constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint,levelData){
+    constructor(game,size,player,ambientLight,height,wallTint,floorTint,glassTint,levelData,name){
         this.entities = [];
         this.doors = [];
         this.particles = [];
@@ -47,6 +47,8 @@ export default class Level{
         this.glassTint = glassTint;
 
         this.levelData = levelData;
+        this.name = name;
+        this.startTime = performance.now();
 
         for (let x = -Level.SECTORRADIUS; x < Level.SECTORGRIDSIZE; x++) {
             this.sectors[x] = [];
