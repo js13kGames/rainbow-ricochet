@@ -8,7 +8,7 @@ export default class Poision extends Structure{
         this.tint = [0.0,0.9,0.0,1.0];
     }
 
-    intersects(game,x,y,z,checkAABB){
+    intersects(game,x,y,z,checkAABB,entity){
         return false;
     }
 }

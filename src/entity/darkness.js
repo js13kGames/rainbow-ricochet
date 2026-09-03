@@ -18,7 +18,7 @@ export default class Darkness extends Entity{
         this.hitDelay = 0;
         this.light = 0.3;
         this.distanceToPlayer = {x:0, z:0};
-        this.aggroRange = 20;
+        this.aggroRange = 15+(Math.random()*10);
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -87,16 +87,12 @@ export default class Darkness extends Entity{
                 var point = p[pi];
                 var s = game.level.getStructure(point.x, point.y);
                 if (s != null && !s.blocksLight()) {
-                    if ((s instanceof Floor && s.height > 0)){
-                        this.hasPlayerAggro = false;
-                        break;
-                    }
                     if (point.x == Math.ceil(game.level.player.position.x) && point.y == Math.ceil(game.level.player.position.z)){
                         if (!this.hasPlayerAggro){
                             this.hasPlayerAggro = true;
                             game.monsterAggro();
-                            }
                         }
+                    }
                 }else{
                     this.hasPlayerAggro = false;
                     break;
