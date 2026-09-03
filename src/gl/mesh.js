@@ -91,6 +91,7 @@ export default class Mesh{
     }
     //Scale the mesh
     setS(s){
+        if (s < 0) return;
         this.scale[0]=s;
         this.scale[1]=s;
         this.scale[2]=s;

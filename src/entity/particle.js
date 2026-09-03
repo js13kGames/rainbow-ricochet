@@ -4,12 +4,13 @@ import Entity from "./entity.js";
 import Game from "../game.js";
 
 export default class Particle extends Entity{
-    constructor(level,x,y,z,ttl,direction,speed,tint,size=1) {
+    constructor(level,x,y,z,ttl,direction,speed,tint,size=1,scaleRatio=0.005) {
         super(level,x,y,z,0,false);
         this.texture = new Texture(Game.glTexture,63,0,1,1);
         this.ttl = ttl;
         this.direction = direction;
         this.speed = speed;
+        this.scaleRatio = scaleRatio;
 
         var meshBuild = MeshBuilder.start(Game.gl,x,y,z,size);
         MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,tint,null);
@@ -25,6 +26,7 @@ export default class Particle extends Entity{
         this.position.z += this.direction.z * this.speed;
         this.mesh.setPos(this.position.x,this.position.y, this.position.z);
         this.mesh.setRotationY(-Game.camera.currentRot);
+        this.mesh.setS(this.mesh.scale[0]-this.scaleRatio);
     }
 
     render(alpha){
