@@ -2,8 +2,8 @@ import Game from "../game.js";
 import UI from "./ui.js";
 
 export default class LevelSwitch extends UI{
-    constructor(width,height){
-        super(width,height);
+    constructor(){
+        super();
         this.clickDelay = 1;
     }
 
@@ -13,7 +13,6 @@ export default class LevelSwitch extends UI{
 
     render(game){
         var currentLevel = game.currentLevel;
-        console.log(currentLevel);
         if (currentLevel < 4 && this.clickDelay <=0 && game.input.firePressed) game.nextLevel();
         this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
         this.drawBackground(Game.glTexture.image,48,48,16,16,'#4444ab');
@@ -27,9 +26,9 @@ export default class LevelSwitch extends UI{
         }
 
         if (currentLevel < 4){
-            this.drawShadowedTextAt("Next level:",0,450,40,"white","black",true);
+            this.drawShadowedTextAt("Lets play level "+currentLevel+1+":",0,450,40,"white","black",true);
 
-            this.drawShadowedTextAt(currentLevel+1+" - "+game.levels[currentLevel][8]+"",0,550,40,"white","black",true);
+            this.drawShadowedTextAt(game.levels[currentLevel][8]+"",0,550,40,"white","black",true);
 
             this.drawShadowedTextAt("<<Click to start>>",0,680,36,"white","black",true);
         }else{

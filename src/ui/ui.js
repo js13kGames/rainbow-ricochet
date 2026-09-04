@@ -1,10 +1,8 @@
 import Game from "../game.js";
 
 export default class UI{
-    constructor(width,height){
+    constructor(){
         this.canvas = document.getElementById("u");
-        this.canvas.width = width;
-        this.canvas.height = height;
         this.context = this.canvas.getContext("2d");
         this.context.imageSmoothingEnabled = false;
         this.messages = [];

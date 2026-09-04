@@ -38,8 +38,8 @@ roadroller -D -Zab31 -Zdy0 -Zlr2286 -Zmc3 -Zmd112 -Zpr16 -S0,1,2,3,5,7,14,25,42,
 echo "<meta charset="UTF-8"><style>" > index-template.html
 cat ../src/i.css >> index-template.html
 echo "</style>" >> index-template.html
-echo "<canvas id=\"u\"></canvas>" >> index-template.html
-echo "<canvas id=\"c\"></canvas>" >> index-template.html
+echo "<canvas id=\"u\" width="1280" height="720"></canvas>" >> index-template.html
+echo "<canvas id=\"c\" width="1280" height="720"></canvas>" >> index-template.html
 echo "<script>" >> index-template.html
 cat ../src/l1.js >> index-template.html
 echo "</script>" >> index-template.html

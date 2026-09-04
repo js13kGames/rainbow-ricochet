@@ -2,8 +2,8 @@ import Game from "../game.js";
 import UI from "./ui.js";
 
 export default class Intro extends UI{
-    constructor(width,height){
-        super(width,height);
+    constructor(){
+        super();
     }
 
     tick(deltaTime){

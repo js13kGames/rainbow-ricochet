@@ -31,16 +31,14 @@ export default class Game{
 
     constructor(){
         this.canvas = document.getElementById("c");
-        this.canvas.width = 1280;
-        this.canvas.height = 720;
         Game.gl = this.canvas.getContext("webgl",{antialias: false});
 
         this.input = new Input();
         this.canvas.addEventListener('click', (e) => { this.canvas.requestPointerLock(); this.mouseLocked = true;});
 
-        this.intro = new Intro(1280,720);
-        this.ui = new UI(1280,720);
-        this.levelSwitch = new LevelSwitch(1280,720);
+        this.intro = new Intro();
+        this.ui = new UI();
+        this.levelSwitch = new LevelSwitch();
 
         this.state = "intro";
 

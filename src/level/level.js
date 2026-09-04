@@ -108,8 +108,6 @@ export default class Level{
         this.buildWallLevel();
         this.buildFloorLevel();
         this.buildTransparentLevel();
-
-        console.log(this.sectors);
     }
 
     addDoor(game, x,z,color){
