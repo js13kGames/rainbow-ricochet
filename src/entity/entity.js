@@ -86,6 +86,10 @@ export default class Entity{
         return {i: intersects,s: structure};
     }
 
+    doesCollideWithStructure(structure){
+        return true;
+    }
+
     // Check if this entity collides with another entity by doing a AABB check. Returns false if we try to check against ourselves.
     doesCollidesWithEntity(game,entity){
         if (entity == this) return false;

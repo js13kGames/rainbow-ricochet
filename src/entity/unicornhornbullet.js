@@ -31,6 +31,10 @@ export default class UnicornhornBullet extends Bullet{
         this.mesh.render();
     }
 
+    doesCollideWithStructure(structure){
+        return false;
+    }
+
     onStructureHit(game, pos,structure){
         if (structure != null && structure instanceof Glassblock) game.playGlassHit();
         else game.playWallHit();
