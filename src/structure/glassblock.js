@@ -15,4 +15,3 @@ export default class Glassblock extends Structure{
         return false;
     }
 }
-//62,0,1,7

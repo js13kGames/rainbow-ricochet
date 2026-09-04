@@ -30,7 +30,7 @@ export default class LevelSwitch extends UI{
 
             this.drawShadowedTextAt(game.levels[currentLevel][8]+"",0,550,40,"white","black",true);
 
-            this.drawShadowedTextAt("<<Click to start>>",0,680,36,"white","black",true);
+            this.drawShadowedTextAt("<Click to play>",0,680,36,"white","black",true);
         }else{
             this.drawShadowedTextAt("You did it!",0,350,40,"white","black",true);
             this.drawShadowedTextAt("You saved the rainbow to be overtaken by darkness",0,450,40,"white","black",true);

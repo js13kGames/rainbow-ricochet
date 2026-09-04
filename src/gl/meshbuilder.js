@@ -21,14 +21,6 @@ export default class MeshBuilder{
         lights.push(l,l,l,l);
     }
 
-    static addLightArray(lights,lightArray){
-        //let l = [light,light,light,1];
-        for (let i = 0; i < 4; i++) {
-            lights.push([lightArray[i],lightArray[i],lightArray[i],1]);          
-        }
-        //lights.push(lightArray[0],lightArray[1],lightArray[2],lightArray[3]);
-    }
-
     //Finish the batch and build the mesh
     static build(meshBuild){
         meshBuild.mesh.addVerticies(meshBuild.verticies, meshBuild.colors, meshBuild.uvs,meshBuild.lights);
@@ -37,13 +29,12 @@ export default class MeshBuilder{
     }
 
     //Add left side of the mesh. Heigth and offset can be specified
-    static left(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
+    static left(uvs,builder,x,y,z,light,height,color,customYSize=0){
         var ySize = customYSize > 0 ? customYSize : baseSize;
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
-            if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-            else MeshBuilder.addLight(builder.lights,light);
+            MeshBuilder.addLight(builder.lights,light);
             uvs.forEach(uv => { builder.uvs.push(uv); });
             builder.verticies.push(
                 x-baseSize,y+h-baseSize,z-baseSize,
@@ -55,13 +46,12 @@ export default class MeshBuilder{
 
     }
     //Add right side of the mesh. Heigth and offset can be specified
-    static right(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
+    static right(uvs,builder,x,y,z,light,height,color,customYSize=0){
         var ySize = customYSize > 0 ? customYSize : baseSize;
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
-            if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-            else MeshBuilder.addLight(builder.lights,light);
+            MeshBuilder.addLight(builder.lights,light);
             uvs.forEach(uv => { builder.uvs.push(uv); });
             builder.verticies.push(
                 x+baseSize,y+h-baseSize,z+baseSize,
@@ -72,13 +62,12 @@ export default class MeshBuilder{
         }
     }
     //Add front side of the mesh. Heigth and offset can be specified
-    static front(uvs,builder,x,y,z,light,height,color,lightArray,customYSize=0){
+    static front(uvs,builder,x,y,z,light,height,color,customYSize=0){
         var ySize = customYSize > 0 ? customYSize : baseSize;
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
-            if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-            else MeshBuilder.addLight(builder.lights,light);
+            MeshBuilder.addLight(builder.lights,light);
             uvs.forEach(uv => { builder.uvs.push(uv); });
             builder.verticies.push(
                 x-baseSize,y+h-baseSize,z+baseSize,
@@ -87,26 +76,14 @@ export default class MeshBuilder{
                 x-baseSize,y+h+ySize,z+baseSize
             );
         }
-        // if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-        //     else MeshBuilder.addLight(builder.lights,light);
-        //     //uvs.forEach(uv => { builder.uvs.push(uv); });
-        //     console.log(uvs);
-        //     builder.uvs.push([0,1.0,0],[0.25,1.0,0],[0.25,0,0],[0,0,0]);
-        //     builder.verticies.push(
-        //         x-baseSize,y-baseSize,z+baseSize,
-        //         x+baseSize,y-baseSize,z+baseSize,
-        //         x+baseSize,y+3+baseSize,z+baseSize,
-        //         x-baseSize,y+3+baseSize,z+baseSize
-        //     );
     }
     //Add back side of the mesh. Heigth and offset can be specified
-    static back(uvs,builder,x,y,z,light,height,color, lightArray,customYSize=0){
+    static back(uvs,builder,x,y,z,light,height,color,customYSize=0){
         var ySize = customYSize > 0 ? customYSize : baseSize;
         if (height == null) height = 1;
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
-            if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-             else MeshBuilder.addLight(builder.lights,light);
+            MeshBuilder.addLight(builder.lights,light);
             uvs.forEach(uv => { builder.uvs.push(uv); });
             builder.verticies.push(
                 x+baseSize,y+h-baseSize,z-baseSize,
@@ -119,10 +96,9 @@ export default class MeshBuilder{
     }
 
     //Add left side of the mesh. Offset can be specified
-    static top(uvs,builder,x,y,z,light, color, lightArray){
+    static top(uvs,builder,x,y,z,light, color){
         MeshBuilder.addColor(builder.colors,color);
-        if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-        else MeshBuilder.addLight(builder.lights,light);
+        MeshBuilder.addLight(builder.lights,light);
         
         uvs.forEach(uv => { builder.uvs.push(uv); });
         builder.verticies.push(
@@ -132,11 +108,10 @@ export default class MeshBuilder{
             x+baseSize,y+baseSize,z-baseSize
         );
     }
-    static bottom(uvs,render,x,y,z,light, color, lightArray){
+    static bottom(uvs,render,x,y,z,light, color){
 
         MeshBuilder.addColor(render.colors,color);
-        if (lightArray != null) MeshBuilder.addLightArray(render.lights,lightArray);
-        else MeshBuilder.addLight(render.lights,light);
+        MeshBuilder.addLight(render.lights,light);
         uvs.forEach(uv => { render.uvs.push(uv); });
         render.verticies.push(
             x-baseSize,y-baseSize,z-baseSize,
@@ -147,11 +122,10 @@ export default class MeshBuilder{
     }
 
     // Same as front but centered
-    static billboard(uvs,builder,x,y,z,light,height,color,lightArray){
+    static billboard(uvs,builder,x,y,z,light,height,color){
         for(let h = 0; h < height; h++){
             MeshBuilder.addColor(builder.colors,color);
-            if (lightArray != null) MeshBuilder.addLightArray(builder.lights,lightArray);
-            else MeshBuilder.addLight(builder.lights,light);
+            MeshBuilder.addLight(builder.lights,light);
             uvs.forEach(uv => { builder.uvs.push(uv); });
             builder.verticies.push(
                 x-baseSize,y+h-baseSize,z,

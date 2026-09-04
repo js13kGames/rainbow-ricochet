@@ -14,4 +14,3 @@ export default class Wall extends Structure{
         return true;
     }
 }
-//62,0,1,7

@@ -54,7 +54,6 @@ export default class Bullet extends Entity{
     onStructureHit(game, pos){
     }
     onEntityHit(game,entity){
-        //console.log(entity.constructor.name);
         if (
             ((entity instanceof Darkness && !(this.owner instanceof Darkness))
             || (entity instanceof Player && !(this.owner instanceof Player))) 

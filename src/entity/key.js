@@ -11,7 +11,7 @@ export default class Key extends Entity{
         this.texture = new Texture(Game.glTexture,32,16,16,16);
 
         var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,this.keyType,null);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,this.keyType);
         this.mesh = MeshBuilder.build(meshBuild);
     }
 
@@ -21,8 +21,8 @@ export default class Key extends Entity{
         this.move(0,0,0);
     }
 
-    render(alpha){
-        super.render(alpha);
+    render(){
+        super.render();
         this.mesh.render();
     }
 }

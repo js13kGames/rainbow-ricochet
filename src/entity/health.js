@@ -15,7 +15,7 @@ export default class HealthPickup extends Entity{
 
         var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
         
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,0.9,1,[1.0,1.0,1.0,0.9],null);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,0.9,1,[1.0,1.0,1.0,0.9]);
         this.mesh = MeshBuilder.build(meshBuild);
         this.mesh.setS(0.4);
 

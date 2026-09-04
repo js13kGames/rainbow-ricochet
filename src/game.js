@@ -183,7 +183,7 @@ export default class Game{
         
         
         var steps = 0;
-        var tickStart = performance.now();
+        //var tickStart = performance.now();
         //var ticked = false;
 
         while (this.accumulator >= TICK_RATE && steps < MAX_STEPS) {
@@ -195,7 +195,7 @@ export default class Game{
         if (steps === MAX_STEPS) this.accumulator = 0;
 
         
-        this.tickTime = performance.now() - tickStart;
+       // this.tickTime = performance.now() - tickStart;
 
       //  if (ticked){
             var renderStart = performance.now();
@@ -210,7 +210,7 @@ export default class Game{
             Game.gl.blendFunc(Game.gl.SRC_ALPHA, Game.gl.ONE_MINUS_SRC_ALPHA);
             this.render();
 
-            this.renderTime = performance.now() - renderStart;
+            //this.renderTime = performance.now() - renderStart;
             //this.fps++;
       //  }
 
@@ -281,18 +281,18 @@ export default class Game{
        zzfx(...[.2,0,43,1,0.6,.29,4,.7,-3.6,,,,,.7,,.6,,.7,,,-2968]); // Explosion 842
     }
 
-    monsterHit(){
-        //zzfx(...[1.5,,378,.02,.09,.15,,2.8,-9,,,,,1.7,,.4,.07,.81,.02,,-1900]); // Hit 342
-    }
+   // monsterHit(){
+    //    //zzfx(...[1.5,,378,.02,.09,.15,,2.8,-9,,,,,1.7,,.4,.07,.81,.02,,-1900]); // Hit 342
+   //}
 
     monsterDie(){
         //zzfx(...[2,,89,.02,.01,.54,4,1.6,,8,,,,.8,,.3,.36,.49,.17]); // Explosion 344
         zzfx(...[.4,.75,31,.06,.14,.59,,3.8,-6,5,,,,1,,.2,.02,.43,.07]); // Explosion 683
     }
 
-    monsterAggro(){
+    //monsterAggro(){
         //zzfx(...[1.2,,63,.06,.25,.41,3,1.6,,5,,,,1.3,3.2,.5,.47,.37,.12,,-3066]); // Explosion 404
-    }
+   // }
 
     playerHurt(){
         zzfx(...[2,.5,185,.01,.04,.07,,.8,-4,,,,,.7,7.4,.4,,.59,.03]); // Hit 439
@@ -303,7 +303,7 @@ export default class Game{
     }
 
     pickedUp(thing){
-        this.ui.queueMessage("PICKED UP "+thing+".");
+        this.ui.queueMessage("PICKED UP A "+thing+".");
     }
 
     switchLevel(){
@@ -318,7 +318,7 @@ export default class Game{
     nextLevel(){
         
         var lArgs = this.levels[this.currentLevel];
-        this.level = new Level(this,lArgs[0],this.player,lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[7],lArgs[8]);
+        this.level = new Level(this,lArgs[0],lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[7],lArgs[8]);
         Game.fogColor = lArgs[6];
         this.state = "game";
     }

@@ -26,19 +26,19 @@ export default class Darkness extends Entity{
 
         var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
         
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,+0.5,0,0,this.light,1,tint,null);
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,-0.5,0,0,this.light,1,tint,null);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,+0.5,0,0,this.light,1,tint);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,-0.5,0,0,this.light,1,tint);
         var m = MeshBuilder.build(meshBuild);
         m.scale[0] = 0.4;
         this.meshes.push(m);
 
         meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0.1,0.8,0,this.light,1,tint,null);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0.1,0.8,0,this.light,1,tint);
         var m = MeshBuilder.build(meshBuild);
         this.meshes.push(m);
 
         meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.25);
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,1.5,0,this.light,1,tint,null);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,1.5,0,this.light,1,tint);
 
         var m = MeshBuilder.build(meshBuild);
        //m.setS(0.7);
@@ -47,8 +47,8 @@ export default class Darkness extends Entity{
 
         meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.02);
 
-        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,-0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0],null);
-        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0],null);
+        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,-0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0]);
+        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0]);
         var m = MeshBuilder.build(meshBuild);
         this.meshes.push(m);
     }
@@ -69,11 +69,6 @@ export default class Darkness extends Entity{
             i++;
         })
 
-       //if (Math.random()< 0.05){
-            //var p = new Particle(game.gl,game.shaderProgram,game.glTexture,this.position.x,this.position.y+0.5,this.position.z,0.8,{x:MathUtil.getRandom(-0.2,0.2), y: Math.random()/1.5, z: MathUtil.getRandom(-0.2,0.2)},0.05,[0.11,0.11,0.11,1.0],MathUtil.getRandom(0.05,0.2));
-            //game.level.addParticle(p);
-       // }
-
         if (this.hitDelay > 0) this.hitDelay -= deltaTime;
 
         this.distanceToPlayer.x = game.level.player.position.x - this.position.x;
@@ -90,7 +85,6 @@ export default class Darkness extends Entity{
                     if (point.x == Math.ceil(game.level.player.position.x) && point.y == Math.ceil(game.level.player.position.z)){
                         if (!this.hasPlayerAggro){
                             this.hasPlayerAggro = true;
-                            game.monsterAggro();
                         }
                     }
                 }else{

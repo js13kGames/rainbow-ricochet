@@ -13,7 +13,7 @@ export default class Particle extends Entity{
         this.scaleRatio = scaleRatio;
 
         var meshBuild = MeshBuilder.start(Game.gl,x,y,z,size);
-        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,tint,null);
+        MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,tint);
         this.mesh = MeshBuilder.build(meshBuild);
     }
 
@@ -29,8 +29,8 @@ export default class Particle extends Entity{
         this.mesh.setS(this.mesh.scale[0]-this.scaleRatio);
     }
 
-    render(alpha){
-        super.render(alpha);
+    render(){
+        super.render();
         this.mesh.render();
     }
 }

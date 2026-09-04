@@ -28,6 +28,6 @@ export default class Intro extends UI{
         this.drawShadowedTextAt("Save the last unicorn from being overtaken by darkness",210,520,26,"white","black");
         this.drawShadowedTextAt("by travel to the unicorn rainbow",396,600,26,"white","black");
 
-        this.drawShadowedTextAt("<<Click to focus and start>>",340,680,36,"white","black");
+        this.drawShadowedTextAt("<Click to focus and start>",340,680,36,"white","black");
     }
 }

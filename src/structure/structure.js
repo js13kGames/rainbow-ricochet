@@ -24,12 +24,6 @@ export default class Structure{
         this.AABB.maxX=x+1;
         this.AABB.maxY=y+yMaxAdjusted;
         this.AABB.maxZ=z+1;
-
-        /*console.log(this.constructor.name);
-        console.log("structure AABB");
-        console.log(this.AABB);
-        console.log("checkAABB");
-        console.log(checkAABB);*/
        
         return (checkAABB.minX <= this.AABB.maxX && checkAABB.maxX >= this.AABB.minX) &&
          (checkAABB.minY <= this.AABB.maxY && checkAABB.maxY >= this.AABB.minY) &&

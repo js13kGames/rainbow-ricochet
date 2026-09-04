@@ -13,7 +13,7 @@ export default class UnicornhornBullet extends Bullet{
             var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
             var c = Game.rainbowColors[Math.floor(Math.random()*6)];
             if (owner instanceof Darkness) c = [0.3,0.3,0.3];
-            MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,2,1,[c[0],c[1],c[2],0.9],null);
+            MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,2,1,[c[0],c[1],c[2],0.9]);
             this.mesh = MeshBuilder.build(meshBuild);
             this.mesh.setS(size);
             this.ttl = ttl;
