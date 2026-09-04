@@ -10,7 +10,7 @@ export default class Door extends Entity{
     static yellow = [1.0,1.0,0.0,1.0];
     static secret = [0.5,0.5,0.5,0.5];
     
-    constructor(level,x,y,z,color,wallColor){
+    constructor(level,x,y,z,color,wallColor,floorColor){
         super(level,x,y,z);
         this.color = color;
         this.lightReduction = 0;
@@ -41,7 +41,7 @@ export default class Door extends Entity{
         this.AABB.maxZ=this.position.z+1.5;
 
         meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
-        MeshBuilder.top(Structures.floor.texture.getUVs(),meshBuild,x,-1,z,level.getLight(x,z),wallColor);
+        MeshBuilder.top(Structures.floor.texture.getUVs(),meshBuild,x,-1,z,level.getLight(x,z),floorColor);
         this.floorMesh = MeshBuilder.build(meshBuild);
 
         meshBuild = MeshBuilder.start(Game.gl,0,0,0,0.5);
