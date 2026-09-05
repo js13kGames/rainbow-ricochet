@@ -29,7 +29,7 @@ export default class Player extends Entity{
         this.cameraSensitivity = 400;
 
         //this.keysHold.push(Door.blue);
-        //this.keysHold.push(Door.green);
+        this.keysHold.push(Door.green);
         //this.keysHold.push(Door.yellow);
         this.move(0,0,0);
         this.cameraYOffset = y;

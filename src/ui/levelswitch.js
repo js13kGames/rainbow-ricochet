@@ -26,9 +26,9 @@ export default class LevelSwitch extends UI{
         }
 
         if (currentLevel < 4){
-            this.drawShadowedTextAt("Lets play level "+currentLevel+1+":",0,450,40,"white","black",true);
+            this.drawShadowedTextAt("Lets play level "+(currentLevel+1)+":",0,450,40,"white","black",true);
 
-            this.drawShadowedTextAt(game.levels[currentLevel][8]+"",0,550,40,"white","black",true);
+            this.drawShadowedTextAt(game.levels[currentLevel][8]+" rainbow",0,550,40,"white","black",true);
 
             this.drawShadowedTextAt("<Click to play>",0,680,36,"white","black",true);
         }else{

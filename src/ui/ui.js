@@ -35,11 +35,6 @@ export default class UI{
             this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
         }
 
-        this.context.drawImage(Game.glTexture.image,0,59,5,5,(this.canvas.width/2)-8,(this.canvas.height/2)-2,16,16);
-            
-        this.drawTextAt("HEALTH:",56,this.canvas.height-100,24);
-        this.drawTextAt(((game.level.player.currentHealth/game.level.player.maxHealth)*100).toFixed(0)+"%", 166,this.canvas.height-100,26,"red");
-
         /*this.drawTextAt("FPS: "+game.stableFPS, this.canvas.width-120,42,20,"white");
         this.drawTextAt("tick:" + game.stableTick+" ms", this.canvas.width-120,72,20,"white");
         this.drawTextAt("rend:" + game.stableRend+" ms", this.canvas.width-120,102,20,"white");
@@ -57,14 +52,18 @@ export default class UI{
 
         if (this.showMiniMap){
             this.drawMiniMap(game);
+        }else{
+            this.context.drawImage(Game.glTexture.image,0,59,5,5,(this.canvas.width/2)-8,(this.canvas.height/2)-2,16,16); //crosshair
+            this.drawTextAt("HEALTH:",56,this.canvas.height-100,24);
+            this.drawTextAt(((game.level.player.currentHealth/game.level.player.maxHealth)*100).toFixed(0)+"%", 166,this.canvas.height-100,26,"red");
         }
         
 
         if (this.messages.length >0){
             for (let i =0;i < 3; i++){
                 let message = this.messages[i];
-                if(message != null) this.drawTextAt(message,27,33+(i*40),28,"black",false);
-                if(message != null) this.drawTextAt(message,24,30+(i*40),28,"red",false);
+                if(message != null) this.drawTextAt(message,27,33+(i*40),28,"black");
+                if(message != null) this.drawTextAt(message,24,30+(i*40),28,"red");
             }
         }
     }
@@ -120,7 +119,8 @@ export default class UI{
     drawTextAt(text,x,y,size,color="white",center=false){
         this.context.font=size+"px monospace";
         this.context.fillStyle = color;
-        if (center)this.context.textAlign = "center";
+        if (center) this.context.textAlign = "center";
+        else this.context.textAlign = "left";
         this.context.fillText(text,center?this.canvas.width/2:x,y);
     }
 
