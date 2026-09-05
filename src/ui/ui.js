@@ -1,4 +1,7 @@
 import Game from "../game.js";
+import DoorBlock from "../structure/doorblock.js";
+import Glassblock from "../structure/glassblock.js";
+import Wall from "../structure/wall.js";
 
 export default class UI{
     constructor(){
@@ -7,6 +10,8 @@ export default class UI{
         this.context.imageSmoothingEnabled = false;
         this.messages = [];
         this.messageTimer = 0;
+        this.showMiniMap = false;
+        this.mapKeyWasPressed = false;
 
 
 
@@ -43,6 +48,17 @@ export default class UI{
         this.drawTextAt("step:" + game.stepTime.toFixed(1)+" ", this.canvas.width-120,192,20,"white");
 
         this.drawTextAt("x:" + game.level.player.position.x.toFixed(1)+" z:"+game.level.player.position.z.toFixed(1), this.canvas.width-150,222,20,"white");*/
+        
+        var mapPressed = game.input.mapPressed;
+        if (mapPressed && !this.mapKeyWasPressed) {
+            this.showMiniMap = !this.showMiniMap; // toggle
+        }
+        this.mapKeyWasPressed = mapPressed;
+
+        if (this.showMiniMap){
+            this.drawMiniMap(game);
+        }
+        
 
         if (this.messages.length >0){
             for (let i =0;i < 3; i++){
@@ -51,6 +67,37 @@ export default class UI{
                 if(message != null) this.drawTextAt(message,24,30+(i*40),28,"red",false);
             }
         }
+    }
+
+    drawMiniMap(game){
+        this.context.globalCompositeOperation = 'multiply';
+        this.context.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
+        this.context.globalCompositeOperation = 'source-over';
+        this.context.font="8px monospace";
+        for (var x = 0;x < 64;x++){
+            for (var z = 0; z < 64;z++){
+                var draw = true;
+                var s = game.level.getStructure(x,z);
+                if (s instanceof Wall)
+                    this.context.fillStyle = "white";
+                else if (s instanceof Glassblock)
+                    this.context.fillStyle = "gray";
+                else if (s instanceof DoorBlock)
+                    this.context.fillStyle = "red";
+                else
+                    draw = false;
+                
+                if (draw) this.context.fillText("#",384+(x*8),(this.canvas.height/6)+(z*8));
+            }
+        }
+        
+        var px = game.level.player.position.x;
+        var pz = game.level.player.position.z;
+        this.context.fillStyle = "red";
+        this.context.font="12px monospace";
+        this.context.fillText("*",384+(px*8),(this.canvas.height/6)+(pz*8));
+        
     }
 
     drawBackground(image,ix,iy,w,h,tint){
