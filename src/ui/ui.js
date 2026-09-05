@@ -134,5 +134,9 @@ export default class UI{
         this.playerHurt = 0.2;
     }
 
+    clearMessages(){
+        this.messages = [];
+    }
+
 
 }

@@ -317,11 +317,17 @@ export default class Game{
         
     }
 
-    nextLevel(){
-        
+    startLevel(){
+        this.playerDead = false;
         var lArgs = this.levels[this.currentLevel];
         this.level = new Level(this,lArgs[0],lArgs[1],lArgs[2],lArgs[3],lArgs[4],lArgs[5],lArgs[7],lArgs[8]);
         Game.fogColor = lArgs[6];
         this.state = "game";
+    }
+
+    playerDied(){
+        this.playerDead = true;
+        this.state = "levelswitch";
+        this.ui.clearMessages();
     }
 }

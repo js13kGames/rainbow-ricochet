@@ -13,16 +13,19 @@ export default class LevelSwitch extends UI{
 
     render(game){
         var currentLevel = game.currentLevel;
-        if (currentLevel < 4 && this.clickDelay <=0 && game.input.firePressed) game.nextLevel();
+        if (currentLevel < 4 && this.clickDelay <=0 && game.input.firePressed) game.startLevel();
         this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
         this.drawBackground(Game.glTexture.image,48,48,16,16,'#4444ab');
 
 
 
-        if (currentLevel>0){
+        if (currentLevel>0 && game.level !=null && game.level.endTime != null && game.level.startTime!=null){
             this.drawShadowedTextAt("Finished level "+(currentLevel),0,150,60,"white","black",true);
             if(game.level != null) this.drawShadowedTextAt("in "+((game.level.endTime-game.level.startTime)/1000).toFixed(1)+" seconds",0,250,40,"red","black",true);
+        }
 
+        if (game.playerDead){
+            this.drawShadowedTextAt("Oh no, you died :(",0,150,60,"white","black",true);
         }
 
         if (currentLevel < 4){
