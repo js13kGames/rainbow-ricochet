@@ -186,7 +186,8 @@ export default class Player extends Entity{
         if (entity instanceof Rainbow){
             if (entity.pickup && !entity.disposed){
                 game.pickedUp("A RAINBOW");
-                game.ui.queueMessage("FIRE WITH RIGHT MOUSE BUTTON.");
+                if (!game.alreadySeenRainbowMessage) game.ui.queueMessage("FIRE WITH RIGHT MOUSE BUTTON.");
+                game.alreadySeenRainbowMessage = true;
             }
             if (entity.bounces > 0 || entity.pickup){
                 this.hasRainbowInHand = true;
@@ -224,7 +225,8 @@ export default class Player extends Entity{
             this.hasUnicornInHand = true;
             game.pickupKey();
             game.pickedUp("UNICORN HORN");
-            game.ui.queueMessage("FIRE WITH LEFT MOUSE BUTTON.");
+            if (!game.alreadySeenUnicornMessage) game.ui.queueMessage("FIRE WITH LEFT MOUSE BUTTON.");
+            game.alreadySeenUnicornMessage=true;
             game.level.deleteEntity(entity);
         }
     }

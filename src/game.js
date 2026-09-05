@@ -146,6 +146,8 @@ export default class Game{
         this.currentLevel = -1;
         //this.currentLevel = 3;
         
+        this.alreadySeenUnicornMessage = false;
+        this.alreadySeenRainbowMessage = false;
 
         
     }

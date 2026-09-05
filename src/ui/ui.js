@@ -22,7 +22,8 @@ export default class UI{
             this.messageCountdown -= deltaTime;
         }else{
             this.messages.shift();
-            if (this.messages.length > 0) this.messageCountdown = 3.5;
+            if (this.messages.length > 0) this.messageCountdown = this.messages[0].length/3.5;
+
         }
 
         if(this.playerHurt>0) this.playerHurt-= deltaTime;
@@ -126,7 +127,7 @@ export default class UI{
 
     queueMessage(message){
         this.messages.push(message);
-        this.messageCountdown = 3.5;
+        this.messageCountdown = message.length/3.5;
     }
 
     showPlayerHurt(){

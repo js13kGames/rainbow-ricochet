@@ -100,6 +100,11 @@ export default class Level{
         this.buildWallLevel();
         this.buildFloorLevel();
         this.buildTransparentLevel();
+
+        if (game.currentLevel==0){
+            game.ui.queueMessage("Move with WASD and look around with the mouse");
+            game.ui.queueMessage("Press E to show the map");
+        }
     }
 
     addDoor(game, x,z,color){
