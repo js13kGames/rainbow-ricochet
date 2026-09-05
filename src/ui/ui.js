@@ -21,7 +21,7 @@ export default class UI{
         if (this.messageCountdown > 0){
             this.messageCountdown -= deltaTime;
         }else{
-            this.messages.pop();
+            this.messages.shift();
             if (this.messages.length > 0) this.messageCountdown = 3.5;
         }
 
