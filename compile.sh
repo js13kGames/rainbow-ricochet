@@ -21,7 +21,7 @@ cp src/t-tinified.png dist/t.png
 
 cd dist
 #terser bundle.js -o i.js --compress --mangle --mangle-props reserved=["g","img","flush","bkg","cls","col","init","generate","createWave"] --timings --toplevel --module
-terser bundle.js -o g.js --compress --mangle --mangle-props --timings --toplevel --module
+terser bundle.js -o g.js --compress passes=3 --mangle --mangle-props --timings --toplevel --module
 rm bundle.js
 
 # Let roadroller run until stopped. I usually leave it running for an hour and then record the output parameters to save time next time
@@ -31,7 +31,7 @@ rm bundle.js
 #roadroller -O2 -D g.js -o ./o.js
 
 # Use the parameters from a -OO session
-roadroller -D -Zab31 -Zdy0 -Zlr2286 -Zmc3 -Zmd112 -Zpr16 -S0,1,2,3,5,7,14,25,42,161,197,338 g.js -o ./o.js
+roadroller -D -Zab31 -Zlr2104 -Zmc3 -Zmd121 -Zpr16 -S0,1,2,3,5,6,13,42,49,153,197,338 g.js -o ./o.js
 
 
 

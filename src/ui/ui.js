@@ -71,7 +71,7 @@ export default class UI{
 
     drawMiniMap(game){
         this.context.globalCompositeOperation = 'multiply';
-        this.context.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        this.context.fillStyle = 'rgba(0, 0, 0, 0.7)';
         this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
         this.context.globalCompositeOperation = 'source-over';
         this.context.font="8px monospace";

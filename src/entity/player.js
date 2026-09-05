@@ -186,7 +186,7 @@ export default class Player extends Entity{
 
         if (entity instanceof Rainbow){
             if (entity.pickup && !entity.disposed){
-                game.pickedUp("A RAINBOW");
+                game.pickedUp("RAINBOW");
                 if (!game.alreadySeenRainbowMessage) game.ui.queueMessage("FIRE WITH RIGHT MOUSE BUTTON.");
                 game.alreadySeenRainbowMessage = true;
             }
