@@ -76,24 +76,11 @@ export default class Darkness extends Entity{
         this.distanceToPlayer.z = game.level.player.position.z - this.position.z;
         var length = MathUtil.length(this.distanceToPlayer);
 
-        if (length < this.aggroRange){
-            var p = MathUtil.bresenham(Math.ceil(this.position.x), Math.ceil(this.position.z), Math.ceil(game.level.player.position.x), Math.ceil(game.level.player.position.z), Math.ceil(length));
-            for (let pi = 0; pi < p.length; pi++){
-                var point = p[pi];
-                var s = game.level.getStructure(point.x, point.y);
-                if (s != null && !s.blocksLight()) {
-                    if (point.x == Math.ceil(game.level.player.position.x) && point.y == Math.ceil(game.level.player.position.z)){
-                        if (!this.hasPlayerAggro){
-                            this.hasPlayerAggro = true;
-                        }
-                    }
-                }else{
-                    this.hasPlayerAggro = false;
-                    break;
-                } 
-            }
-        }else {
-            this.hasPlayerAggro = false;
+        this.hasPlayerAggro=length<this.aggroRange;
+        var s;
+        if(this.hasPlayerAggro){
+            var x=Math.ceil(game.level.player.position.x),z=Math.ceil(game.level.player.position.z),p=MathUtil.bresenham(Math.ceil(this.position.x),Math.ceil(this.position.z),x,z,Math.ceil(length));
+            for(var q of p)if(!(s=game.level.getStructure(q.x,q.y))||s.blocksLight()){this.hasPlayerAggro=false;break}
         }
 
          if (this.hasPlayerAggro && Math.random() < 0.008){

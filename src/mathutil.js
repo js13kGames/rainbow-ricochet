@@ -13,25 +13,18 @@ export default class MathUtil{
         out.z *= length;
     }
 
-    static bresenham(x, y, ex, ey, maxLength) {
-        var points = [];
-        var dx = Math.abs(ex - x);
-        var dy = Math.abs(ey - y);
-        var sx = Math.sign(ex - x);
-        var sy = Math.sign(ey - y);
-        let err = dx - dy;
-
-        for (let i = 0; i < maxLength; i++) {
-            points.push({ x, y });
-            if (x === ex && y === ey) break;
-
-            var e = 2 * err;
-            if (e > -dy) err -= dy, x += sx;
-            if (e < dx) err += dx, y += sy;
+    static bresenham(startX,startY,endX,endY,maxLength){
+        var points=[],dx=Math.abs(endX-startX),dy=Math.abs(endY-startY),sx=Math.sign(endX-startX),sy=Math.sign(endY-startY),e=dx-dy;
+        for(var i=0;i<maxLength;i++){
+            points.push({x: startX,y: startY});
+            if(startX==endX&&startY==endY)break;
+            var q=2*e;
+            if(q>-dy)e-=dy,startX+=sx;
+            if(q<dx)e+=dx,startY+=sy
         }
-
-        return points;
+        return points
     }
+
 
     // Generate a random number between min and max;
     static getRandom(min, max){

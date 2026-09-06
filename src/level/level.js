@@ -189,23 +189,17 @@ export default class Level{
         }
     }
 
-    generateLight(startX,startY, distance,strength){
-        for (let i = 0; i < Math.PI*2; i = i+0.01){
-            var stopX = startX + Math.sin(i) * distance;
-            var stopY = startY + Math.cos(i) * distance;
-            let light = strength;
-            var p = MathUtil.bresenham(startX, startY, stopX, stopY, distance);
-            for (let pi = 0; pi < p.length; pi++){
-                var point = p[pi];
-                light *= 0.74;
-                var s = this.getStructure(point.x, point.y);
-                if (s != null && !s.blocksLight()) {
-                    this.setLight(point.x,point.y,light);
-                }else break;
+    generateLight(x,y,d,l){
+        var s;
+        for(var i=0;i<6.28;i+=.01){
+            var p=MathUtil.bresenham(x,y,x+Math.sin(i)*d,y+Math.cos(i)*d,d),a=l;
+            for(var q of p){
+                a*=.74;
+                if(!(s=this.getStructure(q.x,q.y))||s.blocksLight())break;
+                this.setLight(q.x,q.y,a)
             }
         }
     }
-
     addEntity(entity){
         this.entities.push(entity);
     }
@@ -225,11 +219,8 @@ export default class Level{
 
     // Javascript doesn't have a way to just delete something smoothly from a list (AFAIK)
     deleteFromList(objectToDelete,sourceList){
-        for(let i = sourceList.length - 1; i >= 0; i--) {
-            if(sourceList[i] === objectToDelete) {
-                sourceList.splice(i, 1);
-            }
-        }
+        var i=sourceList.indexOf(objectToDelete)
+        i>=0&&sourceList.splice(i,1)
     }
 
     setStructure(x,z,structure){

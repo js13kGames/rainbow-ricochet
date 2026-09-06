@@ -144,7 +144,6 @@ export default class Game{
         ];
 
         this.currentLevel = -1;
-        //this.currentLevel = 3;
         
         this.alreadySeenUnicornMessage = false;
         this.alreadySeenRainbowMessage = false;
@@ -200,7 +199,7 @@ export default class Game{
        // this.tickTime = performance.now() - tickStart;
 
       //  if (ticked){
-            var renderStart = performance.now();
+            //var renderStart = performance.now();
             Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
             if (this.state == "game") Game.gl.clearColor(0.7,0.7,1.0,1.0);
             else if (this.state == "intro") Game.gl.clearColor(0.0,0.0,0.0,1.0);
@@ -261,7 +260,6 @@ export default class Game{
     }
 
     playGlassHit(){
-        //zzfx(...[1.8,.35,374,.01,.05,.01,1,1.7,,1,,,,.5,,.1,.06,0,.02,,-2476]); // Hit 522
         zzfx(...[.5,,232,.01,.02,.08,1,.7,-9,41,,,,,,,,.71,.07,,100]); // Shoot 641
     }
 
@@ -278,23 +276,13 @@ export default class Game{
     }
 
     openDoor(){
-        //zzfx(...[2.1,,73,.02,.01,.56,2,3.6,,3,,,,.8,,.5,.27,.45,.17]); // Explosion 317
-       // zzfx(...[.8,.2,63,.06,.69,.4,4,2.1,,,,,,2,,.9,,.45,.2,,-3499]); // Explosion 828
        zzfx(...[.2,0,43,1,0.6,.29,4,.7,-3.6,,,,,.7,,.6,,.7,,,-2968]); // Explosion 842
     }
-
-   // monsterHit(){
-    //    //zzfx(...[1.5,,378,.02,.09,.15,,2.8,-9,,,,,1.7,,.4,.07,.81,.02,,-1900]); // Hit 342
-   //}
 
     monsterDie(){
         //zzfx(...[2,,89,.02,.01,.54,4,1.6,,8,,,,.8,,.3,.36,.49,.17]); // Explosion 344
         zzfx(...[.4,.75,31,.06,.14,.59,,3.8,-6,5,,,,1,,.2,.02,.43,.07]); // Explosion 683
     }
-
-    //monsterAggro(){
-        //zzfx(...[1.2,,63,.06,.25,.41,3,1.6,,5,,,,1.3,3.2,.5,.47,.37,.12,,-3066]); // Explosion 404
-   // }
 
     playerHurt(){
         zzfx(...[2,.5,185,.01,.04,.07,,.8,-4,,,,,.7,7.4,.4,,.59,.03]); // Hit 439
