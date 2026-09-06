@@ -36,14 +36,14 @@ export default class UI{
             this.context.fillRect(0,0,this.canvas.width,this.canvas.height);
         }
 
-        /*this.drawTextAt("FPS: "+game.stableFPS, this.canvas.width-120,42,20,"white");
-        this.drawTextAt("tick:" + game.stableTick+" ms", this.canvas.width-120,72,20,"white");
-        this.drawTextAt("rend:" + game.stableRend+" ms", this.canvas.width-120,102,20,"white");
-        this.drawTextAt("accu:" + game.accumulator.toFixed(1)+" ", this.canvas.width-120,132,20,"white");
-        this.drawTextAt("time:" + game.time.toFixed(1)+" ", this.canvas.width-120,162,20,"white");
-        this.drawTextAt("step:" + game.stepTime.toFixed(1)+" ", this.canvas.width-120,192,20,"white");
+        //DEBUG this.drawTextAt("FPS: " + game.stableFPS, this.canvas.width-120,42,20,"white");
+        //DEBUG this.drawTextAt("tick:" + game.stableTick+" ms", this.canvas.width-120,72,20,"white");
+        //DEBUG this.drawTextAt("rend:" + game.stableRend+" ms", this.canvas.width-120,102,20,"white");
+        //DEBUG this.drawTextAt("accu:" + game.accumulator.toFixed(1)+" ", this.canvas.width-120,132,20,"white");
+        //DEBUG this.drawTextAt("time:" + game.time.toFixed(1)+" ", this.canvas.width-120,162,20,"white");
+        //DEBUG this.drawTextAt("step:" + game.stepTime.toFixed(1)+" ", this.canvas.width-120,192,20,"white");
 
-        this.drawTextAt("x:" + game.level.player.position.x.toFixed(1)+" z:"+game.level.player.position.z.toFixed(1), this.canvas.width-150,222,20,"white");*/
+        //DEBUG this.drawTextAt("x:" + game.level.player.position.x.toFixed(1)+" z:"+game.level.player.position.z.toFixed(1), this.canvas.width-150,222,20,"white");
         
         var mapPressed = game.input.mapPressed;
         if (mapPressed && !this.mapKeyWasPressed) {

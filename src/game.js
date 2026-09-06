@@ -138,7 +138,7 @@ export default class Game{
 
         if (deltaTime > 250) deltaTime = 250; // Dont allow too big jump in time.
 
-        //this.counter += deltaTime;
+        //DEBUG this.counter += deltaTime;
 
 
         this.stepTime = deltaTime;
@@ -155,22 +155,22 @@ export default class Game{
         
         
         var steps = 0;
-        //var tickStart = performance.now();
-        //var ticked = false;
+        //DEBUG var tickStart = performance.now();
+
 
         while (this.accumulator >= TICK_RATE && steps < MAX_STEPS) {
             this.tick(TICK_RATE / 1000);
             this.accumulator -= TICK_RATE;
             steps++;
-           // ticked = true;
+
         }
         if (steps === MAX_STEPS) this.accumulator = 0;
 
         
-       // this.tickTime = performance.now() - tickStart;
+        //DEBUG this.tickTime = performance.now() - tickStart;
 
-      //  if (ticked){
-            //var renderStart = performance.now();
+
+            //DEBUG var renderStart = performance.now();
             Game.gl.clear(Game.gl.COLOR_BUFFER_BIT | Game.gl.DEPTH_BUFFER_BIT);
             if (this.state == "game") Game.gl.clearColor(0.7,0.7,1.0,1.0);
             else if (this.state == "intro") Game.gl.clearColor(0.0,0.0,0.0,1.0);
@@ -182,17 +182,17 @@ export default class Game{
             Game.gl.blendFunc(Game.gl.SRC_ALPHA, Game.gl.ONE_MINUS_SRC_ALPHA);
             this.render();
 
-            //this.renderTime = performance.now() - renderStart;
-            //this.fps++;
+            //DEBUG this.renderTime = performance.now() - renderStart;
+            //DEBUG this.fps++;
       //  }
 
         // FPS and tick counter
-        /*if (this.counter > 1000){
-            this.stableFPS = this.fps;
-            this.stableTick = this.tickTime;
-            this.stableRend = this.renderTime;
-            this.counter = this.fps = 0;
-        }*/
+        //DEBUG if (this.counter > 1000){
+        //DEBUG     this.stableFPS = this.fps;
+        //DEBUG     this.stableTick = this.tickTime;
+        //DEBUG     this.stableRend = this.renderTime;
+        //DEBUG     this.counter = this.fps = 0;
+        //DEBUG }
     }
 
     tick(frameTime){
