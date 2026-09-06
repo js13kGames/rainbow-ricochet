@@ -37,7 +37,7 @@ export default class LevelSwitch extends UI{
         }else{
             this.drawShadowedTextAt("You did it!",0,350,40,"white","black",true);
             this.drawShadowedTextAt("You saved the rainbow to be overtaken by darkness",0,450,40,"white","black",true);
-            this.drawShadowedTextAt("and the last unicorn thanks you!",0,550,40,"white","black",true);
+            //this.drawShadowedTextAt("and the last unicorn thanks you!",0,550,40,"white","black",true);
             this.drawShadowedTextAt("Thanks for playing // Nicklas",0,650,30,"green","black",true);
         }
     }
