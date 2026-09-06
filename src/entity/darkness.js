@@ -6,19 +6,21 @@ import Bullet from "./bullet.js";
 import Entity from "./entity.js";
 import Particle from "./particle.js";
 import Game from "../game.js";
+import Rainbow from "./rainbow.js";
 
 export default class Darkness extends Entity{
     constructor(level,x,y,z) {
         super(level,x,y,z);
         //Game.glTexture = glTexture;
+        this.currentHealth = this.maxHealth = 2;
         this.texture = new Texture(Game.glTexture,16,16,16,16);
         this.eyesTexture = new Texture(Game.glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
         
         this.hitDelay = 0;
         this.light = 0.3;
-        this.distanceToPlayer = {x:0, z:0};
-        this.aggroRange = 15+(Math.random()*10);
+        this.distToPlayer = {x:0, z:0};
+        this.aggroRange = 15;
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -71,21 +73,35 @@ export default class Darkness extends Entity{
 
         if (this.hitDelay > 0) this.hitDelay -= deltaTime;
 
-        this.distanceToPlayer.x = game.level.player.position.x - this.position.x;
-        this.distanceToPlayer.y = 0;
-        this.distanceToPlayer.z = game.level.player.position.z - this.position.z;
-        var length = MathUtil.length(this.distanceToPlayer);
+        this.distToPlayer.x = game.level.player.position.x - this.position.x;
+        this.distToPlayer.y = 0;
+        this.distToPlayer.z = game.level.player.position.z - this.position.z;
+        var distanceToPlayer = MathUtil.length(this.distToPlayer);
 
-        this.hasPlayerAggro=length<this.aggroRange;
-        var s;
+        this.hasPlayerAggro = distanceToPlayer < this.aggroRange;
+
         if(this.hasPlayerAggro){
-            var x=Math.ceil(game.level.player.position.x),z=Math.ceil(game.level.player.position.z),p=MathUtil.bresenham(Math.ceil(this.position.x),Math.ceil(this.position.z),x,z,Math.ceil(length));
-            for(var q of p)if(!(s=game.level.getStructure(q.x,q.y))||s.blocksLight()){this.hasPlayerAggro=false;break}
+            // Shoot a ray out from the monster position to the player position.
+            var x=Math.ceil(game.level.player.position.x),
+                z=Math.ceil(game.level.player.position.z),
+                points=MathUtil.bresenham(Math.ceil(this.position.x),Math.ceil(this.position.z),x,z,Math.ceil(distanceToPlayer)),
+                s;
+            for(var p of points)
+                if(!(s=game.level.getStructure(p.x,p.y))
+                    || s.blocksLight()){
+                // If the monster don't have a straight line between his position and the player position drop the aggro.
+                // This is to avoid monster shooting at the player at the other side of the wall
+                this.hasPlayerAggro=false;
+                break
+            }
         }
 
-         if (this.hasPlayerAggro && Math.random() < 0.008){
-            MathUtil.normalize(this.distanceToPlayer);
-            var direction = {x:-this.distanceToPlayer.x,y:0,z:-this.distanceToPlayer.z};
+        // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
+        // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
+        if (this.hasPlayerAggro && Math.random() < 0.01+0.09*(1-distanceToPlayer/this.aggroRange)**2){
+            MathUtil.normalize(this.distToPlayer);
+            // Make the monster aim a bit off so it's not always hitting player
+            var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.15,0.15),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.15,0.15)};
             game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.2,3);
         }
     }
@@ -104,7 +120,8 @@ export default class Darkness extends Entity{
         if (!(entity instanceof Bullet)) return;
         if (entity.owner instanceof Darkness) return;
         if (this.hitDelay <= 0){
-            this.currentHealth--;
+            // code golf trick since true in javascript also is the number 1. So if it's a rainbow hitting reduce 2 from current health otherwise just 1.
+            this.currentHealth-=1+(entity instanceof Rainbow)
 
             if (this.currentHealth <=0){
                 this.disposed = true;
