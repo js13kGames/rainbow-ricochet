@@ -16,11 +16,13 @@ export default class Darkness extends Entity{
         this.texture = new Texture(Game.glTexture,16,16,16,16);
         this.eyesTexture = new Texture(Game.glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
+        this.startPosition = {x:x,y:y,z:z};
         
         this.hitDelay = 0;
         this.light = 0.3;
         this.distToPlayer = {x:0, z:0};
-        this.aggroRange = 15;
+        this.aggroRange = 18;
+        this.speed = MathUtil.getRandom(0.01,0.08);
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -72,6 +74,13 @@ export default class Darkness extends Entity{
         })
 
         if (this.hitDelay > 0) this.hitDelay -= deltaTime;
+        if (this.moveBackCounter >0) this.moveBackCounter -= deltaTime;
+
+        if (this.moveBackCounter <= 0 && !this.hasMovedBack){
+            this.position=this.startPosition;
+            this.move(0,0,0);
+            this.hasMovedBack = true;
+        }
 
         this.distToPlayer.x = game.level.player.position.x - this.position.x;
         this.distToPlayer.y = 0;
@@ -81,28 +90,64 @@ export default class Darkness extends Entity{
         this.hasPlayerAggro = distanceToPlayer < this.aggroRange;
 
         if(this.hasPlayerAggro){
+            // Reset any ongoing movingback counters
+            this.hasMovedBack=true;
             // Shoot a ray out from the monster position to the player position.
             var x=Math.ceil(game.level.player.position.x),
                 z=Math.ceil(game.level.player.position.z),
                 points=MathUtil.bresenham(Math.ceil(this.position.x),Math.ceil(this.position.z),x,z,Math.ceil(distanceToPlayer)),
                 s;
+            
+            // Loop trough the ray and if we hit a obstacle then we lost aggro and we will be teleported back
             for(var p of points)
                 if(!(s=game.level.getStructure(p.x,p.y))
                     || s.blocksLight()){
                 // If the monster don't have a straight line between his position and the player position drop the aggro.
                 // This is to avoid monster shooting at the player at the other side of the wall
                 this.hasPlayerAggro=false;
+                this.moveBackCounter=2.5;
+                this.hasMovedBack=false;
                 break
             }
         }
 
-        // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
-        // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
-        if (this.hasPlayerAggro && Math.random() < 0.01+0.09*(1-distanceToPlayer/this.aggroRange)**2){
+        if(this.hasPlayerAggro){
             MathUtil.normalize(this.distToPlayer);
-            // Make the monster aim a bit off so it's not always hitting player
-            var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.15,0.15),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.15,0.15)};
-            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.2,3);
+
+            // Move against the player and check against the enviroment if it's possible
+            var x=this.position.x+this.distToPlayer.x*this.speed,
+                z=this.position.z+this.distToPlayer.z*this.speed,
+                moveX=this.canMove(game,x,this.position.y,this.position.z),
+                moveZ=this.canMove(game,this.position.x,this.position.y,z);
+
+            // Depending on the result from the environment check move X and Z and seperate steps
+            if(moveX.i)this.move(x-this.position.x,0,0);
+            if(moveZ.i)this.move(0,0,z-this.position.z);
+
+            // if we can't move straight to the player try strafe in either direction instead
+            if(!moveX.i&&!moveZ.i){
+                x=this.position.x-this.distToPlayer.z*this.speed;
+                z=this.position.z+this.distToPlayer.x*this.speed;
+                moveX=this.canMove(game,x,this.position.y,this.position.z);
+                moveZ=this.canMove(game,this.position.x,this.position.y,z);
+            if(!moveX.i&&!moveZ.i){
+                x=this.position.x+this.distToPlayer.z*this.speed;
+                z=this.position.z-this.distToPlayer.x*this.speed;
+                moveX=this.canMove(game,x,this.position.y,this.position.z);
+                moveZ=this.canMove(game,this.position.x,this.position.y,z);
+            }
+            if(moveX.i)this.move(x-this.position.x,0,0);
+            if(moveZ.i)this.move(0,0,z-this.position.z);
+        }
+
+            // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
+            // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
+            if (Math.random() < 0.01+0.09*(1-distanceToPlayer/this.aggroRange)**2){
+                
+                // Make the monster aim a bit off so it's not always hitting player
+                var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.15,0.15),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.15,0.15)};
+                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.2,3);
+            }
         }
     }
 

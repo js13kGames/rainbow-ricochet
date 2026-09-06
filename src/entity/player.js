@@ -181,7 +181,7 @@ export default class Player extends Entity{
             this.currentHealth--;
             game.ui.showPlayerHurt();
             game.playerHurt();
-            this.hurtDelay = 0.5;
+            this.hurtDelay = 0.8;
         }
 
         if (entity instanceof Rainbow){
