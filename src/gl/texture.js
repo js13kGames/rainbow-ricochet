@@ -10,19 +10,12 @@ export default class Texture{
     }
 
     getUVs(){
-        if (this.dirty){
-            let w = 1 / 64;
-            let h = 1 / 64;
-
-            let u = (this.x * w)%1;
-            let v = (this.y * h)%1;
-            let u2 = (this.width * w)+u;
-            let v2 = (this.height * h)+v;
-
-            this.uvs = [[u,v2,0.0],[u2,v2,0.0], [u2,v,0.0],[u,v,0.0]];
-            this.dirty = false;
+        if(this.dirty){
+            var u=this.x/64,v=this.y/64,U=this.width/64+u,V=this.height/64+v;
+            this.uvs=[[u,V,0],[U,V,0],[U,v,0],[u,v,0]];
+            this.dirty=0
         }
-        return this.uvs;
-    }
+        return this.uvs
+}
 
 }

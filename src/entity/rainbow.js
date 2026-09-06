@@ -41,15 +41,13 @@ export default class Rainbow extends Bullet{
     }
 
     addBox(meshBuild,x,y,z,rgb,alpha,light){
-        var r = rgb[0];
-        var g = rgb[1];
-        var b = rgb[2];
-        MeshBuilder.left(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha]);
-        MeshBuilder.right(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha]);
-        MeshBuilder.front(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha]);
-        MeshBuilder.back(this.texture.getUVs(),meshBuild,x,y,z,light,1,[r,g,b,alpha]);
-        MeshBuilder.top(this.texture.getUVs(),meshBuild,x,y,z,light,[r,g,b,alpha]);
-        MeshBuilder.bottom(this.texture.getUVs(),meshBuild,x,y,z,light,[r,g,b,alpha]);
+        var c = [rgb[0],rgb[1],rgb[2],alpha],uv=this.texture.getUVs();
+        MeshBuilder.left(uv,meshBuild,x,y,z,light,1,c);
+        MeshBuilder.right(uv,meshBuild,x,y,z,light,1,c);
+        MeshBuilder.front(uv,meshBuild,x,y,z,light,1,c);
+        MeshBuilder.back(uv,meshBuild,x,y,z,light,1,c);
+        MeshBuilder.top(uv,meshBuild,x,y,z,light,c);
+        MeshBuilder.bottom(uv,meshBuild,x,y,z,light,c);
     }
 
     onStructureHit(game, pos,structure){

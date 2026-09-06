@@ -19,12 +19,8 @@ export default class Sensor extends Entity{
 
     tick(game,deltaTime){
         super.tick(game,deltaTime);
-        this.listReset++;
-        if (this.listReset >=3){
-            this.list.clear();
-            this.listReset = 0;
-        }
-        this.updateAABB(game.level);
+        if(++this.listReset>=3)this.list.clear(),this.listReset=0;
+        this.updateAABB(game.level)
     }
 
     updateAABB(level){

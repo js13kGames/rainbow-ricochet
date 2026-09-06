@@ -25,7 +25,6 @@ export default class Mesh{
 
     //Add verticies, colors, UVs and lights to this mesh
     addVerticies(verticies, cols, uvs,lights){
-        //this.verticies.push(...verticies);
         verticies.forEach(v=>{this.verticies.push(v)});
         this.updateCols(cols);
         this.updateUVs(uvs);
@@ -51,15 +50,11 @@ export default class Mesh{
         this.verticiesBuffer32.set(this.verticies);
 
         //Since we are always using squares the indicies will be the same for every 6 verticies
-        for (let i = 0; i < indiciesNeeded; i++){
-            for (let c = 0; c < 6; c++){
-                this.indiciesBuffer16[counter+c] = indicies[c] + vertexCounter;
-            }
-            vertexCounter += 4;
-            counter += 6;
-        }
+        for(var i=0;i<indiciesNeeded;i++)
+            for(var j=0;j<6;j++)
+                this.indiciesBuffer16[6*i+j]=indicies[j]+4*i;
+        this.numberOfIndicies=6*indiciesNeeded;
 
-        this.numberOfIndicies = counter;
 
         //Upload the arrays to the buffers on the graphic card
         Game.gl.bindBuffer(Game.gl.ARRAY_BUFFER, this.positionsBuffer);

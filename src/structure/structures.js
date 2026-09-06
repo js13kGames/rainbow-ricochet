@@ -18,14 +18,7 @@ export default class Structures{
     constructor(glTexture){
         Structures.wall = new Wall(glTexture);
         Structures.floor = new Floor(glTexture,0);
-        Structures.floor1 = new Floor(glTexture,0.75);
-        Structures.floor2 = new Floor(glTexture,1.25);
-        Structures.floor3 = new Floor(glTexture,1.75);
-        Structures.floor4 = new Floor(glTexture,2.25);
-        Structures.floor5 = new Floor(glTexture,2.75);
-        Structures.floor6 = new Floor(glTexture,3.25);
-        Structures.floor7 = new Floor(glTexture,3.75);
-        Structures.floor8 = new Floor(glTexture,4.25);
+        for(var i=0;i<8;i++)Structures['floor'+(i+1)]=new Floor(glTexture,i/2+.75)
         Structures.glassBlock = new Glassblock(glTexture);
         Structures.doorBlock = new DoorBlock();
         Structures.poision = new Poision(glTexture);

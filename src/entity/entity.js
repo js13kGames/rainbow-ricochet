@@ -66,13 +66,14 @@ export default class Entity{
             this.checkIntersects(game, x2, y, z2),
         ];
 
-        // This is ugly..  Prefer wall collisions over floor collisions (fake 3D trade‑off)
+        // Prefer wall collisions over floor collisions
         for (let structure of structures) {
             if (structure.i && !(structure.s instanceof Floor)) return { i: !structure.i, s: structure.s };
         }
         for (let structure of structures) {
             if (structure.i) return { i: !structure.i, s: structure.s };
         }
+        // If nothing collided (for example floor with heigt 0 isn't a tile) return true;
         return { i: true, s: null };
     }
 
