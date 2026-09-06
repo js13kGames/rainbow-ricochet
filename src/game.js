@@ -49,30 +49,37 @@ export default class Game{
        //The shader program above expanded:
         // Game.shaderProgram = new ShaderProgram(Game.gl,`
         //     precision highp float; 
-        //     attribute vec4 p,c,l,f;
-        //     attribute vec2 u;
-        //     uniform float rX,rY,crX,crY; 
-        //     uniform vec3 cp,mp,ms;
-        //     uniform vec4 o;
-        //     varying vec4 vc,fc; 
-        //     varying vec2 uv;
-        //     varying float cz; 
-        //     varying vec4 li;
+        //     attribute vec4 p,c,l,f; //p=vertexPosition,c=color,l=light strength
+        //     attribute vec2 u; //u=uv texture coordinates
+        //     uniform float rX,rY,crX,crY; //rX,rY=mesh rotation, crX, crY=camera rotation
+        //     uniform vec3 cp,mp,ms; //cp=cameraPosition, mp=meshPosition,ms=meshScale
+        //     uniform vec4 o; //o=fog color
+        //     varying vec4 vc,fc; //varying to fragment shader vc=color,fc=fog color
+        //     varying vec2 uv; // varying to fragment shader uv=uv texture coordinates
+        //     varying float cz; //varying to fragment shader cz=camera z-depth buffer
+        //     varying vec4 li; // varying to fragment shader li=light strength
+        //     //x rotation matrix
         //     mat4 rmX(float rX){ 
         //         return mat4( 1,0,0,0, 0,cos(rX),-sin(rX),0, 0,sin(rX),cos(rX),0, 0,0,0,1); 
-        //     } 
+        //     }
+        //     //y rotation matrix
         //     mat4 rmY(float rY){ 
         //         return mat4( cos(rY),0,sin(rY),0, 0,1,0,0, -sin(rY),0,cos(rY),0, 0,0,0,1 ); 
-        //     } 
+        //     }
+        //     // camera projection matrix
         //     mat4 cpm(float fov, float aspect, float near, float far) { 
         //         float f = 1.0 / tan(fov / 2.0);
         //         return mat4( f / aspect, 0., 0., 0., 0., f, 0., 0., 0., 0., (far + near) / (near - far), -1., 0., 0., (2. * far * near) / (near - far), 0. ); 
         //     }
             
         //     void main(){ 
-        //         vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.); 
-        //         mat4 proj = cpm(1.2,2.,0.1,40.) * rmX(crX) * rmY(crY); 
+        //         // rotation matrix of the vertex with x and y rotation plus scaling
+        //         vec4 rp = rmX(rX) * rmY(rY) * vec4(p.x*ms.x,p.y*ms.y,p.z*ms.z,p.w) + vec4(mp-cp,1.);
+        //         // projection matrix with field of view of 1.2 (about 90°)
+        //         mat4 proj = cpm(1.2,2.,0.1,40.) * rmX(crX) * rmY(crY);
+        //         // finally assign this vertex position my multiplying projection matrix with rotation matrix
         //         gl_Position = proj * rp;
+        //         assign the different varying variables we need in the fragment shader
         //         vc=c;
         //         li=l;
         //         uv=u;
@@ -82,20 +89,28 @@ export default class Game{
                 
         //     `,`
 
-        //     precision highp float; 
-        //     varying vec4 vc,li,fc;
-        //     varying vec2 uv; 
-        //     varying float cz;
-        //     uniform sampler2D s;
+        //     precision highp float;    
+        //     varying vec4 vc,li,fc; // varying from vertex shader vc=color,li=light strength,fc=fog color
+        //     varying vec2 uv; // varying from vertex shader uv=uv texture coordinates
+        //     varying float cz; //varying from vertex shader cz=camera z-depth buffer
+        //     uniform sampler2D s; // the texture sent to the fragment shader by the shaderprogram
 
-        //     uniform float t;
+        //     uniform float t; // a timer counting upwards, comes from performance.now() during rendering
 
         //     void main(){
+        //         // calculare the ammount of fog based on the camera z-buffer
         //         float fogFactor = exp2(-.0035*cz*cz);
+        //         // get the color of the texture pixel that is processed on this position of the screen
         //         vec4 col=texture2D(s,uv);
+        //         // don't draw fully transparent pixels (used by the billboarded sprites for example)
         //         if (col.a == 0.) discard;
+        //         // multiply texture pixel color with vertexcolor (tint) and the lightstrength
         //         vec4 c=col*vc*li; 
+        //         // this one just varies the strength of RGB by doing SIN and COS math using the timer
+        //         // this will create a small ammount of smooth light flickering. Since it's using
+        //         // three SIN and COS calculation it's not static blinking
         //         c.rgb *= .8+.03*sin(t*.005)+.06*cos(t*.003)+.04*sin(t*.006);
+        //         // finally mix the texture color(with tint,light and flickering) with the fog color
         //         gl_FragColor=mix(fc,c,fogFactor);
         //       }
             
