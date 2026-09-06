@@ -143,7 +143,7 @@ export default class Game{
             [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4,"Red"],
         ];
 
-        this.currentLevel = -1;
+        this.currentLevel = 0;
         
         this.alreadySeenUnicornMessage = false;
         this.alreadySeenRainbowMessage = false;
@@ -251,9 +251,9 @@ export default class Game{
         zzfx(...[,.45,330,.02,.03,.18,,1.9,,-32,,,,.2,,,,.94,.03]); // Pickup 58
     }
 
-    playRainbowWallHit(){
-        zzfx(...[1.1,,81,.01,.07,.38,4,3.4,,,,,,.5,,.6,,.44,.08]); // Explosion 77
-    }
+    //playRainbowWallHit(){
+    //    zzfx(...[1.1,,81,.01,.07,.38,4,3.4,,,,,,.5,,.6,,.44,.08]); // Explosion 77
+   // }
 
     playWallHit(){
         zzfx(...[3.2,,446,.02,.04,.17,,1.1,,,,,,1.8,,.4,,.56,.02,,-1623]); // Hit 492
