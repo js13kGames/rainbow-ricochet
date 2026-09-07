@@ -77,7 +77,9 @@ export default class Darkness extends Entity{
         if (this.moveBackCounter >0) this.moveBackCounter -= deltaTime;
 
         if (this.moveBackCounter <= 0 && !this.hasMovedBack){
-            this.position=this.startPosition;
+            this.position.x = this.startPosition.x;
+            this.position.y = this.startPosition.y;
+            this.position.z = this.startPosition.z;
             this.move(0,0,0);
             this.hasMovedBack = true;
         }
@@ -168,7 +170,6 @@ export default class Darkness extends Entity{
             // code golf trick since true in javascript also is the number 1. So if it's a rainbow hitting reduce 2 from current health otherwise just 1.
             //this.currentHealth-=1+(entity instanceof Rainbow)
             this.currentHealth--;
-            entity.disposed = true;
 
             if (this.currentHealth <=0){
                 this.disposed = true;
@@ -178,11 +179,7 @@ export default class Darkness extends Entity{
                     game.level.addParticle(p);
                 }
                
-            }else{
-                this.hitDelay = 0.25;
-                game.monsterHit();
             }
-            
         }
 
     }

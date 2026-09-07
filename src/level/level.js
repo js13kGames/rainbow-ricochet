@@ -189,14 +189,14 @@ export default class Level{
         }
     }
 
-    generateLight(x,y,d,l){
+    generateLight(x,y,distance,lightStrength){
         var s;
         for(var i=0;i<6.28;i+=.01){
-            var p=MathUtil.bresenham(x,y,x+Math.sin(i)*d,y+Math.cos(i)*d,d),a=l;
-            for(var q of p){
-                a*=.74;
-                if(!(s=this.getStructure(q.x,q.y))||s.blocksLight())break;
-                this.setLight(q.x,q.y,a)
+            var points=MathUtil.bresenham(x,y,x+Math.sin(i)*distance,y+Math.cos(i)*distance,distance),light=lightStrength;
+            for(var point of points){
+                light*=.74;
+                if(!(s=this.getStructure(point.x,point.y))||s.blocksLight())break;
+                this.setLight(point.x,point.y,light)
             }
         }
     }

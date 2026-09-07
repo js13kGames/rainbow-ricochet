@@ -16,7 +16,9 @@ export default class Input {
         this.pointer = { x: this.pointerX || 0, y: this.pointerY || 0 };
         this.firePressed = this.buttons[0] == "mousedown";
         this.secondFirePressed = this.buttons[2] == "mousedown";
-        this.mapPressed = this.keys[69] == "keydown" || this.keys[77] == "keydown";
+        this.mapPressed = this.keys[69] == "keydown";
+        this.plusPressed = this.keys[171] == "keydown";
+        this.minusPressed = this.keys[173] == "keydown";
         this.buttons[2] = this.keys[32] = null;
     }
 

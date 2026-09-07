@@ -50,6 +50,10 @@ export default class Player extends Entity{
     tick(game,deltaTime){
         super.tick(game,deltaTime);
         if (this.currentHealth <= 0) game.playerDied();
+        
+        this.cameraSensitivity-=game.input.plusPressed*13;
+        this.cameraSensitivity+=game.input.minusPressed*13;
+        if (this.cameraSensitivity < 50) this.cameraSensitivity = 50;
 
         var cameraYTargetDiff = this.yTarget - this.cameraYOffset;
         this.cameraYOffset = Math.abs(cameraYTargetDiff) > 0.08 ? this.cameraYOffset + (cameraYTargetDiff > 0 ? 0.08 : -0.2) : this.yTarget;
