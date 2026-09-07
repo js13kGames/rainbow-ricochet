@@ -12,7 +12,7 @@ export default class Darkness extends Entity{
     constructor(level,x,y,z) {
         super(level,x,y,z);
         //Game.glTexture = glTexture;
-        this.currentHealth = this.maxHealth = 2;
+        this.currentHealth = this.maxHealth = 1;
         this.texture = new Texture(Game.glTexture,16,16,16,16);
         this.eyesTexture = new Texture(Game.glTexture,63,0,1,1);
         var tint = [1.0, 1.0, 1.0, 1.0];
@@ -146,7 +146,7 @@ export default class Darkness extends Entity{
                 
                 // Make the monster aim a bit off so it's not always hitting player
                 var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.15,0.15),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.15,0.15)};
-                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.2,3);
+                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.3,3);
             }
         }
     }
@@ -166,7 +166,9 @@ export default class Darkness extends Entity{
         if (entity.owner instanceof Darkness) return;
         if (this.hitDelay <= 0){
             // code golf trick since true in javascript also is the number 1. So if it's a rainbow hitting reduce 2 from current health otherwise just 1.
-            this.currentHealth-=1+(entity instanceof Rainbow)
+            //this.currentHealth-=1+(entity instanceof Rainbow)
+            this.currentHealth--;
+            entity.disposed = true;
 
             if (this.currentHealth <=0){
                 this.disposed = true;
