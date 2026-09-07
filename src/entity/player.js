@@ -26,7 +26,7 @@ export default class Player extends Entity{
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
-        this.cameraSensitivity = 210;
+        this.cameraSensitivity = 400;
 
         //this.keysHold.push(Door.blue);
         //this.keysHold.push(Door.green);

@@ -7,7 +7,7 @@ export default class Input {
         onkeydown = onkeyup = e => this.keys[e.keyCode] = e.type;
         onmousemove = e => { this.pointerX += e.movementX; this.pointerY += e.movementY; };
         onmousedown = onmouseup = e => this.buttons[e.button] = e.type;
-        onclick = e => e.target.requestPointerLock({unadjustedMovement:true});
+        onclick = e => e.target.requestPointerLock();
         oncontextmenu = e => e.preventDefault();
     }
 
