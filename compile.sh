@@ -21,8 +21,12 @@ cp src/t-tinified.png dist/t.png
 
 cd dist
 #terser bundle.js -o i.js --compress --mangle --mangle-props reserved=["g","img","flush","bkg","cls","col","init","generate","createWave"] --timings --toplevel --module
-terser bundle.js -o g.js --compress passes=3 --mangle --mangle-props --timings --toplevel --module
+##terser bundle.js -o g.js --compress passes=3 --mangle --mangle-props --timings --toplevel --module
+#rm bundle.js
+
+closure-compiler --compilation_level ADVANCED --env BROWSER --externs ../closure-externs.js --js bundle.js --js_output_file gc.js
 rm bundle.js
+terser gc.js -o g.js --compress passes=3 --mangle --mangle-props --timings --toplevel --module
 
 # Let roadroller run until stopped. I usually leave it running for an hour and then record the output parameters to save time next time
 #roadroller -OO -D g.js -o ./roadroller.js
@@ -60,7 +64,7 @@ echo "</script>" >> index-template.html
 cat index-template.html | tr -d '\n' > index.html
 
 
-rm g.js o.js roadroller.js index-template.html
+rm gc.js g.js o.js roadroller.js index-template.html
 
 echo "Previous version:"
 ls -la ../dist.zip

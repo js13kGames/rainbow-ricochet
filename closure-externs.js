@@ -1,0 +1,11 @@
+var l1;
+var l2;
+var l3;
+var l4;
+var onkeydown;
+var onkeyup;
+var onmousemove;
+var onmousedown;
+var onmouseup;
+var onclick;
+var oncontextmenu;
