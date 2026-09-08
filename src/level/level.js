@@ -81,7 +81,7 @@ export default class Level{
 
                 if (levelChar == "m") this.addDarkness(game,x,z);
 
-                if (x == 0 || z == 0 || x == size-1 || z == size-1) this.setStructure(x,z,Structures.wall);
+                if(!x||!z||x==size-1||z==size-1) this.setStructure(x,z,Structures.wall);
             }
         }
 

@@ -25,14 +25,15 @@ terser bundle.js -o g.js --compress passes=3 --mangle --mangle-props --timings -
 rm bundle.js
 
 # Let roadroller run until stopped. I usually leave it running for an hour and then record the output parameters to save time next time
-#roadroller -OO -D g.js -o ./o.js
+#roadroller -OO -D g.js -o ./roadroller.js
 
 # Do 100 iterations
-#roadroller -O2 -D g.js -o ./o.js
+#roadroller -O2 -D g.js -o ./roadroller.js
 
 # Use the parameters from a -OO session
-roadroller -D -Zab31 -Zlr2501 -Zmc3 -Zmd145 -Zpr16 -S0,1,2,3,5,6,15,25,42,204,227,305 g.js -o ./o.js
+roadroller -D -Zab31 -Zlr2501 -Zmc3 -Zmd145 -Zpr16 -S0,1,2,3,5,6,15,25,42,204,227,305 g.js -o ./roadroller.js
 
+cat ../src/l1.js ../src/l2.js ../src/l3.js ../src/l4.js roadroller.js > o.js
 
 
 echo "<meta charset="UTF-8"><style>" > index-template.html
@@ -40,18 +41,18 @@ cat ../src/i.css >> index-template.html
 echo "</style>" >> index-template.html
 echo "<canvas id=\"u\" width="1280" height="720"></canvas>" >> index-template.html
 echo "<canvas id=\"c\" width="1280" height="720"></canvas>" >> index-template.html
-echo "<script>" >> index-template.html
-cat ../src/l1.js >> index-template.html
-echo "</script>" >> index-template.html
-echo "<script>" >> index-template.html
-cat ../src/l2.js >> index-template.html
-echo "</script>" >> index-template.html
-echo "<script>" >> index-template.html
-cat ../src/l3.js >> index-template.html
-echo "</script>" >> index-template.html
-echo "<script>" >> index-template.html
-cat ../src/l4.js >> index-template.html
-echo "</script>" >> index-template.html
+#echo "<script>" >> index-template.html
+#cat ../src/l1.js >> index-template.html
+#echo "</script>" >> index-template.html
+#echo "<script>" >> index-template.html
+#cat ../src/l2.js >> index-template.html
+#echo "</script>" >> index-template.html
+#echo "<script>" >> index-template.html
+#cat ../src/l3.js >> index-template.html
+#echo "</script>" >> index-template.html
+#echo "<script>" >> index-template.html
+#cat ../src/l4.js >> index-template.html
+#echo "</script>" >> index-template.html
 echo "<script charset=\"utf8\">" >> index-template.html
 cat o.js >> index-template.html
 echo "</script>" >> index-template.html
@@ -59,7 +60,7 @@ echo "</script>" >> index-template.html
 cat index-template.html | tr -d '\n' > index.html
 
 
-rm g.js o.js index-template.html
+rm g.js o.js roadroller.js index-template.html
 
 echo "Previous version:"
 ls -la ../dist.zip
