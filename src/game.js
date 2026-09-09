@@ -278,6 +278,10 @@ export default class Game{
         zzfx(...[.3,.45,672,.02,.02,.2,1,.6,,,324,.06,.02,,,,,.91,.03]); // Pickup 521
     }
 
+    bulletPickedUp(){
+        zzfx(...[.7,,216,,.01,.13,,3.3,,-106,267,.07,.1,.5,,.1,,.75,.03,,827]); // Pickup 941
+    }
+
     pickedUp(thing){
         this.ui.queueMessage("PICKED UP A "+thing+".");
     }

@@ -63,6 +63,7 @@ loadImage("level"+levelId+".png").then((image) => {
                 if (c == 0x00bdff) addToLevel(level,x,y,"h"); // Unicorn horn
                 if (c == 0x7dddff) addToLevel(level,x,y,"r"); // Rainbow
                 if (c == 0x9d9dff) addToLevel(level,x,y,"s"); // Health     
+                if (c == 0xe19a20) addToLevel(level,x,y,"b"); // Bullet pickup  
                 // Height floor
 
                 if (c == 0xff5555) addToLevel(level,x,y,"1");

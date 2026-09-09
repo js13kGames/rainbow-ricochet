@@ -1,6 +1,7 @@
 import Game from "../game.js";
 import MathUtil from "../mathutil.js";
 import Floor from "../structure/floor.js";
+import BulletPickup from "./bulletpickup.js";
 import Door from "./door.js";
 import Entity from "./entity.js";
 import HealthPickup from "./health.js";
@@ -21,8 +22,9 @@ export default class Player extends Entity{
         this.currentHealth = 10;
         this.maxHealth = 10;
         this.bobCounter = 0;
+        this.bullets = 15;
         //this.hasRainbowInHand = true;
-        //this.hasUnicornInHand = true;
+        this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
@@ -178,11 +180,12 @@ export default class Player extends Entity{
         }
 
         // Fire unicornhorn bullets
-        if (this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
+        if (this.bullets > 0 && this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
             //game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
-            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this);
-            this.primaryFireDelay = 0.3;
+            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this,0.1,0.8);
+            this.primaryFireDelay = 0.5;
             game.playShoot();
+            this.bullets--;
             this.unicornInHand.inHandYOffset = 0.6;
         }
 
@@ -244,8 +247,16 @@ export default class Player extends Entity{
                 game.healthPickedUp();
                 this.currentHealth += entity.ammount;
                 entity.dispose(game);
-            }
-            
+            } 
+        }
+
+        if (entity instanceof BulletPickup){
+            if (!this.alreadySeenBulletMessage) game.ui.queueMessage("PICKED UP BULLETS");
+            this.alreadySeenBulletMessage = true;
+            game.bulletPickedUp();
+            this.bullets += 3;
+            entity.dispose(game);
+
         }
 
         if (entity instanceof Door){

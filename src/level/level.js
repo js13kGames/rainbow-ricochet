@@ -19,6 +19,7 @@ import HealthPickup from "../entity/health.js";
 import Poision from "../structure/poision.js";
 import PoisionEntity from "../entity/poisionentity.js";
 import Player from "../entity/player.js";
+import BulletPickup from "../entity/bulletpickup.js";
 
 export default class Level{
     static SECTORSIZE = 4;
@@ -65,6 +66,7 @@ export default class Level{
                 else if (levelChar == "h") this.addUnicornHorn(game, x,z);
                 else if (levelChar == "r") this.addRainbow(game, x,z);
                 else if (levelChar == "s") this.addHealth(game, x,z);
+                else if (levelChar == "b") this.addBulletPickup(game, x,z);
                 else if (levelChar == "1") this.setStructure(x,z,Structures.floors[0]);
                 else if (levelChar == "2") this.setStructure(x,z,Structures.floors[1]);
                 else if (levelChar == "3") this.setStructure(x,z,Structures.floors[2]);
@@ -144,6 +146,12 @@ export default class Level{
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
         this.addEntity(new HealthPickup(this,x,floor.height,z,0.5));
+    }
+
+    addBulletPickup(game,x,z){
+        var floor = this.getStructure(x-1,z);
+        this.setStructure(x,z,floor);
+        this.addEntity(new BulletPickup(this,x,floor.height,z,0.5));
     }
 
     addPlayer(x,z){
