@@ -1,3 +1,4 @@
+import Darkness from "../entity/darkness.js";
 import Game from "../game.js";
 import DoorBlock from "../structure/doorblock.js";
 import Glassblock from "../structure/glassblock.js";
@@ -108,6 +109,27 @@ export default class UI{
         this.context.fillStyle = "green";
         this.context.font="12px monospace";
         this.context.fillText("@",384+(px*8),(this.canvas.height/6)+(pz*8));
+// DEBUG
+/*        if (game.level.player.printMap){
+            for (let [key, value] of  game.level.player.pathFinding.entries()) {
+                var [x, z] = key.split(',').map(Number);
+                this.context.fillStyle = "white";
+                this.context.font="8px monospace";
+                //this.context.fillText(value,10+(x*8),10+(z*8));
+                this.context.fillText(value,384+(x*8),(this.canvas.height/6)+(z*8));
+            }
+                
+                //this.context.font="8px monospace";
+                //this.context.fillText("#",10+(x*8),10+(z*8));
+            
+        }
+
+        game.level.entities.forEach(e=>{
+            if (e instanceof Darkness){
+                this.context.fillStyle = "red";
+                this.context.fillText("e",384+(Math.floor(e.position.x)*8),(this.canvas.height/6)+(Math.floor(e.position.z)*8));
+            }
+        })*/
         
     }
 

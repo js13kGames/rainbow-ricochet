@@ -29,11 +29,12 @@ export default class Player extends Entity{
         this.cameraSensitivity = 400;
 
         //this.keysHold.push(Door.blue);
-        //this.keysHold.push(Door.green);
+        this.keysHold.push(Door.green);
         //this.keysHold.push(Door.yellow);
         this.move(0,0,0);
         this.cameraYOffset = y;
         this.yTarget = y;
+        this.pathFinding = new Map();
     }
 
     updateCamera(game){
@@ -97,8 +98,42 @@ export default class Player extends Entity{
 
             var moveX = this.canMove(game, this.tempVector.x,this.position.y,this.position.z);
             var moveZ = this.canMove(game, this.position.x,this.position.y,this.tempVector.z);
-            if (moveX.i) this.move(this.tempVector.x-this.position.x,0,0);
-            if (moveZ.i) this.move(0,0,this.tempVector.z-this.position.z);
+            var tileChanged = false;
+            if (moveX.i){
+                if (Math.ceil(this.position.x) != Math.ceil(this.tempVector.x-this.position.x)){
+                    tileChanged = true;
+                }
+                this.move(this.tempVector.x-this.position.x,0,0);
+            }
+            if (moveZ.i){
+                if (Math.ceil(this.position.z) != Math.ceil(this.tempVector.z-this.position.z)){
+                    tileChanged = true;
+                }
+                this.move(0,0,this.tempVector.z-this.position.z);
+            }
+
+            if (tileChanged){
+                this.pathFinding.clear();
+                for (let i = 0; i < Math.PI*2; i = i+0.01){
+                    var stopX = this.position.x + Math.sin(i) * 20;
+                    var stopY = this.position.z + Math.cos(i) * 20;
+                    let distanceFromPlayer = 0;
+                    var p = MathUtil.bresenham(Math.round(this.position.x), Math.round(this.position.z), stopX, stopY, 20);
+                    for (let pi = 0; pi < p.length; pi++){
+                        var point = p[pi];
+                        var s = game.level.getStructure(point.x, point.y);
+                        if (s != null && !s.blocksLight()) {
+                            var key = `${point.x},${point.y}`;
+                            if (!this.pathFinding.has(key)) this.pathFinding.set(key,distanceFromPlayer);
+                            distanceFromPlayer++;
+                        }else break;
+                    }
+                }
+
+        //console.log(this.pathFinding);
+
+        this.printMap = true;
+            }
 
             if (moveX.s != null && (moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76)){
                 this.move(this.tempVector.x-this.position.x,0,0);
@@ -174,6 +209,8 @@ export default class Player extends Entity{
         if (this.unicornInHand != null && this.unicornInHand.inHandYOffset > 0){
             this.unicornInHand.inHandYOffset -= deltaTime*3;
         }
+
+        
 
         
     }

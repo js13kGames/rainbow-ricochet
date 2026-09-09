@@ -22,7 +22,7 @@ export default class Darkness extends Entity{
         this.light = 0.3;
         this.distToPlayer = {x:0, z:0};
         this.aggroRange = 18;
-        this.speed = MathUtil.getRandom(0.01,0.08);
+        this.speed = MathUtil.getRandom(0.03,0.07);
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -89,7 +89,7 @@ export default class Darkness extends Entity{
         this.distToPlayer.z = game.level.player.position.z - this.position.z;
         var distanceToPlayer = MathUtil.length(this.distToPlayer);
 
-        this.hasPlayerAggro = distanceToPlayer < this.aggroRange;
+        this.hasPlayerAggro = (distanceToPlayer < this.aggroRange);
 
         if(this.hasPlayerAggro){
             // Reset any ongoing movingback counters
@@ -113,41 +113,55 @@ export default class Darkness extends Entity{
             }
         }
 
-        if(this.hasPlayerAggro){
+        move_monster: if(distanceToPlayer < this.aggroRange){
             MathUtil.normalize(this.distToPlayer);
 
-            // Move against the player and check against the enviroment if it's possible
-            var x=this.position.x+this.distToPlayer.x*this.speed,
-                z=this.position.z+this.distToPlayer.z*this.speed,
-                moveX=this.canMove(game,x,this.position.y,this.position.z),
-                moveZ=this.canMove(game,this.position.x,this.position.y,z);
+            var directions = [
+                [+1,0],
+                [0,+1],
+                [-1,0],
+                [0,-1],
+                [+1,-1],
+                [+1,+1],
+                [-1,+1],
+                [-1,-1]
+            ]
 
-            // Depending on the result from the environment check move X and Z and seperate steps
-            if(moveX.i)this.move(x-this.position.x,0,0);
-            if(moveZ.i)this.move(0,0,z-this.position.z);
+            var seenDistance=32;
+            var choosenPath;
+            var choosenDirection;
+            
+            directions.forEach(d=>{
+                let key = `${d[0]+Math.ceil(this.position.x)},${d[1]+Math.ceil(this.position.z)}`;
+                let distance = game.level.player.pathFinding.get(key);
+                if (distance == null) return;
+                if (distance < seenDistance && distance > 1){
+                    seenDistance = distance;
+                    choosenPath = key;
+                    choosenDirection = d;
+                }
+            })
 
-            // if we can't move straight to the player try strafe in either direction instead
-            if(!moveX.i&&!moveZ.i){
-                x=this.position.x-this.distToPlayer.z*this.speed;
-                z=this.position.z+this.distToPlayer.x*this.speed;
-                moveX=this.canMove(game,x,this.position.y,this.position.z);
-                moveZ=this.canMove(game,this.position.x,this.position.y,z);
-            if(!moveX.i&&!moveZ.i){
-                x=this.position.x+this.distToPlayer.z*this.speed;
-                z=this.position.z-this.distToPlayer.x*this.speed;
-                moveX=this.canMove(game,x,this.position.y,this.position.z);
-                moveZ=this.canMove(game,this.position.x,this.position.y,z);
-            }
-            if(moveX.i)this.move(x-this.position.x,0,0);
-            if(moveZ.i)this.move(0,0,z-this.position.z);
+            if (choosenPath == null) break move_monster;
+            var choosenPath = choosenPath.split(',').map(Number);
+
+            this.tempVector.x = this.position.x + (choosenDirection[0]*this.speed);
+            this.tempVector.z = this.position.z + (choosenDirection[1]*this.speed);
+    
+            var moveX=this.canMove(game,this.tempVector.x,this.position.y,this.position.z);
+            var moveZ=this.canMove(game,this.position.x,this.position.y,this.tempVector.z);
+
+            if(moveX.i) this.move(this.tempVector.x-this.position.x,0,0);
+            if(moveZ.i) this.move(0,0,this.tempVector.z-this.position.z);
         }
 
-            // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
-            // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
-            if (Math.random() < 0.01+0.09*(1-distanceToPlayer/this.aggroRange)**2){
+        // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
+        // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
+        if (this.hasPlayerAggro){
+            if (Math.random() < 0.01+0.08*(1-distanceToPlayer/this.aggroRange)**2){
                 
                 // Make the monster aim a bit off so it's not always hitting player
-                var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.15,0.15),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.15,0.15)};
+                var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.18,0.18),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.18,0.18)};
                 game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,direction,20,this,0.3,3);
             }
         }

@@ -35,7 +35,7 @@ terser gc.js -o g.js --compress passes=3 --mangle --mangle-props --timings --top
 #roadroller -O2 -D g.js -o ./roadroller.js
 
 # Use the parameters from a -OO session
-roadroller -D -Zab31 -Zlr2501 -Zmc3 -Zmd145 -Zpr16 -S0,1,2,3,5,6,15,25,42,204,227,305 g.js -o ./roadroller.js
+roadroller -D -Zab17 -Zlr2737 -Zmc3 -Zmd130 -Zpr16 -S0,1,2,3,5,7,13,17,42,201,309,338 g.js -o ./roadroller.js
 
 cat ../src/l1.js ../src/l2.js ../src/l3.js ../src/l4.js roadroller.js > o.js
 
