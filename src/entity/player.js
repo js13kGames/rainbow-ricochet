@@ -18,7 +18,7 @@ export default class Player extends Entity{
 
         this.strafe = {x:0,z:0};
         this.speed = 10;
-        this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 2;
+        this.hurtDelay = this.primaryFireDelay = this.secondaryFireDelay = 0;
         this.currentHealth = 10;
         this.maxHealth = 10;
         this.bobCounter = 0;
@@ -62,8 +62,12 @@ export default class Player extends Entity{
         this.cameraYOffset = Math.abs(cameraYTargetDiff) > 0.08 ? this.cameraYOffset + (cameraYTargetDiff > 0 ? 0.08 : -0.2) : this.yTarget;
 
         this.primaryFireDelay -= deltaTime;
-        this.secondaryFireDelay -= deltaTime;
+        if (this.secondaryFireDelay >0) this.secondaryFireDelay -= deltaTime;
         this.hurtDelay -= deltaTime;
+        if (this.hasRainbowInHand && this.secondaryFireDelay < 0){
+            game.rainbowReady();
+            this.secondaryFireDelay = 0;
+        }
         
         this.velocity.z = game.input.axes.y;
 
@@ -180,21 +184,32 @@ export default class Player extends Entity{
         }
 
         // Fire unicornhorn bullets
-        if (this.bullets > 0 && this.hasUnicornInHand && game.input.firePressed && this.primaryFireDelay <= 0.0){
-            //game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
-            game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this,0.1,0.8);
-            this.primaryFireDelay = 0.5;
-            game.playShoot();
-            this.bullets--;
-            this.unicornInHand.inHandYOffset = 0.6;
+        if (this.hasUnicornInHand && game.input.firePressed){
+            if (this.primaryFireDelay <= 0.0 && this.bullets > 0){
+                //game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
+                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this,0.1,0.8);
+                this.primaryFireDelay = 0.5;
+                game.playShoot();
+                this.bullets--;
+                this.unicornInHand.inHandYOffset = 0.6;
+            }else{
+                if (this.primaryFireDelay <= 0.0){
+                    game.cantFireNow();
+                    this.primaryFireDelay = 0.5;
+                }
+            }
         }
 
         // Fire rainbow boomerang
-        if (this.hasRainbowInHand && game.input.secondFirePressed && this.secondaryFireDelay <= 0.0){
-            game.level.addEntity(new Rainbow(game.level,game,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
-            this.secondaryFireDelay = 0.9;
-            this.hasRainbowInHand = false;
-            game.throwRainbow();
+        if (this.hasRainbowInHand && game.input.secondFirePressed){
+            if (this.secondaryFireDelay <= 0.0){
+                game.level.addEntity(new Rainbow(game.level,game,this.position.x,this.position.y+0.9,this.position.z,cameraDirection,20));
+                //this.secondaryFireDelay = 5;
+                this.hasRainbowInHand = false;
+                game.throwRainbow();
+            }else{
+                game.cantFireNow();
+            }
         }
 
         if (this.rainbowInHand != null && !this.hasRainbowInHand && this.rainbowInHand.inHandYOffset > -1){
@@ -231,15 +246,21 @@ export default class Player extends Entity{
         if (entity instanceof Rainbow){
             if (entity.pickup && !entity.disposed){
                 game.pickedUp("RAINBOW");
-                if (!game.alreadySeenRainbowMessage) game.ui.queueMessage("FIRE WITH RIGHT MOUSE BUTTON.");
+                if (!game.alreadySeenRainbowMessage){
+                    game.ui.queueMessage("FIRE WITH RIGHT MOUSE BUTTON.");
+                    game.ui.queueMessage("RAINBOW HAS A 2 SECONDS COOLDOWN.");
+                }
                 game.alreadySeenRainbowMessage = true;
+                this.secondaryFireDelay = 0;
             }
             if (entity.bounces > 0 || entity.pickup){
                 this.hasRainbowInHand = true;
+                
                 game.catchRainbow();
                 if (entity.sensor) entity.sensor.disposed = true;
                 entity.dispose(game);
             }
+            if (!entity.pickup) this.secondaryFireDelay = 2;
         }
 
         if (entity instanceof HealthPickup){
@@ -286,11 +307,11 @@ export default class Player extends Entity{
 
     renderInHand(){
         if (this.rainbowInHand != null && this.rainbowInHand.inHandYOffset > -1){
-            this.rainbowInHand.renderinHand();
+            this.rainbowInHand.renderinHand(this);
         }
 
         if (this.unicornInHand != null){
-            this.unicornInHand.renderinHand();
+            this.unicornInHand.renderinHand(this);
         }
     }
 }

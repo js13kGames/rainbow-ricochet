@@ -131,7 +131,7 @@ export default class Game{
             [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4,"Red"],
         ];
 
-        this.currentLevel = -1;
+        this.currentLevel = 0;
         
         this.alreadySeenUnicornMessage = false;
         this.alreadySeenRainbowMessage = false;   
@@ -257,6 +257,10 @@ export default class Game{
         zzfx(...[2,,257,.01,.03,.17,,3.3,,-96,113,.07,,,,,.04,.51,.01,,-1409]); // Pickup 109
     }
 
+    rainbowReady(){
+        zzfx(...[1.5,,334,.03,.19,.06,2,3.3,-13,45,-50,,,.3,,.2,,.56,.08,.01,-1182]);
+    }
+
     pickupKey(){
         zzfx(...[.6,,270,,.09,.07,1,,,,396,.07,.09,,,,,.85,,,146]); // Pickup 135
     }
@@ -280,6 +284,10 @@ export default class Game{
 
     bulletPickedUp(){
         zzfx(...[.7,,216,,.01,.13,,3.3,,-106,267,.07,.1,.5,,.1,,.75,.03,,827]); // Pickup 941
+    }
+
+    cantFireNow(){
+        zzfx(...[1.6,,53,,.01,.02,,.1,,-3,,,.07,,,,.01,.98,.01,.03]); // Blip 950
     }
 
     pickedUp(thing){

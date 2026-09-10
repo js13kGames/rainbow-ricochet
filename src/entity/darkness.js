@@ -181,8 +181,6 @@ export default class Darkness extends Entity{
         if (!(entity instanceof Bullet)) return;
         if (entity.owner instanceof Darkness) return;
         if (this.hitDelay <= 0){
-            // code golf trick since true in javascript also is the number 1. So if it's a rainbow hitting reduce 2 from current health otherwise just 1.
-            //this.currentHealth-=1+(entity instanceof Rainbow)
             this.currentHealth--;
 
             if (this.currentHealth <=0){
