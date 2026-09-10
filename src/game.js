@@ -131,7 +131,7 @@ export default class Game{
             [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4,"Red"],
         ];
 
-        this.currentLevel = 0;
+        this.currentLevel = -1;
         
         this.alreadySeenUnicornMessage = false;
         this.alreadySeenRainbowMessage = false;   

@@ -56,7 +56,7 @@ export default class UI{
             this.drawMiniMap(game);
         }else{
             this.context.drawImage(Game.glTexture.image,0,59,5,5,(this.canvas.width/2)-8,(this.canvas.height/2)-2,16,16); //crosshair
-            if(game.level.player.hasUnicornInHand) this.drawTextAt("BULLETS:",56,this.canvas.height-90,24);
+            if(game.level.player.hasUnicornInHand) this.drawTextAt("BULLETS:",56,this.canvas.height-90,24,game.level.player.bullets<=0?"red":"white");
             if(game.level.player.hasUnicornInHand) this.drawTextAt(game.level.player.bullets,180,this.canvas.height-90,24,"red");
             this.drawTextAt("HEALTH :",56,this.canvas.height-120,24);
             this.drawTextAt(((game.level.player.currentHealth/game.level.player.maxHealth)*100).toFixed(0)+"%", 180,this.canvas.height-120,26,"red");
