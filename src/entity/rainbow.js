@@ -90,7 +90,7 @@ export default class Rainbow extends Bullet{
         super.onEntityHit(game,entity);
         if (this.pickup) return;
         if (entity instanceof Darkness){
-            this.bounces += 1;
+            this.bounces += 1.5;
             this.speed -= 2;
             var targets = Array.from(this.sensor.list)
             .sort((a,b)=>{
