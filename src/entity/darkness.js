@@ -166,7 +166,7 @@ export default class Darkness extends Entity{
         // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
         // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
         if (this.inAggroRange && this.willAttackPlayer){
-            if (Math.random() < 0.01+0.08*(1-distanceToPlayer/this.aggroRange)**2){
+            if (Math.random() < 0.01+0.10*(1-distanceToPlayer/this.aggroRange)**2){
                 
                 // Make the monster aim a bit off so it's not always hitting player
                 var direction = {x:-this.distToPlayer.x+MathUtil.getRandom(-0.18,0.18),y:0,z:-this.distToPlayer.z+MathUtil.getRandom(-0.18,0.18)};

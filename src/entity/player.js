@@ -138,7 +138,7 @@ export default class Player extends Entity{
 
         //console.log(this.pathFinding);
 
-        this.printMap = true;
+        //this.printMap = true;
             }
 
             if (moveX.s != null && (moveX.s instanceof Floor && moveX.s.height >0 && moveX.s.height - this.position.y < 0.76)){

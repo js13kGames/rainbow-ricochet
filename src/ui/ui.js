@@ -108,8 +108,8 @@ export default class UI{
         
         var px = game.level.player.position.x;
         var pz = game.level.player.position.z;
-        this.context.fillStyle = "green";
-        this.context.font="12px monospace";
+        this.context.fillStyle = "aquamarine";
+        this.context.font="bold 12px monospace";
         this.context.fillText("@",384+(px*8),(this.canvas.height/6)+(pz*8));
 // DEBUG
 /*        if (game.level.player.printMap){
