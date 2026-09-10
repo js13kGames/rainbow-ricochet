@@ -49,10 +49,11 @@ export default class Darkness extends Entity{
         this.meshes.push(m);
 
 
-        meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.02);
+        meshBuild = MeshBuilder.start(Game.gl,x,y,z,MathUtil.getRandom(0.01,0.09));
 
-        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,-0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0]);
-        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,0.1,1.5,0.02,2,1,[1.0,0.0,0.0,1.0]);
+        var c = Game.rainbowColors[Math.floor(Math.random()*6)];
+        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,-0.1,1.5,0.02,2,1,[c[0],c[1],c[2],0.9]);
+        MeshBuilder.billboard(this.eyesTexture.getUVs(),meshBuild,0.1,1.5,0.02,2,1,[c[0],c[1],c[2],0.9]);
         var m = MeshBuilder.build(meshBuild);
         this.meshes.push(m);
     }
