@@ -84,14 +84,19 @@ export default class Darkness extends Entity{
             this.hasMovedBack = true;
         }
 
+        if (this.attackPlayerCounter >0) this.attackPlayerCounter -= deltaTime;
+        if (this.attackPlayerCounter <=0 && !this.willAttackPlayer){
+            this.willAttackPlayer = true;
+        }
+
         this.distToPlayer.x = game.level.player.position.x - this.position.x;
         this.distToPlayer.y = 0;
         this.distToPlayer.z = game.level.player.position.z - this.position.z;
         var distanceToPlayer = MathUtil.length(this.distToPlayer);
 
-        this.hasPlayerAggro = (distanceToPlayer < this.aggroRange);
+        this.inAggroRange = (distanceToPlayer < this.aggroRange);
 
-        if(this.hasPlayerAggro){
+        if(this.inAggroRange){
             // Reset any ongoing movingback counters
             this.hasMovedBack=true;
             // Shoot a ray out from the monster position to the player position.
@@ -106,11 +111,14 @@ export default class Darkness extends Entity{
                     || s.blocksLight()){
                 // If the monster don't have a straight line between his position and the player position drop the aggro.
                 // This is to avoid monster shooting at the player at the other side of the wall
-                this.hasPlayerAggro=false;
+                this.inAggroRange=false;
+                this.willAttackPlayer = false;
                 this.moveBackCounter=2.5;
                 this.hasMovedBack=false;
                 break
             }
+
+            if (!this.willAttackPlayer && !this.inAggroRange) this.attackPlayerCounter = 0.5;
         }
 
         move_monster: if(distanceToPlayer < this.aggroRange){
@@ -157,7 +165,7 @@ export default class Darkness extends Entity{
 
         // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
         // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
-        if (this.hasPlayerAggro){
+        if (this.inAggroRange && this.willAttackPlayer){
             if (Math.random() < 0.01+0.08*(1-distanceToPlayer/this.aggroRange)**2){
                 
                 // Make the monster aim a bit off so it's not always hitting player

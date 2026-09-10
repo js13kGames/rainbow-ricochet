@@ -187,7 +187,7 @@ export default class Player extends Entity{
         if (this.hasUnicornInHand && game.input.firePressed){
             if (this.primaryFireDelay <= 0.0 && this.bullets > 0){
                 //game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
-                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this,0.1,0.8);
+                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this,0.1,0.6);
                 this.primaryFireDelay = 0.5;
                 game.playShoot();
                 this.bullets--;
