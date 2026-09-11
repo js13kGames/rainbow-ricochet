@@ -5,24 +5,9 @@ rollup g.js --format cjs --file ../dist/bundle.js
 
 cd ..
 
-#mkdir -p temp
-
-#cp -av src/t.png temp
-
-#cd temp
-#oxipng -o max --strip all t.png --out oxipng.png -v --zc 12 -a
-
-#cp -av oxipng.png ../dist/t.png
-#rm t.png oxipng.png
-#cd ..
-#rmdir temp
-
 cp src/t-tinified.png dist/t.png
 
 cd dist
-#terser bundle.js -o i.js --compress --mangle --mangle-props reserved=["g","img","flush","bkg","cls","col","init","generate","createWave"] --timings --toplevel --module
-##terser bundle.js -o g.js --compress passes=3 --mangle --mangle-props --timings --toplevel --module
-#rm bundle.js
 
 closure-compiler --compilation_level ADVANCED --env BROWSER --externs ../closure-externs.js --js bundle.js --js_output_file gc.js
 rm bundle.js
@@ -45,18 +30,6 @@ cat ../src/i.css >> index-template.html
 echo "</style>" >> index-template.html
 echo "<canvas id=\"u\" width="1280" height="720"></canvas>" >> index-template.html
 echo "<canvas id=\"c\" width="1280" height="720"></canvas>" >> index-template.html
-#echo "<script>" >> index-template.html
-#cat ../src/l1.js >> index-template.html
-#echo "</script>" >> index-template.html
-#echo "<script>" >> index-template.html
-#cat ../src/l2.js >> index-template.html
-#echo "</script>" >> index-template.html
-#echo "<script>" >> index-template.html
-#cat ../src/l3.js >> index-template.html
-#echo "</script>" >> index-template.html
-#echo "<script>" >> index-template.html
-#cat ../src/l4.js >> index-template.html
-#echo "</script>" >> index-template.html
 echo "<script charset=\"utf8\">" >> index-template.html
 cat o.js >> index-template.html
 echo "</script>" >> index-template.html
