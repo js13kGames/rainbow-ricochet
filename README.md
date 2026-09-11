@@ -7,13 +7,15 @@ JS13k 2026 Theme: Unicorns and Rainbows.
 
 The whole game is written in ES6 Javascript.
 
+As starting point I used my small [3D-template](https://github.com/nicklaslof/js13k-3dtemplate) that has slowly been developed during JS13k since 2020.
+
 I made the graphics in Libresprite and compressed them with TinyPNG and Compress-or-die.
 
 Wall and floor graphic created by https://isadu.itch.io
 
 The sound effects was created in the exellent ZzFX web application and using ZzFX library to play them.
 
-Minification done with rollup, google closure compiler and terser.
+Minification done with Rollup, Google closure compiler and Terser.
 
 Black magic compression done with Roadroller.
 
