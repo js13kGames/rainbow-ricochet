@@ -18,7 +18,7 @@ export default class Intro extends UI{
         
         this.drawBackground(Game.glTexture.image,16,48,16,16,'#2cabab');
 
-        this.drawShadowedTextAt("DARKNESS",0,100,70,"white","black",true);
+        this.drawShadowedTextAt("RAINBOW RICOCHET",0,100,70,"white","black",true);
 
         this.drawShadowedTextAt("A game for JS13k 2026",0,200,48,"white","black",true);
         this.drawShadowedTextAt("by Nicklas Löf",0,280,48,"white","black",true);
