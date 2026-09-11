@@ -23,6 +23,7 @@ export default class Darkness extends Entity{
         this.distToPlayer = {x:0, z:0};
         this.aggroRange = 18;
         this.speed = MathUtil.getRandom(0.03,0.07);
+        this.bobCounter = 0;
 
         var headCounter = Math.random()*10;
         this.meshMoveCounter = [Math.random()*10,Math.random()*10,headCounter,headCounter];
@@ -66,7 +67,7 @@ export default class Darkness extends Entity{
         this.meshes.forEach(m=>{
             this.meshMoveCounter[i]+=deltaTime;
             var xOffset = Math.sin(this.meshMoveCounter[i]);
-            var yOffset = Math.cos(this.meshMoveCounter[i]);
+            var yOffset = Math.cos(this.meshMoveCounter[i]+Math.sin(this.bobCounter)*8);
             var zOffset = Math.sin(this.meshMoveCounter[i]+0.5);
             m.setRotationY(-Game.camera.currentRot);
             m.setPos(this.position.x+xOffset/14,this.position.y+0.1+yOffset/14,this.position.z+zOffset/14);
@@ -162,8 +163,9 @@ export default class Darkness extends Entity{
 
             if(moveX.i) this.move(this.tempVector.x-this.position.x,0,0);
             if(moveZ.i) this.move(0,0,this.tempVector.z-this.position.z);
+            if (moveX.i || moveZ.i) this.bobCounter += deltaTime;
         }
-
+        
         // If the monster is close it will start shoot randomly. The closer you are the more frequent. This is to stop player to just rush trough enimies running for the exit.
         // Using ** is not a typo since it's the operator for expotentional operations so the distance from the player to the monster is more smooth.
         if (this.inAggroRange && this.willAttackPlayer){
