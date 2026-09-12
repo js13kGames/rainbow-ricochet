@@ -37,4 +37,6 @@ The game is © Nicklas Löf 2026 and can't be distributed anywhere else than at 
 
 [Kang Seonghoon](https://twitter.com/senokay) for [Roadroller](https://lifthrasiir.github.io/roadroller/)
 
+[burntcustard](https://burnt.io) for [Roadroller optimizations](https://github.com/burntcustard/roadroller/tree/feature/hierarchical-mixers-zopfli-optimizations)
+
 [Andrzej Mazur](https://end3r.com/) for organizing JS13k every year! :)
