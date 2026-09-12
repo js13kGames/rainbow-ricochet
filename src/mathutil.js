@@ -7,10 +7,12 @@ export default class MathUtil{
 
     static normalize(out) {
         var length = out.x * out.x + out.y * out.y + out.z * out.z;
-        if (length > 0) length = 1 / Math.sqrt(length);
-        out.x *= length;
-        out.y *= length;
-        out.z *= length;
+        if(length > 1){
+            length = 1/Math.sqrt(length);
+            out.x *= length;
+            out.y *= length;
+            out.z *= length;
+        }
     }
 
     static bresenham(startX,startY,endX,endY,maxLength){

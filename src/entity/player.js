@@ -23,7 +23,7 @@ export default class Player extends Entity{
         this.maxHealth = 10;
         this.bobCounter = 0;
         this.bullets = 15;
-        //this.hasRainbowInHand = true;
+        this.hasRainbowInHand = true;
         //this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);
@@ -68,21 +68,29 @@ export default class Player extends Entity{
             game.rainbowReady();
             this.secondaryFireDelay = 0;
         }
-        
-        this.velocity.z = game.input.axes.y;
+
+        if (game.input.axes.x !=0 || game.input.axes.y != 0){
+            this.bobCounter += deltaTime;
+        }else{
+            this.bobCounter = 0;
+        }
+        this.velocity.x = game.input.axes.x || this.velocity.x * 0.85;
+        this.velocity.z = game.input.axes.y || this.velocity.z * 0.85;
 
         this.strafe.x = 0;
         this.strafe.z = 0;
 
         let cameraDirection = Game.camera.getDirection();
-        if (game.input.axes.x < 0) MathUtil.crossProduct(this.strafe,cameraDirection,Game.up);
-        if (game.input.axes.x > 0) MathUtil.crossProduct(this.strafe,cameraDirection,Game.down);
+        if (this.velocity.x < 0)
+            MathUtil.crossProduct(this.strafe,cameraDirection,Game.up);
 
-        if (this.velocity.x !=0 || this.velocity.z != 0){
-            this.bobCounter += deltaTime;
-        }else{
-            this.bobCounter = 0;
-        }
+        if (this.velocity.x > 0)
+            MathUtil.crossProduct(this.strafe,cameraDirection,Game.down);
+
+        this.strafe.x *= Math.abs(this.velocity.x);
+        this.strafe.z *= Math.abs(this.velocity.x);
+
+        
 
         if (this.velocity.x !=0 || this.velocity.z != 0 || this.strafe.x != 0 || this.strafe.z !=0){
             //combine forward/backward movement with strafe movement and multiply that with the direction the camera is facing
