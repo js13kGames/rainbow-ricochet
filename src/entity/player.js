@@ -74,8 +74,8 @@ export default class Player extends Entity{
         }else{
             this.bobCounter = 0;
         }
-        this.velocity.x = game.input.axes.x || this.velocity.x * 0.85;
-        this.velocity.z = game.input.axes.y || this.velocity.z * 0.85;
+        this.velocity.x = game.input.axes.x || this.velocity.x * 0.82;
+        this.velocity.z = game.input.axes.y || this.velocity.z * 0.82;
 
         this.strafe.x = 0;
         this.strafe.z = 0;
