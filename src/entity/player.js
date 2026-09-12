@@ -186,8 +186,16 @@ export default class Player extends Entity{
         // Fire unicornhorn bullets
         if (this.hasUnicornInHand && game.input.firePressed){
             if (this.primaryFireDelay <= 0.0 && this.bullets > 0){
-                //game.level.addEntity(new UnicornhornBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40));
-                game.level.shootBullet(this.position.x,this.position.y + 0.9,this.position.z,cameraDirection,40,this,0.1,0.6);
+                // Offset the bullet so it comes from the player left hand, also move it slightly forward.
+                var bulletSideOffset = 0.25, bulletFrontOfPlayerOffset = 0.5;
+                // The bulletdirection which basically is the cameradirection but slightly offset since the bullet comes a bit from the left
+                var bulletDirection = {x:cameraDirection.x + cameraDirection.z *-0.025, y:cameraDirection.y, z:cameraDirection.z - cameraDirection.x *- 0.025}
+                // Fire the bullet. The important thing here is to set the 0.06 nocollisiontimer since the bullet would hit walls a bit too easily when
+                // it's offset to the left.
+                game.level.shootBullet(this.position.x - cameraDirection.z * bulletSideOffset + cameraDirection.x * bulletFrontOfPlayerOffset,
+                    this.position.y+1.2,
+                    this.position.z + cameraDirection.x * bulletSideOffset + cameraDirection.z * bulletFrontOfPlayerOffset,
+                    bulletDirection,40,this,.1,.6,0.06);
                 this.primaryFireDelay = 0.5;
                 game.playShoot();
                 this.bullets--;

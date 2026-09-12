@@ -173,8 +173,8 @@ export default class Level{
         this.addEntity(new Darkness(this,x,height,z));
     }
 
-    shootBullet(x,y,z,direction,speed,owner,size,ttl){
-        this.addEntity(new UnicornhornBullet(this,x,y,z,direction,speed,owner,size,ttl));
+    shootBullet(x,y,z,direction,speed,owner,size,ttl,ignoreCollisionTimer=0){
+        this.addEntity(new UnicornhornBullet(this,x,y,z,direction,speed,owner,size,ttl,ignoreCollisionTimer));
     }
 
     buildLight(game){
@@ -213,8 +213,14 @@ export default class Level{
     }
 
     deleteEntity(entity){
-        this.deleteFromList(entity, this.sectors[entity.sectorX][entity.sectorZ].entities);
-        this.deleteFromList(entity,this.entities);
+        try{
+            this.deleteFromList(entity, this.sectors[entity.sectorX][entity.sectorZ].entities);
+            this.deleteFromList(entity,this.entities);
+        } catch(error){
+            // Yeah this is ugly.  it can keep a few entities that entered outside the level but that's ok for this safety fallback that shouldn't happen
+            // but with the noCollision check on the bullet it can happen...
+        }
+
     }
 
     addParticle(particle){
@@ -372,19 +378,29 @@ export default class Level{
     }
 
     checkCollisions(game,entity,sectorX, sectorZ) {
-        this.sectors[sectorX][sectorZ].entities.forEach(otherEntity => {
-            if (entity == otherEntity) return;
-            if ((!entity.disposed || !otherEntity.disposed || !entity.collisions || !otherEntity.collisions) && entity.doesCollidesWithEntity(game,otherEntity)) {
-                entity.onEntityHit(game,otherEntity);
-            }
-        });
+        try{
+            this.sectors[sectorX][sectorZ].entities.forEach(otherEntity => {
+                if (entity == otherEntity) return;
+                if ((!entity.disposed || !otherEntity.disposed || !entity.collisions || !otherEntity.collisions) && entity.doesCollidesWithEntity(game,otherEntity)) {
+                    entity.onEntityHit(game,otherEntity);
+                }
+            });
+        }catch (error){
+            // Yeah this is ugly.  it can keep a few entities that entered outside the level but that's ok for this safety fallback that shouldn't happen
+            // but with the noCollision check on the bullet it can happen...
+        }
     }
 
     setEntitySector(oldX,oldZ,newX,newZ,entity){
-        if (oldX != null || oldZ != null){
-            this.deleteFromList(entity, this.sectors[oldX][oldZ].entities);
+        try{
+            if (oldX != null || oldZ != null){
+                this.deleteFromList(entity, this.sectors[oldX][oldZ].entities);
+            }
+            this.sectors[newX][newZ].entities.push(entity);
+        } catch(error){
+            entity.disposed;
+            // If the entity is outside the level dispose it.
         }
-        this.sectors[newX][newZ].entities.push(entity);
     }
 
     worldPosToGrid(position){

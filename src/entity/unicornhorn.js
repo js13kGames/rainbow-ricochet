@@ -10,7 +10,7 @@ export default class UnicornHorn extends Entity{
             this.texture = new Texture(Game.glTexture,32,0,16,16);
     
             var meshBuild = MeshBuilder.start(Game.gl,x,y,z,0.5);
-            MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,[1.0,1.0,1.0,0.5]);
+            MeshBuilder.billboard(this.texture.getUVs(),meshBuild,0,0,0,1,1,[1.0,1.0,1.0,1.0]);
             this.mesh = MeshBuilder.build(meshBuild);
             this.yOffset = y-2; // already adding +2 in Entity AABB-check but we need higher number if item is on a higher floor
             this.inHandYOffset = 0;
@@ -32,7 +32,7 @@ export default class UnicornHorn extends Entity{
         renderinHand(){
             
             this.mesh.setS(0.7);
-            this.mesh.setPos(0+this.bobX,-1.5+this.inHandYOffset+this.bobZ,-2);
+            this.mesh.setPos(-1.5+this.bobX,-1.5+this.inHandYOffset+this.bobZ,-2);
             this.mesh.setRotationY(0);
             this.mesh.setRotationX(3.14);
             Game.gl.enable(Game.gl.BLEND)
