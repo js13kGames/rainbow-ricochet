@@ -296,6 +296,10 @@ export default class Game{
 
     switchLevel(){
         if (this.levelSwitchDelay >0) return;
+        if (this.level != null && this.level.player != null){
+            this.playerHealth = this.level.player.currentHealth;
+            this.playerBullets = this.level.player.bullets;
+        }
         this.levelSwitchDelay = 1;
         this.currentLevel++;
         this.state = "levelswitch";
@@ -313,6 +317,8 @@ export default class Game{
 
     playerDied(){
         this.playerDead = true;
+        this.playerHealth = 0;
+        this.playerBullets = 0;
         this.state = "levelswitch";
         this.ui.clearMessages();
     }

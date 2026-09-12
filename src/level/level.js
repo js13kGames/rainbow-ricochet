@@ -79,7 +79,7 @@ export default class Level{
                 else if (levelChar == "o") this.addPoision(x,z);
                 else this.setStructure(x,z,Structures.floor);
 
-                if (levelChar == "p") this.addPlayer(x,z);
+                if (levelChar == "p") this.addPlayer(game,x,z);
 
                 if (levelChar == "m") this.addDarkness(game,x,z);
 
@@ -154,10 +154,12 @@ export default class Level{
         this.addEntity(new BulletPickup(this,x,floor.height,z,0.5));
     }
 
-    addPlayer(x,z){
+    addPlayer(game,x,z){
         var floor = this.getStructure(x-1,z);
         this.setStructure(x,z,floor);
         this.player = new Player(this,x,floor.height,z);
+        if (game.playerHealth != null && game.playerHealth>0) this.player.currentHealth = game.playerHealth;
+        if (game.playerBullets != null && game.playerBullets>0) this.player.bullets = game.playerBullets;
         this.entities.push(this.player);
         if (Game.camera != null) Game.camera.setRotation(270);
     }
