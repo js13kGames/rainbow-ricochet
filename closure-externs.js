@@ -9,3 +9,4 @@ var onmousedown;
 var onmouseup;
 var onclick;
 var oncontextmenu;
+var localStorage;

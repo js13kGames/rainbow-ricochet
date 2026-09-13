@@ -16,6 +16,7 @@ import LevelSwitch from "./ui/levelswitch.js";
 
 const TICK_RATE = 1000 / 60;
 const MAX_STEPS = 5;
+const localStorageLevel = "snukey.rr.lvl";
 
 export default class Game{
     static up = {x:0,y:1,z:0};
@@ -131,7 +132,8 @@ export default class Game{
             [64,0.3,8,[0.7,0.2,0.2,1.0],[0.8,0.5,0.5,1.0],[0.9,0.1,0.3,1.0],[1.0,0.0,0.1,1],l4,"Red"],
         ];
 
-        this.currentLevel = -1;
+        var savedLevel = localStorage.getItem(localStorageLevel);
+        this.currentLevel = savedLevel==null?-1:savedLevel;
         
         this.alreadySeenUnicornMessage = false;
         this.alreadySeenRainbowMessage = false;   
@@ -301,6 +303,7 @@ export default class Game{
             this.playerBullets = this.level.player.bullets;
         }
         this.levelSwitchDelay = 1;
+        localStorage.setItem(localStorageLevel,this.currentLevel==3?-1:this.currentLevel);
         this.currentLevel++;
         this.state = "levelswitch";
         if (this.level)this.level.endTime = performance.now();
