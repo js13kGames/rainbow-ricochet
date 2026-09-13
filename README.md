@@ -3,6 +3,8 @@
 
 A game for JS13k 2026 by [Nicklas Löf](https://mastodon.social/@snukey)
 
+Playable at the JS13k website at https://js13kgames.com/2026/games/rainbow-ricochet
+
 JS13k 2026 Theme: Unicorns and Rainbows.
 
 The whole game is written in ES6 Javascript.
