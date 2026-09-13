@@ -1,0 +1,3 @@
+LICENSE
+
+Don't use for commercial purposes. The code and the game belongs to Nicklas Löf!
