@@ -42,3 +42,7 @@ The game is © Nicklas Löf 2026 and can't be distributed anywhere else than at 
 [burntcustard](https://burnt.io) for [Roadroller optimizations](https://github.com/burntcustard/roadroller/tree/feature/hierarchical-mixers-zopfli-optimizations)
 
 [Andrzej Mazur](https://end3r.com/) for organizing JS13k every year! :)
+
+# LICENSE
+
+Don't use for commercial purposes. The code and the game belongs to Nicklas Löf!
