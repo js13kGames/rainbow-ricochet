@@ -137,6 +137,7 @@ export default class Game{
         
         this.alreadySeenUnicornMessage = false;
         this.alreadySeenRainbowMessage = false;   
+        this.mouseSensitivity = 400;
     }
 
     update(){
@@ -290,6 +291,10 @@ export default class Game{
 
     cantFireNow(){
         zzfx(...[1.6,,53,,.01,.02,,.1,,-3,,,.07,,,,.01,.98,.01,.03]); // Blip 950
+    }
+    
+    beep(){
+        zzfx(...[.8,0,470,,,.02,2,3.5,,31,,,,,316,,.16,.5,.01,.06,313]); // Blip 1018
     }
 
     pickedUp(thing){

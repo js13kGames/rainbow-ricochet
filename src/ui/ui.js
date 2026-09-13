@@ -164,6 +164,10 @@ export default class UI{
         this.messages.push(message);
         this.messageCountdown = message.length/3.5;
     }
+    clearAndQueueMessage(message){
+        this.clearMessages();
+        this.queueMessage(message);
+    }
 
     showPlayerHurt(){
         this.playerHurt = 0.2;

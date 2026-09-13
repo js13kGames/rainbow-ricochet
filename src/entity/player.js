@@ -22,13 +22,14 @@ export default class Player extends Entity{
         this.currentHealth = 10;
         this.maxHealth = 10;
         this.bobCounter = 0;
+        this.cameraSensitivityAdjustCounter = 0;
         this.bullets = 15;
         //this.hasRainbowInHand = true;
         //this.hasUnicornInHand = true;
         this.keysHold = [];
         this.keysHold.push(Door.secret);
 
-        this.cameraSensitivity = 400;
+    
 
         //this.keysHold.push(Door.blue);
         //this.keysHold.push(Door.green);
@@ -40,12 +41,11 @@ export default class Player extends Entity{
     }
 
     updateCamera(game){
-        Game.camera.rotate(-game.input.pointer.x/this.cameraSensitivity);
-        Game.camera.rotateX(-game.input.pointer.y/this.cameraSensitivity);
+        Game.camera.rotate(-game.input.pointer.x/game.mouseSensitivity);
+        Game.camera.rotateX(-game.input.pointer.y/game.mouseSensitivity);
         game.input.resetMouse();
 
         Game.camera.position.x = this.position.x;
-        //Game.camera.position.y = Game.camera.heightOverGround + this.cameraYOffset + this.position.y + (Math.sin(this.bobCounter*10)/15);
         Game.camera.position.y = Game.camera.heightOverGround + this.cameraYOffset + (Math.sin(this.bobCounter*10)/15);
         Game.camera.position.z = this.position.z;
     }
@@ -53,10 +53,18 @@ export default class Player extends Entity{
     tick(game,deltaTime){
         super.tick(game,deltaTime);
         if (this.currentHealth <= 0) game.playerDied();
+        if (this.cameraSensitivityAdjustCounter >0) this.cameraSensitivityAdjustCounter -= deltaTime;
         
-        this.cameraSensitivity-=game.input.plusPressed*13;
-        this.cameraSensitivity+=game.input.minusPressed*13;
-        if (this.cameraSensitivity < 50) this.cameraSensitivity = 50;
+        if (this.cameraSensitivityAdjustCounter <= 0 && (game.input.plusPressed || game.input.minusPressed)){
+            game.beep();
+            game.mouseSensitivity *= 1-game.input.plusPressed * 0.12 + game.input.minusPressed * 0.12;
+            game.mouseSensitivity = Math.max(50, Math.min(3950, game.mouseSensitivity));
+            this.cameraSensitivityAdjustCounter = 0.1;
+            game.ui.clearAndQueueMessage("Mouse sensitivity: "+Math.round(100*(4000 - game.mouseSensitivity)/3950));
+        }
+
+        if (game.mouseSensitivity < 50) game.mouseSensitivity = 50;
+        if (game.mouseSensitivity > 3950) game.mouseSensitivity = 3950;
 
         var cameraYTargetDiff = this.yTarget - this.cameraYOffset;
         this.cameraYOffset = Math.abs(cameraYTargetDiff) > 0.08 ? this.cameraYOffset + (cameraYTargetDiff > 0 ? 0.08 : -0.2) : this.yTarget;
