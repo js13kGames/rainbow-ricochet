@@ -1,4 +1,8 @@
 ---
+genres:
+  - shooter
+  - action
+  - adventure
 post: https://blog.snukey.se/js13k-2026-post-mortem/
 # See github.com/js13kGames/hello-world for supported frontmatter
 ---
